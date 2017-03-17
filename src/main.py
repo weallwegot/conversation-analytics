@@ -22,8 +22,15 @@ Main module
 - are long periods of silence followed with a "sorry"? lmao.
 - the use of punctuation to show effort score
 - are links shared between the two?
+- longest streak of consecutive days talked
+- longest streak of consecutive days not talked
 https://developers.google.com/edu/python/regular-expressions
 not sure what else.
+"""
+"""
+make the parsing flexible in case the format of text input
+changes drastically. currently using 
+https://github.com/PeterKaminski09/baskup to dump data
 """
 
 #standard imports
@@ -81,30 +88,3 @@ with open(full_path,'r') as whole_ass_convo:
 print(str([str(g.date_day_of_week) for g in text_equivs]))
 
 
-######
-#Parse
-######
-
-
-
-"""
-things to consider when reading
-messages that are consecutive should just be seen as one
-if the timestamps are close by
-
-how do emojis look in unicode or whatever string format
-dictionaries are not ordered, so be wary of data structure rep
-
-make the parsing flexible in case the format of text input
-changes drastically. currently using 
-https://github.com/PeterKaminski09/baskup to dump data
-
-#object oriented design
-#each cluster of continuous (how is this defined) text
-is one object
-or should each exchange be its own object
-
-what is the criteria for a conversation being terminated and starting anew
-versus just an extended pause.
-
-"""
