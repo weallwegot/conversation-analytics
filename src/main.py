@@ -57,8 +57,9 @@ with open(full_path,'r') as whole_ass_convo:
 				text_equivs.append(te)
 				i += 1
 		print line
-		if i == 1000:
-			break
+		if i == 10000:
+			#break
+			pass
 
 
 r = mc.calculate_all_metrics(text_equivs)

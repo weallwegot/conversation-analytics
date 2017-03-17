@@ -85,14 +85,14 @@ def calculate_all_metrics(tes):
 		earlier_te = tes[i]
 		later_te = tes[i+1]
 		time_diff_dict = calc_time_between_text_equivalents(earlier_te,later_te)
-		print(earlier_te.sender)
 		if earlier_te.sender == PARTICPANT_1:
 			time_diffs_s1.append(time_diff_dict)
 		elif earlier_te.sender == PARTICPANT_2:
 			time_diffs_s2.append(time_diff_dict)
-	print(time_diffs_s1)
 	master_metrics['response_rate_s1'] = np.median([td['time diff'] for td in time_diffs_s1])
 	master_metrics['response_rate_s2'] = np.median([td['time diff'] for td in time_diffs_s2])
+	master_metrics['double_text_rate_s1'] = 100.0*(sum([td['double text'] for td in time_diffs_s1])/float(len(tes)))
+	master_metrics['double_text_rate_s2'] = 100.0*(sum([td['double text'] for td in time_diffs_s2])/float(len(tes)))
 	return (master_metrics)
 
 
