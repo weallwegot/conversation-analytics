@@ -7,14 +7,14 @@ class TextEquivalent:
 	def __init__(self,name,timestamp_string,text):
 		self.sender = name
 		
-		self.date_day = self.date_day_parse(timestamp_string)
-		self.date_month = self.date_month_parse(timestamp_string)
-		self.date_year = self.date_year_parse(timestamp_string)
-		self.time = self.time_of_day_parse(timestamp_string)
+		self.date_day = None
+		self.date_month = None
+		self.date_year = None
+		self.time = None
 		
 		self.all_text = text
 		self.timestamp = self.set_timestamp(timestamp_string)
-		self.date_day_of_week = self.day_of_week_parse(timestamp_string)
+		self.date_day_of_week = self.timestamp.isoweekday() 
 
 	def append_sequential_text(self,text_to_append):
 		self.all_text = self.all_text + "\n" + text_to_append
@@ -29,17 +29,9 @@ class TextEquivalent:
 			 senders of merged texts must be identical \n\
 			 " + self.sender + "does not equal" + text_equivalent_to_merge.sender)
 	def average_timestamps(self,earlier,later):
+		#http://stackoverflow.com/questions/25473394/finding-mid-point-date-between-two-dates-in-python
 		return(earlier + (later-earlier)/2)
-	def date_day_parse(self,timestamp_string):
-		return ""
-	def date_month_parse(self,timestamp_string):
-		return ""		
-	def date_year_parse(self,timestamp_string):
-		return ""		
-	def time_of_day_parse(self,timestamp_string):
-		return ""	
-	def day_of_week_parse(self,timestamp_string):
-		return ""	
+
 	def set_timestamp(self,timestamp_string):
 		ds_ts = timestamp_string.split(' ')
 		date_strings = ds_ts[0].split('-')

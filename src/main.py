@@ -74,11 +74,11 @@ with open(full_path,'r') as whole_ass_convo:
 				text_equivs.append(te)
 				i += 1
 		print line
-		if i == 10:
+		if i == 1000:
 			break
 
 
-print(str([g.all_text for g in text_equivs]))
+print(str([str(g.date_day_of_week) for g in text_equivs]))
 
 
 ######
