@@ -36,7 +36,8 @@ with open(full_path,'r') as whole_ass_convo:
 		# search for the timestamp in YYYY-MM-DD HH:MM:SS format.
 		timestamp = re.search(r'\|\d+\-\d+\-\d+\s?\d+\:\d+\:\d+',line)
 		if sender and timestamp:
-			sender_name = sender.group()
+			# get rid of the identifying colon, last character
+			sender_name = sender.group()[:-1]
 			
 			timestamp_string = timestamp.group()
 			# slice the raw input such that sender & timestamp are gone.

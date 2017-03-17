@@ -48,8 +48,8 @@ import datetime
 #tes will likely be a dictionary with some meta data
 #what are the names of the conversation participants
 def calculate_all_metrics(tes):
-	PARTICPANT_1 = "Me:"
-	PARTICPANT_2 = "Friend:"
+	PARTICPANT_1 = "Me"
+	PARTICPANT_2 = "Friend"
 	master_metrics = {
 	'response_rate_s1':None,
 	'response_rate_s2':None,
@@ -89,8 +89,8 @@ def calculate_all_metrics(tes):
 			time_diffs_s1.append(time_diff_dict)
 		elif earlier_te.sender == PARTICPANT_2:
 			time_diffs_s2.append(time_diff_dict)
-	master_metrics['response_rate_s1'] = np.median([td['time diff'] for td in time_diffs_s1])
-	master_metrics['response_rate_s2'] = np.median([td['time diff'] for td in time_diffs_s2])
+	master_metrics['response_rate_s1'] = np.median([td['time diff'] for td in time_diffs_s1 if not td['double text']])
+	master_metrics['response_rate_s2'] = np.median([td['time diff'] for td in time_diffs_s2 if not td['double text']])
 	master_metrics['double_text_rate_s1'] = 100.0*(sum([td['double text'] for td in time_diffs_s1])/float(len(tes)))
 	master_metrics['double_text_rate_s2'] = 100.0*(sum([td['double text'] for td in time_diffs_s2])/float(len(tes)))
 	return (master_metrics)
