@@ -1,31 +1,6 @@
 """
 Main module
 - read data in from data/ directory
-#TODO
-- do some preliminary calcs
-- metrics of how interested the other person in a text conversation is.
-- average time of response. 
-- emoji usage comparison. 
-- laughs. 
-	- favorite way to express humor [lmao, lol, haha, loll]
-	- average number of ha's in a laugh
-- follow up questions asked. [how to quantify, not clear/dont really make sense]
-- response text length to initial text length. 
-- most terminated conversations
-- analyze which times of the day are most active for conversation
-- frequency of cursing 
-- favorite emojis
-- which day of the week is most active for conversation
-- how do all of these metrics change depending on the day of the week
-- or the time of the month
-- period of the day
-- are long periods of silence followed with a "sorry"? lmao.
-- the use of punctuation to show effort score
-- are links shared between the two?
-- longest streak of consecutive days talked
-- longest streak of consecutive days not talked
-https://developers.google.com/edu/python/regular-expressions
-not sure what else.
 """
 """
 make the parsing flexible in case the format of text input
@@ -39,6 +14,7 @@ import datetime
 import re
 #module imports
 from convo_objects.TextEquivalent import TextEquivalent
+import metric_calculations as mc 
 
 #########
 #Read
@@ -85,6 +61,7 @@ with open(full_path,'r') as whole_ass_convo:
 			break
 
 
-print(str([str(g.date_day_of_week) for g in text_equivs]))
+r = mc.calculate_all_metrics(text_equivs)
+print(str(r))
 
 

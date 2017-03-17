@@ -41,22 +41,75 @@ versus just an extended pause.
 # https://developers.google.com/edu/python/regular-expressions
 # not sure what else.
 
+import numpy as np
+import datetime
+
 #one method for all metrics so the loop only happens once
+#tes will likely be a dictionary with some meta data
+#what are the names of the conversation participants
 def calculate_all_metrics(tes):
-	list_of_dicts_time_diff = []
+	PARTICPANT_1 = "Me:"
+	PARTICPANT_2 = "Friend:"
+	master_metrics = {
+	'response_rate_s1':None,
+	'response_rate_s2':None,
+	'double_text_rate_s1':None,
+	'double_text_rate_s2':None,
+	'emoji_rate_s1':None,
+	'emoji_rate_s2':None,
+	'median_length_s1':None,
+	'median_length_s2':None,
+	'top_5_emojis_s1':None,
+	'top_5_emojis_s2':None,
+	'curse_rate_s1':None,
+	'curse_rate_s2':None,
+	'laugh_rate_s1':None,
+	'laugh_rate_s2':None,
+	'longest_steak':None,
+	'longest_drought':None,
+	'punctuation_s1':None,
+	'punctuation_s2':None,
+	'link_rate_s1':None,
+	'link_rate_s2':None
+	}
+	# will there be a new dictionary thats mostly the same, but for days of week?
+	# for days of the month
+	# for messages that start with sender 1 versus sender 2 ?
+	# all of these lists are lists of dictionaries
+	time_diffs_s1 = []
+	time_diffs_s2 = []
+
+
 	for i in range(len(tes)-1):
-		#
+		# it is important to subtract later from earlier for proper time
 		earlier_te = tes[i]
 		later_te = tes[i+1]
-		time_diff = calc_time_between_text_equivalents(earlier_te,later_te)
+		time_diff_dict = calc_time_between_text_equivalents(earlier_te,later_te)
+		print(earlier_te.sender)
+		if earlier_te.sender == PARTICPANT_1:
+			time_diffs_s1.append(time_diff_dict)
+		elif earlier_te.sender == PARTICPANT_2:
+			time_diffs_s2.append(time_diff_dict)
+	print(time_diffs_s1)
+	master_metrics['response_rate_s1'] = np.median([td['time diff'] for td in time_diffs_s1])
+	master_metrics['response_rate_s2'] = np.median([td['time diff'] for td in time_diffs_s2])
+	return (master_metrics)
+
 
 
 def calc_time_between_text_equivalents(tes_1,tes_2):
 	return_vals = {}
-	time_diff = tes_2.timestamp - tes_1.timestamp
+	# it is important to subtract later from earlier for proper time
+	return_vals['time diff'] = (tes_2.timestamp - tes_1.timestamp).seconds
 	initiater = tes_1.sender 
 	return_vals['responder'] = tes_2.sender
 	return_vals['sender'] = tes_1.sender
+	# use the person who sent the message to calculate
+	# eventually perhaps we can give advice on when the best time
+	# to talk to someone is
 	return_vals['day of week'] = tes_1.date_day_of_week
+	return_vals['double text'] = tes_2.sender==tes_1.sender
+	return_vals['hour'] = tes_1.timestamp.hour
+	return return_vals
 
 
