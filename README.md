@@ -12,7 +12,7 @@ s1 & s2 denote different conversations participants.
 ```python
 # response rates are in seconds
 	# the first is a median, the other is an average
-# double text rates are percentage of texts sent
+# double text & laugh rates are percentage of texts sent
 # longest streak is consecutive days talking
 # longest drought is consecutive days no talking
 
