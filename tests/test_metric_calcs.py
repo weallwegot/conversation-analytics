@@ -1,4 +1,4 @@
-
+# This Python file uses the following encoding: utf-8
 import unittest
 
 import os
@@ -8,7 +8,7 @@ from src.read_parse import read_and_parse_text_file
 from src.metric_calculations import calc_time_between_text_equivalents
 from src.metric_calculations import calc_length_text_equivalent
 from src.metric_calculations import calculate_all_metrics
-from src.metric_calculations import calc_laugh,calc_curse,calc_link
+from src.metric_calculations import calc_laugh,calc_curse,calc_link,calc_emoji
 
 
 
@@ -152,12 +152,66 @@ class TestMetricCalculations(unittest.TestCase):
 		self.assertTrue(calc_link(te7)['link_bool'],"Should contain a link")
 		#te7 = TextEquivalent("Me","2016-08-06 15:11:44","linkedin.com")
 		#self.assertTrue(calc_link(te7)['link_bool'],"Should contain a link")
+		
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","https://twitter.com/90spideypool/status/840747256596856832")
+		self.assertTrue(calc_link(te7)['link_bool'],"Should contain a link")
 		te7 = TextEquivalent("Me","2016-08-06 15:11:44","http://www.buyblack.io/")
 		self.assertTrue(calc_link(te7)['link_bool'],"Should contain a link")
 
 	def test_no_link_detection(self):
 		te7 = TextEquivalent("Me","2016-08-06 15:11:44","hi how are you, no thats not me")
 		self.assertFalse(calc_link(te7)['link_bool'],"Should not contain a link")
+
+
+	def test_emoji_detection(self):
+		
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","💁🏾💁🏾💁🏾💁🏾")
+		print(te7.all_text.decode('utf-8'))
+		self.assertTrue(calc_emoji(te7)['emoji_bool'],"Should contain an emoji")
+		
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","🤗")
+		self.assertTrue(calc_emoji(te7)['emoji_bool'],"Should contain an emoji")
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","🤓")
+		self.assertTrue(calc_emoji(te7)['emoji_bool'],"Should contain an emoji")
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","😔")
+		self.assertTrue(calc_emoji(te7)['emoji_bool'],"Should contain an emoji")
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","😂😂")
+		self.assertTrue(calc_emoji(te7)['emoji_bool'],"Should contain an emoji")
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","🤔")
+		self.assertTrue(calc_emoji(te7)['emoji_bool'],"Should contain an emoji")
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","👋🏿")
+		self.assertTrue(calc_emoji(te7)['emoji_bool'],"Should contain an emoji")
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","💅")
+		self.assertTrue(calc_emoji(te7)['emoji_bool'],"Should contain an emoji")
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","💅🏿")
+		self.assertTrue(calc_emoji(te7)['emoji_bool'],"Should contain an emoji")
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","😩😩😩")
+		self.assertTrue(calc_emoji(te7)['emoji_bool'],"Should contain an emoji")
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","😍")
+		self.assertTrue(calc_emoji(te7)['emoji_bool'],"Should contain an emoji")
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","🙄🙄🙄")
+		self.assertTrue(calc_emoji(te7)['emoji_bool'],"Should contain an emoji")
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","😱")
+		self.assertTrue(calc_emoji(te7)['emoji_bool'],"Should contain an emoji")
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","😈")
+		self.assertTrue(calc_emoji(te7)['emoji_bool'],"Should contain an emoji")
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","👌")
+		self.assertTrue(calc_emoji(te7)['emoji_bool'],"Should contain an emoji")
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","🏾")
+		self.assertTrue(calc_emoji(te7)['emoji_bool'],"Should contain an emoji")
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","👍🏿")
+		self.assertTrue(calc_emoji(te7)['emoji_bool'],"Should contain an emoji")
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","🙏")
+		self.assertTrue(calc_emoji(te7)['emoji_bool'],"Should contain an emoji")
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","🏃")
+		self.assertTrue(calc_emoji(te7)['emoji_bool'],"Should contain an emoji")
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","💁")
+		self.assertTrue(calc_emoji(te7)['emoji_bool'],"Should contain an emoji")
+
+	def test_no_emoji_detection(self):
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","hi how are you, no thats not me")
+		self.assertFalse(calc_emoji(te7)['emoji_bool'],"Should not contain a link")
+
 
 
 

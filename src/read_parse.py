@@ -27,7 +27,6 @@ def read_and_parse_text_file(full_ass_path, block_text_threshold_seconds):
 					te_prev = text_equivs[i-1]
 					diff = te.timestamp - te_prev.timestamp
 					if (te_prev.sender==te.sender) and (abs(diff.seconds) < block_text_threshold_seconds):
-						#te_prev.append_sequential_text(text_msg)
 						te_prev.merge_sequential_text_equiv(te)
 					else:
 						text_equivs.append(te)

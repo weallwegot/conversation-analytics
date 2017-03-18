@@ -94,6 +94,9 @@ def calculate_all_metrics(tes):
 	curses_s2 = []
 	links_s1 = []
 	links_s2 = []
+	emojis_s1 = []
+	emojis_s2 = []
+
 
 	number_of_text_eqs_sent_s1 = 0
 	number_of_text_eqs_sent_s2 = 0
@@ -119,18 +122,22 @@ def calculate_all_metrics(tes):
 		laugh_dict = calc_laugh(earlier_te)
 		curse_dict = calc_curse(earlier_te)
 		link_dict = calc_link(earlier_te)
+		emoji_dict = calc_emoji(earlier_te)
+
 		if earlier_te.sender == PARTICPANT_1:
 			number_of_text_eqs_sent_s1 += 1
 			avg_lengths_s1.append(length_dict)
 			laughs_s1.append(laugh_dict)
 			curses_s1.append(curse_dict)
 			links_s1.append(link_dict)
+			emojis_s1.append(emoji_dict)
 		elif earlier_te.sender == PARTICPANT_2:
 			number_of_text_eqs_sent_s2 += 1
 			avg_lengths_s2.append(length_dict)
 			laughs_s2.append(laugh_dict)
 			curses_s2.append(curse_dict)
 			links_s2.append(link_dict)
+			emojis_s2.append(emoji_dict)
 
 
 	# do the processing of data calcs aggregated
@@ -156,6 +163,9 @@ def calculate_all_metrics(tes):
 		master_metrics['curse_rate_s1'] =  calc_rate_of_occurrence('curse_bool',curses_s1,number_of_text_eqs_sent_s1)
 		# find rate of link sharing
 		master_metrics['link_rate_s1'] = calc_rate_of_occurrence('link_bool',links_s1,number_of_text_eqs_sent_s1)
+		# find the rate of emoji usage
+		master_metrics['emoji_rate_s1'] = calc_rate_of_occurrence('emoji_bool',emojis_s1,number_of_text_eqs_sent_s1)
+
 	if number_of_text_eqs_sent_s2 > 0:
 		# median number of seconds to reply
 		master_metrics['response_rate_s2'] = np.median([td['time diff'] for td in time_diffs_s2 if not td['double text']])
@@ -171,7 +181,10 @@ def calculate_all_metrics(tes):
 		master_metrics['curse_rate_s2'] =  calc_rate_of_occurrence('curse_bool',curses_s2,number_of_text_eqs_sent_s2)
 		# find rate of link sharing
 		master_metrics['link_rate_s2'] = calc_rate_of_occurrence('link_bool',links_s2,number_of_text_eqs_sent_s2)
-	
+		# find the rate of emoji usage
+		master_metrics['emoji_rate_s2'] = calc_rate_of_occurrence('emoji_bool',emojis_s2,number_of_text_eqs_sent_s2)
+
+
 	return (master_metrics)
 
 # method to calculate a rate as a percentage of occurrence
@@ -223,8 +236,7 @@ def calc_curse(te):
 	return_vals = {}
 	return_vals['day of week'] = te.date_day_of_week
 	return_vals['hour'] = te.timestamp.hour
-	# the words that count as a laugh
-	# http://stackoverflow.com/questions/16453522/how-can-i-detect-laughing-words-in-a-string
+	# the words that count as a curse
 	if re.search(r'\b([s]+[h]+[i]+[t]+|[f]+[u]+[c]+[k]+|[b]+[i]+[t]+[c]+[h]+)\b',te.all_text.lower()):
 		return_vals['curse_bool'] = True
 	else:
@@ -242,6 +254,26 @@ def calc_link(te):
 		return_vals['link_bool'] = True
 	else:
 		return_vals['link_bool'] = False
+	return return_vals
+
+def calc_emoji(te):
+	return_vals = {}
+	return_vals['day of week'] = te.date_day_of_week
+	return_vals['hour'] = te.timestamp.hour
+	# the characters that count as an emoji
+	# http://stackoverflow.com/questions/19149186/how-to-find-and-count-emoticons-in-a-string-using-python
+	# decode the string into utf-8 to get emojis
+	# because this is built in 2.7 python need to do some bs, workaround with astral plan regex
+	# the normal way to do this doesnt work well so we get this convoluted workaround
+	# google: python narrow build versus wide build or ES5 vs ES6 or UCS-4 vs UCS-2
+	# http://stackoverflow.com/questions/31603075/how-can-i-represent-this-regex-to-not-get-a-bad-character-range-error
+	# with wide build could use some regex like this -> [\U0001d300-\U0001d356]
+	# http://stackoverflow.com/questions/19149186/how-to-find-and-count-emoticons-in-a-string-using-python
+	txt_utf_8 = te.all_text.decode('utf-8')
+	if re.search(ur'(\ud838[\udc50-\udfff])|([\ud839-\ud83d][\udc00-\udfff])|(\ud83e[\udc00-\udfbf])|([\udc50-\udfff]\ud838)|([\udc00-\udfff][\ud839-\ud83d])|([\udc00-\udfbf]\ud83e)',txt_utf_8):
+		return_vals['emoji_bool'] = True
+	else:
+		return_vals['emoji_bool'] = False
 	return return_vals
 
 
