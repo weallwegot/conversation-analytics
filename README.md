@@ -12,7 +12,10 @@ s1 & s2 denote different conversations participants.
 ```python
 # response rates are in seconds
 	# the first is a median, the other is an average
-# double text & laugh rates are percentage of texts sent
+		# response_rate_s1: 
+		# if s1 sends a text, then 22.0 seconds is the most common time 
+		# that they will wait before receiving a reply from s2
+# double text & laugh & curse rates are percentage of texts sent
 # longest streak is consecutive days talking
 # longest drought is consecutive days no talking
 
@@ -22,8 +25,8 @@ s1 & s2 denote different conversations participants.
 	'texts_sent_s2':2638,
 	'response_rate_s1':22.0,
 	'response_rate_s2':33.0,
-	'response_rate_mean_s1':None,
-	'response_rate_mean_s2':None,
+	'response_rate_mean_s1':1832.46,
+	'response_rate_mean_s2':911.863,
 	'double_text_rate_s1':7.17,
 	'double_text_rate_s2':13.68,
 	'emoji_rate_s1':None,
@@ -32,8 +35,8 @@ s1 & s2 denote different conversations participants.
 	'average_length_s2':8.97,
 	'top_5_emojis_s1':None,
 	'top_5_emojis_s2':None,
-	'curse_rate_s1':None,
-	'curse_rate_s2':None,
+	'curse_rate_s1':2.568,
+	'curse_rate_s2':1.023,
 	'laugh_rate_s1':19.323,
 	'laugh_rate_s2':7.99,
 	'big_words_rate_s1':None,
@@ -42,8 +45,8 @@ s1 & s2 denote different conversations participants.
 	'longest_drought':None,
 	'punctuation_s1':None,
 	'punctuation_s2':None,
-	'link_rate_s1':None,
-	'link_rate_s2':None
+	'link_rate_s1':1.182,
+	'link_rate_s2':0.568
 	}
 ```
 
