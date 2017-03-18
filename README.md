@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/weAllWeGot/conversation-analytics.svg?branch=master)](https://travis-ci.org/weAllWeGot/conversation-analytics)
+
 # conversation-analytics
 understand social dynamics in a two-way conversation
 
