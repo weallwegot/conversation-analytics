@@ -140,13 +140,11 @@ def calculate_all_metrics(tes):
 		# average number of seconds to reply
 		master_metrics['response_rate_mean_s1'] = np.mean([td['time diff'] for td in time_diffs_s1 if not td['double text']])
 		# proportion of texts sent that are "double texts"
-		master_metrics['double_text_rate_s1'] = 100.0*(sum([td['double text'] for td in time_diffs_s1])
-			/float(number_of_text_eqs_sent_s1))
+		master_metrics['double_text_rate_s1'] = calc_rate_of_occurrence('double text',time_diffs_s1,number_of_text_eqs_sent_s1)
 		# average text length in words
 		master_metrics['average_length_s1'] = np.mean([ld['length_words'] for ld in avg_lengths_s1])
 		# find rate of laughter
-		master_metrics['laugh_rate_s1'] = 100.0*(sum([td['laugh_bool'] for td in laughs_s1])
-			/float(number_of_text_eqs_sent_s1))
+		master_metrics['laugh_rate_s1'] = calc_rate_of_occurrence('laugh_bool',laughs_s1,number_of_text_eqs_sent_s1)
 		# find rate of cursing
 		master_metrics['curse_rate_s1'] =  calc_rate_of_occurrence('curse_bool',curses_s1,number_of_text_eqs_sent_s1)
 
@@ -156,13 +154,11 @@ def calculate_all_metrics(tes):
 		# average number of seconds to reply
 		master_metrics['response_rate_mean_s2'] = np.mean([td['time diff'] for td in time_diffs_s2 if not td['double text']])
 		# proportion of texts sent that are "double texts"
-		master_metrics['double_text_rate_s2'] = 100.0*(sum([td['double text'] for td in time_diffs_s2])
-			/float(number_of_text_eqs_sent_s2))
+		master_metrics['double_text_rate_s2'] = calc_rate_of_occurrence('double text',time_diffs_s2,number_of_text_eqs_sent_s2)
 		# average text length in words
 		master_metrics['average_length_s2'] = np.mean([ld['length_words'] for ld in avg_lengths_s2])
 		# find rate of laughter
-		master_metrics['laugh_rate_s2'] = 100.0*(sum([td['laugh_bool'] for td in laughs_s2])
-			/float(number_of_text_eqs_sent_s2))
+		master_metrics['laugh_rate_s2'] = calc_rate_of_occurrence('laugh_bool',laughs_s2,number_of_text_eqs_sent_s2)
 		# find rate of cursing
 		master_metrics['curse_rate_s2'] =  calc_rate_of_occurrence('curse_bool',curses_s2,number_of_text_eqs_sent_s2)
 	
