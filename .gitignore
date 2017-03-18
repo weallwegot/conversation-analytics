@@ -7,7 +7,7 @@ __pycache__/
 *.so
 
 # Don't upload the actual conversations!!!!!!!
-*.txt
+anon_convo.txt
 
 # Distribution / packaging
 .Python
