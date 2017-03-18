@@ -90,6 +90,8 @@ def calculate_all_metrics(tes):
 	avg_lengths_s2 = []
 	laughs_s1 = []
 	laughs_s2 = []
+	curses_s1 = []
+	curses_s2 = []
 
 	number_of_text_eqs_sent_s1 = 0
 	number_of_text_eqs_sent_s2 = 0
@@ -111,14 +113,17 @@ def calculate_all_metrics(tes):
 
 		length_dict = calc_length_text_equivalent(earlier_te)
 		laugh_dict = calc_laugh(earlier_te)
+		curse_dict = calc_curse(earlier_te)
 		if earlier_te.sender == PARTICPANT_1:
 			number_of_text_eqs_sent_s1 += 1
 			avg_lengths_s1.append(length_dict)
 			laughs_s1.append(laugh_dict)
+			curses_s1.append(curse_dict)
 		elif earlier_te.sender == PARTICPANT_2:
 			number_of_text_eqs_sent_s2 += 1
 			avg_lengths_s2.append(length_dict)
 			laughs_s2.append(laugh_dict)
+			curses_s2.append(curse_dict)
 
 
 	# do the processing of data calcs aggregated
@@ -142,6 +147,8 @@ def calculate_all_metrics(tes):
 		# find rate of laughter
 		master_metrics['laugh_rate_s1'] = 100.0*(sum([td['laugh_bool'] for td in laughs_s1])
 			/float(number_of_text_eqs_sent_s1))
+		# find rate of cursing
+		master_metrics['curse_rate_s1'] =  calc_rate_of_occurrence('curse_bool',curses_s1,number_of_text_eqs_sent_s1)
 
 	if number_of_text_eqs_sent_s2 > 0:
 		# median number of seconds to reply
@@ -156,8 +163,17 @@ def calculate_all_metrics(tes):
 		# find rate of laughter
 		master_metrics['laugh_rate_s2'] = 100.0*(sum([td['laugh_bool'] for td in laughs_s2])
 			/float(number_of_text_eqs_sent_s2))
+		# find rate of cursing
+		master_metrics['curse_rate_s2'] =  calc_rate_of_occurrence('curse_bool',curses_s2,number_of_text_eqs_sent_s2)
 	
 	return (master_metrics)
+
+# method to calculate a rate as a percentage of occurrence
+def calc_rate_of_occurrence(special_key,list_of_dicts,total_number):
+	res = 100.0*(sum([td[special_key] for td in list_of_dicts])
+			/float(total_number))
+	return res
+
 
 def calc_time_between_text_equivalents(tes_1,tes_2):
 	return_vals = {}
