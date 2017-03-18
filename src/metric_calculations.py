@@ -92,6 +92,8 @@ def calculate_all_metrics(tes):
 	laughs_s2 = []
 	curses_s1 = []
 	curses_s2 = []
+	links_s1 = []
+	links_s2 = []
 
 	number_of_text_eqs_sent_s1 = 0
 	number_of_text_eqs_sent_s2 = 0
@@ -102,6 +104,8 @@ def calculate_all_metrics(tes):
 
 		# The calculations for time between are broken out
 		# because they require 2 Text Equivalents Simulataneously
+		# if you sent the text, then the time it takes the other person to respond
+		# is your response rate?
 		if i < len(tes)-1:
 			later_te = tes[i+1]
 			time_diff_dict = calc_time_between_text_equivalents(earlier_te,later_te)
@@ -114,16 +118,19 @@ def calculate_all_metrics(tes):
 		length_dict = calc_length_text_equivalent(earlier_te)
 		laugh_dict = calc_laugh(earlier_te)
 		curse_dict = calc_curse(earlier_te)
+		link_dict = calc_link(earlier_te)
 		if earlier_te.sender == PARTICPANT_1:
 			number_of_text_eqs_sent_s1 += 1
 			avg_lengths_s1.append(length_dict)
 			laughs_s1.append(laugh_dict)
 			curses_s1.append(curse_dict)
+			links_s1.append(link_dict)
 		elif earlier_te.sender == PARTICPANT_2:
 			number_of_text_eqs_sent_s2 += 1
 			avg_lengths_s2.append(length_dict)
 			laughs_s2.append(laugh_dict)
 			curses_s2.append(curse_dict)
+			links_s2.append(link_dict)
 
 
 	# do the processing of data calcs aggregated
@@ -147,7 +154,8 @@ def calculate_all_metrics(tes):
 		master_metrics['laugh_rate_s1'] = calc_rate_of_occurrence('laugh_bool',laughs_s1,number_of_text_eqs_sent_s1)
 		# find rate of cursing
 		master_metrics['curse_rate_s1'] =  calc_rate_of_occurrence('curse_bool',curses_s1,number_of_text_eqs_sent_s1)
-
+		# find rate of link sharing
+		master_metrics['link_rate_s1'] = calc_rate_of_occurrence('link_bool',links_s1,number_of_text_eqs_sent_s1)
 	if number_of_text_eqs_sent_s2 > 0:
 		# median number of seconds to reply
 		master_metrics['response_rate_s2'] = np.median([td['time diff'] for td in time_diffs_s2 if not td['double text']])
@@ -161,6 +169,8 @@ def calculate_all_metrics(tes):
 		master_metrics['laugh_rate_s2'] = calc_rate_of_occurrence('laugh_bool',laughs_s2,number_of_text_eqs_sent_s2)
 		# find rate of cursing
 		master_metrics['curse_rate_s2'] =  calc_rate_of_occurrence('curse_bool',curses_s2,number_of_text_eqs_sent_s2)
+		# find rate of link sharing
+		master_metrics['link_rate_s2'] = calc_rate_of_occurrence('link_bool',links_s2,number_of_text_eqs_sent_s2)
 	
 	return (master_metrics)
 
@@ -221,4 +231,17 @@ def calc_curse(te):
 		return_vals['curse_bool'] = False
 
 	return return_vals
+
+def calc_link(te):
+	return_vals = {}
+	return_vals['day of week'] = te.date_day_of_week
+	return_vals['hour'] = te.timestamp.hour
+	# the words that count as a link
+	# http://stackoverflow.com/questions/6883049/regex-to-find-urls-in-string-in-python
+	if re.search(r'http[s]?://(?:[a-zA-Z]|[0-9]|[$-_@.&+]|[!*\(\),]|(?:%[0-9a-fA-F][0-9a-fA-F]))+',te.all_text.lower()):
+		return_vals['link_bool'] = True
+	else:
+		return_vals['link_bool'] = False
+	return return_vals
+
 

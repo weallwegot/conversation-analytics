@@ -8,7 +8,7 @@ from src.read_parse import read_and_parse_text_file
 from src.metric_calculations import calc_time_between_text_equivalents
 from src.metric_calculations import calc_length_text_equivalent
 from src.metric_calculations import calculate_all_metrics
-from src.metric_calculations import calc_laugh,calc_curse
+from src.metric_calculations import calc_laugh,calc_curse,calc_link
 
 
 
@@ -144,6 +144,20 @@ class TestMetricCalculations(unittest.TestCase):
 	def test_no_curse_detection(self):
 		te7 = TextEquivalent("Me","2016-08-06 15:11:44","hi how are you, no thats not me")
 		self.assertFalse(calc_curse(te7)['curse_bool'],"Should not contain a curse")
+
+	def test_link_detection(self):
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","https://github.com/weAllWeGot/conversation-analytics")
+		self.assertTrue(calc_link(te7)['link_bool'],"Should contain a link")
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","https://twitter.com/OluwaSumnSumn")
+		self.assertTrue(calc_link(te7)['link_bool'],"Should contain a link")
+		#te7 = TextEquivalent("Me","2016-08-06 15:11:44","linkedin.com")
+		#self.assertTrue(calc_link(te7)['link_bool'],"Should contain a link")
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","http://www.buyblack.io/")
+		self.assertTrue(calc_link(te7)['link_bool'],"Should contain a link")
+
+	def test_no_link_detection(self):
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","hi how are you, no thats not me")
+		self.assertFalse(calc_link(te7)['link_bool'],"Should not contain a link")
 
 
 
