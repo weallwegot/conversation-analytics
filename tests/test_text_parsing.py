@@ -25,10 +25,10 @@ class TestTextParsing(unittest.TestCase):
 		data_folder = working_dir + os.sep + "test_data" 
 		text_file_name = "TestData.txt"
 		full_path = data_folder + os.sep + text_file_name
-		self.text_eqs = read_and_parse_text_file(full_path,0) 
+		self.text_eqs = read_and_parse_text_file(full_path,3) 
 		te1 = TextEquivalent("Me","2016-08-06 15:11:44","Hi",)
 		te2 = TextEquivalent("Me","2016-08-06 15:13:44","Wassup")
-		te1 = TextEquivalent("Me","2016-08-06 15:11:44","Hi",)
+		te1 = TextEquivalent("Me","2016-08-06 15:11:44","Hi")
 		te2 = TextEquivalent("Me","2016-08-06 15:13:44","Wassup")
 		te1.merge_sequential_text_equiv(te2)
 		self.merged_te = te1

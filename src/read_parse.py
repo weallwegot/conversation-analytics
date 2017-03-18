@@ -2,7 +2,7 @@ import re
 from convo_objects.TextEquivalent import TextEquivalent
 def read_and_parse_text_file(full_ass_path, block_text_threshold_seconds):
 	#the amount of time between texts for them to be considered 'sequential'
-	#BLOCK_TEXT_THRESHOLD_SECONDS = 90
+	#BLOCK_TEXT_THRESHOLD_SECONDS 
 	text_equivs = []
 
 	with open(full_ass_path,'r') as whole_ass_convo:
@@ -35,7 +35,7 @@ def read_and_parse_text_file(full_ass_path, block_text_threshold_seconds):
 				else:
 					text_equivs.append(te)
 					i += 1
-			if i == 10000:
+			if i == 15:
 				#break
 				pass
 	return text_equivs

@@ -3,6 +3,37 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+#dumb pycharm tings
+
+#partially bowered from jetbrains.gitignore project on github
+.idea/workspace.xml
+**/.idea/workspace.xml 
+**/.idea/tasks.xml
+*.pyc
+*.iws
+.idea_modules/
+.idea/dataSources/
+.idea/dataSources.xml
+.idea/dynamic.xml
+.idea/uiDesigner.xml
+.idea/sqlDataSources.xml
+.idea/dataSources.local.xml
+.idea/dataSources.ids
+.idea/gradle.xml
+.idea/libraries
+
+.idea/mongoSettings.xml
+
+/out/
+
+atlassian-ide-plugin.xml
+
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+fabric.properties
+*/.idea/*
+
 # C extensions
 *.so
 
