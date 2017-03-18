@@ -1,5 +1,9 @@
 [![Build Status](https://travis-ci.org/weAllWeGot/conversation-analytics.svg?branch=master)](https://travis-ci.org/weAllWeGot/conversation-analytics)
 
+[![Coverage Status](https://coveralls.io/repos/github/weAllWeGot/conversation-analytics/badge.svg?branch=master)](https://coveralls.io/github/weAllWeGot/conversation-analytics?branch=master)
+
+
+
 # conversation-analytics
 understand social dynamics in a two-way conversation
 
