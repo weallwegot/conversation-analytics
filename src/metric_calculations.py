@@ -197,3 +197,16 @@ def calc_laugh(te):
 
 	return return_vals
 
+def calc_curse(te):
+	return_vals = {}
+	return_vals['day of week'] = te.date_day_of_week
+	return_vals['hour'] = te.timestamp.hour
+	# the words that count as a laugh
+	# http://stackoverflow.com/questions/16453522/how-can-i-detect-laughing-words-in-a-string
+	if re.search(r'\b([s]+[h]+[i]+[t]+|[f]+[u]+[c]+[k]+|[b]+[i]+[t]+[c]+[h]+)\b',te.all_text.lower()):
+		return_vals['curse_bool'] = True
+	else:
+		return_vals['curse_bool'] = False
+
+	return return_vals
+

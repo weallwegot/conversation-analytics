@@ -8,7 +8,7 @@ from src.read_parse import read_and_parse_text_file
 from src.metric_calculations import calc_time_between_text_equivalents
 from src.metric_calculations import calc_length_text_equivalent
 from src.metric_calculations import calculate_all_metrics
-from src.metric_calculations import calc_laugh
+from src.metric_calculations import calc_laugh,calc_curse
 
 
 
@@ -88,6 +88,19 @@ class TestMetricCalculations(unittest.TestCase):
 		number = rd['texts_sent_s1']
 		self.assertEquals(double,75.0,"wrong text rate")
 
+	def test_metric_test_laugh_rate_50_percent(self):
+		#the first timestamp just for reference
+		#2016-08-06 15:11:44
+		te1 = TextEquivalent("Me","2016-08-06 15:11:44","Hi,ahaha")
+		te2 = TextEquivalent("Me","2016-08-06 15:13:44","Wassup")
+		te3 = TextEquivalent("Me","2016-08-06 16:11:44","Hi")
+		te4 = TextEquivalent("Me","2016-08-06 17:13:44","Wassup,lmaoo")
+		rd = calculate_all_metrics([te1,te2,te3,te4])
+
+		double = rd['laugh_rate_s1']
+		number = rd['texts_sent_s1']
+		self.assertEquals(double,50.0,"wrong laugh rate")
+
 	def test_number_of_texts_sent(self):
 		rd = calculate_all_metrics(self.tes)
 		self.assertEquals(rd['texts_sent_s1'],2)
@@ -111,6 +124,26 @@ class TestMetricCalculations(unittest.TestCase):
 	def test_no_laugh_detection(self):
 		te7 = TextEquivalent("Me","2016-08-06 15:11:44","hi how are you, no thats not me")
 		self.assertFalse(calc_laugh(te7)['laugh_bool'],"Should not contain a laugh")
+
+	def test_curse_detection(self):
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","hi shit")
+		self.assertTrue(calc_curse(te7)['curse_bool'],"Should  contain a curse")
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","hi fuck")
+		self.assertTrue(calc_curse(te7)['curse_bool'],"Should  contain a curse")
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","hi bitch")
+		self.assertTrue(calc_curse(te7)['curse_bool'],"Should  contain a curse")
+
+	def test_curse_detection_many_letters(self):
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","hi fuckkk")
+		self.assertTrue(calc_curse(te7)['curse_bool'],"Should  contain a curse")
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","biiitchh")
+		self.assertTrue(calc_curse(te7)['curse_bool'],"Should  contain a curse")
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","sshhittt")
+		self.assertTrue(calc_curse(te7)['curse_bool'],"Should  contain a curse")
+
+	def test_no_curse_detection(self):
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","hi how are you, no thats not me")
+		self.assertFalse(calc_curse(te7)['curse_bool'],"Should not contain a curse")
 
 
 
