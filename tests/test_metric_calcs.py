@@ -8,7 +8,7 @@ from src.read_parse import read_and_parse_text_file
 from src.metric_calculations import calc_time_between_text_equivalents
 from src.metric_calculations import calc_length_text_equivalent
 from src.metric_calculations import calculate_all_metrics
-
+from src.metric_calculations import calc_laugh
 
 
 
@@ -93,10 +93,24 @@ class TestMetricCalculations(unittest.TestCase):
 		self.assertEquals(rd['texts_sent_s1'],2)
 		self.assertEquals(rd['texts_sent_s2'],2)
 
+	def test_laughing_detection_haha(self):
+		te1 = TextEquivalent("Me","2016-08-06 15:11:44","Haha")
+		self.assertTrue(calc_laugh(te1)['laugh_bool'],"Should contain a laugh")
+		te3 = TextEquivalent("Me","2016-08-06 15:11:44","hahaha")
+		self.assertTrue(calc_laugh(te3)['laugh_bool'],"Should contain a laugh")
 
-
-
-
+	def test_laugh_detection_acronyms(self):
+		te2 = TextEquivalent("Me","2016-08-06 15:11:44","Lol")
+		self.assertTrue(calc_laugh(te2)['laugh_bool'],"Should contain a laugh")
+		te4 = TextEquivalent("Me","2016-08-06 15:11:44","lolol")
+		self.assertTrue(calc_laugh(te4)['laugh_bool'],"Should contain a laugh")
+		te5 = TextEquivalent("Me","2016-08-06 15:11:44","lmaoo")
+		self.assertTrue(calc_laugh(te5)['laugh_bool'],"Should contain a laugh")
+		te6 = TextEquivalent("Me","2016-08-06 15:11:44","lmao")
+		self.assertTrue(calc_laugh(te6)['laugh_bool'],"Should contain a laugh")
+	def test_no_laugh_detection(self):
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44","hi how are you, no thats not me")
+		self.assertFalse(calc_laugh(te7)['laugh_bool'],"Should not contain a laugh")
 
 
 

@@ -71,6 +71,8 @@ def calculate_all_metrics(tes):
 	'curse_rate_s2':None,
 	'laugh_rate_s1':None,
 	'laugh_rate_s2':None,
+	'big_words_rate_s1':None,
+	'big_words_rate_s2':None,
 	'longest_steak':None,
 	'longest_drought':None,
 	'punctuation_s1':None,
@@ -86,6 +88,8 @@ def calculate_all_metrics(tes):
 	time_diffs_s2 = []
 	avg_lengths_s1 = []
 	avg_lengths_s2 = []
+	laughs_s1 = []
+	laughs_s2 = []
 
 	number_of_text_eqs_sent_s1 = 0
 	number_of_text_eqs_sent_s2 = 0
@@ -106,12 +110,15 @@ def calculate_all_metrics(tes):
 
 
 		length_dict = calc_length_text_equivalent(earlier_te)
+		laugh_dict = calc_laugh(earlier_te)
 		if earlier_te.sender == PARTICPANT_1:
 			number_of_text_eqs_sent_s1 += 1
 			avg_lengths_s1.append(length_dict)
+			laughs_s1.append(laugh_dict)
 		elif earlier_te.sender == PARTICPANT_2:
 			number_of_text_eqs_sent_s2 += 1
 			avg_lengths_s2.append(length_dict)
+			laughs_s2.append(laugh_dict)
 
 
 	# do the processing of data calcs aggregated
@@ -132,6 +139,9 @@ def calculate_all_metrics(tes):
 			/float(number_of_text_eqs_sent_s1))
 		# average text length in words
 		master_metrics['average_length_s1'] = np.mean([ld['length_words'] for ld in avg_lengths_s1])
+		# find rate of laughter
+		master_metrics['laugh_rate_s1'] = 100.0*(sum([td['laugh_bool'] for td in laughs_s1])
+			/float(number_of_text_eqs_sent_s1))
 
 	if number_of_text_eqs_sent_s2 > 0:
 		# median number of seconds to reply
@@ -143,6 +153,9 @@ def calculate_all_metrics(tes):
 			/float(number_of_text_eqs_sent_s2))
 		# average text length in words
 		master_metrics['average_length_s2'] = np.mean([ld['length_words'] for ld in avg_lengths_s2])
+		# find rate of laughter
+		master_metrics['laugh_rate_s2'] = 100.0*(sum([td['laugh_bool'] for td in laughs_s2])
+			/float(number_of_text_eqs_sent_s2))
 	
 	return (master_metrics)
 
@@ -171,4 +184,16 @@ def calc_length_text_equivalent(te):
 
 	return return_vals
 
+def calc_laugh(te):
+	return_vals = {}
+	return_vals['day of week'] = te.date_day_of_week
+	return_vals['hour'] = te.timestamp.hour
+	# the words that count as a laugh
+	# http://stackoverflow.com/questions/16453522/how-can-i-detect-laughing-words-in-a-string
+	if re.search(r'\b(a*ha+h[ha]*|o?l+o+l+[ol]*|lma[o]+)\b',te.all_text.lower()):
+		return_vals['laugh_bool'] = True
+	else:
+		return_vals['laugh_bool'] = False
+
+	return return_vals
 
