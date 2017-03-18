@@ -15,7 +15,7 @@ s1 & s2 denote different conversations participants.
 		# response_rate_s1: 
 		# if s1 sends a text, then 22.0 seconds is the most common time 
 		# that they will wait before receiving a reply from s2
-# double text & laugh & curse rates are percentage of texts sent
+# double text & laugh & curse & emoji & link rates are percentage of texts sent
 # longest streak is consecutive days talking
 # longest drought is consecutive days no talking
 
@@ -29,8 +29,8 @@ s1 & s2 denote different conversations participants.
 	'response_rate_mean_s2':911.863,
 	'double_text_rate_s1':7.17,
 	'double_text_rate_s2':13.68,
-	'emoji_rate_s1':None,
-	'emoji_rate_s2':None,
+	'emoji_rate_s1':5.055,
+	'emoji_rate_s2':3.56,
 	'average_length_s1':11.06,
 	'average_length_s2':8.97,
 	'top_5_emojis_s1':None,
