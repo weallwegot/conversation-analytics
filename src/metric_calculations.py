@@ -50,9 +50,12 @@ import datetime
 def calculate_all_metrics(tes):
 	PARTICPANT_1 = "Me"
 	PARTICPANT_2 = "Friend"
+	
 	master_metrics = {
 	'response_rate_s1':None,
 	'response_rate_s2':None,
+	'response_rate_mean_s1':None,
+	'response_rate_mean_s2':None,
 	'double_text_rate_s1':None,
 	'double_text_rate_s2':None,
 	'emoji_rate_s1':None,
@@ -78,38 +81,56 @@ def calculate_all_metrics(tes):
 	# all of these lists are lists of dictionaries
 	time_diffs_s1 = []
 	time_diffs_s2 = []
+	median_length_s1 = []
+	median_length_s2 = []
 
 
 	for i in range(len(tes)-1):
-		# it is important to subtract later from earlier for proper time
+		# it is important to subtract later from earlier for proper time calculation
 		earlier_te = tes[i]
 		later_te = tes[i+1]
 		time_diff_dict = calc_time_between_text_equivalents(earlier_te,later_te)
+		length_dict = calc_length_text_equivalent(earlier_te)
 		if earlier_te.sender == PARTICPANT_1:
 			time_diffs_s1.append(time_diff_dict)
+			median_length_s1.append(length_dict)
 		elif earlier_te.sender == PARTICPANT_2:
 			time_diffs_s2.append(time_diff_dict)
+			median_length_s2.append(length_dict)
+
+
+	# do the processing of data calcs aggregated
+	# insert the data into the master metrics dictionary
 	master_metrics['response_rate_s1'] = np.median([td['time diff'] for td in time_diffs_s1 if not td['double text']])
 	master_metrics['response_rate_s2'] = np.median([td['time diff'] for td in time_diffs_s2 if not td['double text']])
+	master_metrics['response_rate_mean_s1'] = np.mean([td['time diff'] for td in time_diffs_s1 if not td['double text']])
+	master_metrics['response_rate_mean_s2'] = np.mean([td['time diff'] for td in time_diffs_s2 if not td['double text']])	
 	master_metrics['double_text_rate_s1'] = 100.0*(sum([td['double text'] for td in time_diffs_s1])/float(len(tes)))
 	master_metrics['double_text_rate_s2'] = 100.0*(sum([td['double text'] for td in time_diffs_s2])/float(len(tes)))
 	return (master_metrics)
-
-
 
 def calc_time_between_text_equivalents(tes_1,tes_2):
 	return_vals = {}
 	# it is important to subtract later from earlier for proper time
 	return_vals['time diff'] = (tes_2.timestamp - tes_1.timestamp).seconds
-	initiater = tes_1.sender 
+	initiator = tes_1.sender 
 	return_vals['responder'] = tes_2.sender
-	return_vals['sender'] = tes_1.sender
+	return_vals['sender'] = initiator
 	# use the person who sent the message to calculate
 	# eventually perhaps we can give advice on when the best time
 	# to talk to someone is
 	return_vals['day of week'] = tes_1.date_day_of_week
 	return_vals['double text'] = tes_2.sender==tes_1.sender
 	return_vals['hour'] = tes_1.timestamp.hour
+	return return_vals
+
+def calc_length_text_equivalent(te):
+	return_vals = {}
+
+	return_vals['day of week'] = te.date_day_of_week
+	return_vals['hour'] = te.timestamp.hour
+	return_vals['length'] = len(te.all_text) # this counts characters, do we want words?
+
 	return return_vals
 
 
