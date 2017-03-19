@@ -41,7 +41,7 @@ s1 & s2 denote different conversations participants.
 	'laugh_rate_s2':7.99,
 	'big_words_rate_s1':None,
 	'big_words_rate_s2':None,
-	'longest_steak':None,
+	'longest_steak':17,
 	'longest_drought':7.013,
 	'punctuation_s1':None,
 	'punctuation_s2':None,
