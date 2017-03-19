@@ -7,6 +7,11 @@
 # conversation-analytics
 understand social dynamics in a two-way conversation
 
+obtain your text conversations as .txt by
+running the shell script in this repo:
+https://github.com/PeterKaminski09/baskup 
+
+
 # preliminary output
 s1 & s2 denote different conversations participants.
 ```python
@@ -57,4 +62,9 @@ s1 & s2 denote different conversations participants.
 - can we predict future relationship status/health ?
 - MLE gradient descent
 - Front end with web application to make visualization fun & pretty
+- desktop application 
+	-sends recorded metrics back to central database
+	-allows for beautiful visualization over time
+	-show trends and rank conversation engagement
+
 
