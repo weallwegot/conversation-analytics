@@ -217,7 +217,8 @@ def calc_rate_of_occurrence(special_key,list_of_dicts,total_number):
 def calc_time_between_text_equivalents(tes_1,tes_2):
 	return_vals = {}
 	# it is important to subtract later from earlier for proper time
-	return_vals['time diff'] = (tes_2.timestamp - tes_1.timestamp).seconds
+	tdelta = (tes_2.timestamp-tes_1.timestamp)
+	return_vals['time diff'] = tdelta.seconds + tdelta.days*24.0*60.0*60.0
 	initiator = tes_1.sender 
 	return_vals['responder'] = tes_2.sender
 	return_vals['sender'] = initiator
