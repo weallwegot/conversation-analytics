@@ -23,7 +23,6 @@ on the basis of acronyms, names, numbers, cs xxxx, and csxxxx
 class TestMetricCalculations(unittest.TestCase):
 
 	def setUp(self):
-		#self.te = TextEquivalent()
 		working_dir = os.path.dirname(os.path.abspath(__file__))
 		data_folder = working_dir + os.sep + "test_data" 
 		text_file_name = "TestData.txt"
@@ -76,8 +75,6 @@ class TestMetricCalculations(unittest.TestCase):
 			"double text rate is wrong")
 
 	def test_metric_test_double_text_75_percent(self):
-		#the first timestamp just for reference
-		#2016-08-06 15:11:44
 		te1 = TextEquivalent("Me","2016-08-06 15:11:44","Hi")
 		te2 = TextEquivalent("Me","2016-08-06 15:13:44","Wassup")
 		te3 = TextEquivalent("Me","2016-08-06 16:11:44","Hi")
@@ -89,8 +86,6 @@ class TestMetricCalculations(unittest.TestCase):
 		self.assertEquals(double,75.0,"wrong text rate")
 
 	def test_metric_test_longest_drought(self):
-		#the first timestamp just for reference
-		#2016-08-06 15:11:44
 		te1 = TextEquivalent("Me","2016-08-06 15:11:44","Hi")
 		te2 = TextEquivalent("Me","2016-08-06 15:13:44","Wassup")
 		te3 = TextEquivalent("Me","2016-08-06 16:11:44","Hi")
@@ -101,9 +96,19 @@ class TestMetricCalculations(unittest.TestCase):
 		self.assertEquals(drought,10.0,"wrong drought days: " + str(drought) + 
 			" DNE " + str(10.0))
 
+	def test_metric_test_longest_streak(self):
+		te1 = TextEquivalent("Me","2016-08-06 15:11:44","Hi")
+		te2 = TextEquivalent("Friend","2016-08-07 15:13:44","Wassup")
+		te3 = TextEquivalent("Me","2016-08-08 16:11:44","Hi")
+		te4 = TextEquivalent("Friend","2016-08-09 16:11:44","Wassup")
+		rd = calculate_all_metrics([te1,te2,te3,te4])
+
+		streak = rd['longest_streak']
+		self.assertEquals(streak,3,"wrong streak days: " + str(streak) + 
+			" DNE " + str(3))
+
 	def test_metric_test_laugh_rate_50_percent(self):
-		#the first timestamp just for reference
-		#2016-08-06 15:11:44
+
 		te1 = TextEquivalent("Me","2016-08-06 15:11:44","Hi,ahaha")
 		te2 = TextEquivalent("Me","2016-08-06 15:13:44","Wassup")
 		te3 = TextEquivalent("Me","2016-08-06 16:11:44","Hi")

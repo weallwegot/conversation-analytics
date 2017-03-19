@@ -73,7 +73,7 @@ def calculate_all_metrics(tes):
 	'laugh_rate_s2':None,
 	'big_words_rate_s1':None,
 	'big_words_rate_s2':None,
-	'longest_steak':None,
+	'longest_streak':None,
 	'longest_drought':None,
 	'punctuation_s1':None,
 	'punctuation_s2':None,
@@ -96,6 +96,8 @@ def calculate_all_metrics(tes):
 	links_s2 = []
 	emojis_s1 = []
 	emojis_s2 = []
+	streaks = []
+	days_of_week = []
 
 
 	number_of_text_eqs_sent_s1 = 0
@@ -104,6 +106,8 @@ def calculate_all_metrics(tes):
 	for i in range(len(tes)):
 		# it is important to subtract later from earlier for proper time calculation
 		earlier_te = tes[i]
+
+		days_of_week.append(earlier_te.date_day_of_week)
 
 		# The calculations for time between are broken out
 		# because they require 2 Text Equivalents Simulataneously
@@ -165,6 +169,7 @@ def calculate_all_metrics(tes):
 
 	longest_drought_seconds = max([s1_longest,s2_longest])
 	master_metrics['longest_drought'] = longest_drought_seconds/60.0/60.0/24.0
+	master_metrics['longest_streak'] = calc_longest_streak(days_of_week)
 
 
 
@@ -207,6 +212,31 @@ def calculate_all_metrics(tes):
 
 
 	return (master_metrics)
+def calc_longest_streak(list_of_days):
+	streaks = []
+	streak = 0
+	# logic is faulty
+	for i in range(len(list_of_days)-1):
+		if not list_of_days[i] == 7:
+			if list_of_days[i+1] == list_of_days[i] + 1:
+				streak += 1
+			elif list_of_days[i+1] == list_of_days[i]:
+				streak = streak
+			else:
+				streaks.append(streak)
+		else:
+			if list_of_days[i+1] == 1:
+				streak += 1
+			elif list_of_days[i+1] == 7:
+				streak = streak
+			else:
+				streaks.append(streak)
+	# if the streak is currently going the streak list is empty
+	if len(streaks)==0:
+		return streak
+	return max(streaks)
+
+
 
 # method to calculate a rate as a percentage of occurrence
 def calc_rate_of_occurrence(special_key,list_of_dicts,total_number):
