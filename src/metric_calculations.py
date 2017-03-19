@@ -163,8 +163,8 @@ def calculate_all_metrics(tes):
 	else:
 		s2_longest = 0
 
-		longest_drought_seconds = max([s1_longest,s2_longest])
-		master_metrics['longest_drought'] = longest_drought_seconds/60.0/60.0/24.0
+	longest_drought_seconds = max([s1_longest,s2_longest])
+	master_metrics['longest_drought'] = longest_drought_seconds/60.0/60.0/24.0
 
 
 
