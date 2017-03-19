@@ -97,7 +97,7 @@ def calculate_all_metrics(tes):
 	emojis_s1 = []
 	emojis_s2 = []
 	streaks = []
-	days_of_week = []
+	timestamps = []
 
 
 	number_of_text_eqs_sent_s1 = 0
@@ -107,7 +107,6 @@ def calculate_all_metrics(tes):
 		# it is important to subtract later from earlier for proper time calculation
 		earlier_te = tes[i]
 
-		days_of_week.append(earlier_te.date_day_of_week)
 
 		# The calculations for time between are broken out
 		# because they require 2 Text Equivalents Simulataneously
@@ -117,11 +116,15 @@ def calculate_all_metrics(tes):
 			later_te = tes[i+1]
 			time_diff_dict = calc_time_between_text_equivalents(earlier_te,later_te)
 
-
 			if earlier_te.sender == PARTICPANT_1:
 				time_diffs_s1.append(time_diff_dict)
 			elif earlier_te.sender == PARTICPANT_2:
 				time_diffs_s2.append(time_diff_dict)
+
+			if not earlier_te.sender == later_te.sender:
+				# only append the day if there was an exchange between
+				# 2 different participants.
+				timestamps.append(earlier_te.timestamp)
 
 
 		length_dict = calc_length_text_equivalent(earlier_te)
@@ -169,7 +172,7 @@ def calculate_all_metrics(tes):
 
 	longest_drought_seconds = max([s1_longest,s2_longest])
 	master_metrics['longest_drought'] = longest_drought_seconds/60.0/60.0/24.0
-	master_metrics['longest_streak'] = calc_longest_streak(days_of_week)
+	master_metrics['longest_streak'] = calc_longest_streak(timestamps)
 
 
 
@@ -212,26 +215,40 @@ def calculate_all_metrics(tes):
 
 
 	return (master_metrics)
-def calc_longest_streak(list_of_days):
+def calc_longest_streak(timestamps):
+
 	streaks = []
 	streak = 0
-	# logic is faulty
-	for i in range(len(list_of_days)-1):
-		if not list_of_days[i] == 7:
-			if list_of_days[i+1] == list_of_days[i] + 1:
+	end_days = [31,30,29,28]
+	for i in range(len(timestamps)-1):
+		early_t = timestamps[i]
+		late_t = timestamps[i+1]
+		late_t_day = late_t.isoweekday()
+		early_t_day = early_t.isoweekday()
+
+		if not early_t_day == 7:
+			if (early_t_day+1 == late_t_day) and ((late_t-early_t).days in [0,1]):
 				streak += 1
-			elif list_of_days[i+1] == list_of_days[i]:
+			elif (early_t_day == late_t_day) and ((late_t-early_t).days == 0):
 				streak = streak
+				# if there is a text exchange streak is 1
+				if streak == 0:
+					streak = 1
 			else:
 				streaks.append(streak)
+				streak = 0
 		else:
-			if list_of_days[i+1] == 1:
+			if (late_t_day == 1) and ((late_t-early_t).days in [0,1]):
 				streak += 1
-			elif list_of_days[i+1] == 7:
+			elif (early_t_day == 7) and ((late_t-early_t).days==0):
 				streak = streak
+				# if somebody exchange, they streak is at 1
+				if streak == 0:
+					streak = 1
 			else:
 				streaks.append(streak)
-	# if the streak is currently going the streak list is empty
+				streak = 0
+
 	if len(streaks)==0:
 		return streak
 	return max(streaks)

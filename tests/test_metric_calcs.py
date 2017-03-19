@@ -98,14 +98,18 @@ class TestMetricCalculations(unittest.TestCase):
 
 	def test_metric_test_longest_streak(self):
 		te1 = TextEquivalent("Me","2016-08-06 15:11:44","Hi")
-		te2 = TextEquivalent("Friend","2016-08-07 15:13:44","Wassup")
-		te3 = TextEquivalent("Me","2016-08-08 16:11:44","Hi")
-		te4 = TextEquivalent("Friend","2016-08-09 16:11:44","Wassup")
-		rd = calculate_all_metrics([te1,te2,te3,te4])
+		te2 = TextEquivalent("Friend","2016-08-06 15:13:44","Wassup")
+		te3 = TextEquivalent("Me","2016-08-07 16:10:44","nun much, u?")
+		te4 = TextEquivalent("Friend","2016-08-07 16:11:44","chillin with bae")
+		te5 = TextEquivalent("Me","2016-08-08 16:10:44","word, say hi for me")
+		te6 = TextEquivalent("Friend","2016-08-08 16:11:44","she dont care")
+		te7 = TextEquivalent("Me","2016-08-09 16:10:44","cool, i dont like her")
+		te8 = TextEquivalent("Friend","2016-08-09 16:11:44","you dont have to lol...")
+		rd = calculate_all_metrics([te1,te2,te3,te4,te5,te6,te7,te8])
 
 		streak = rd['longest_streak']
-		self.assertEquals(streak,3,"wrong streak days: " + str(streak) + 
-			" DNE " + str(3))
+		self.assertEquals(streak,4," wrong streak days: " + str(streak) + 
+			" DNE " + str(4))
 
 	def test_metric_test_laugh_rate_50_percent(self):
 
