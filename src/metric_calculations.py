@@ -112,6 +112,8 @@ def calculate_all_metrics(tes):
 		if i < len(tes)-1:
 			later_te = tes[i+1]
 			time_diff_dict = calc_time_between_text_equivalents(earlier_te,later_te)
+
+
 			if earlier_te.sender == PARTICPANT_1:
 				time_diffs_s1.append(time_diff_dict)
 			elif earlier_te.sender == PARTICPANT_2:
@@ -146,13 +148,32 @@ def calculate_all_metrics(tes):
 	# number of texts sent
 	master_metrics['texts_sent_s1'] = number_of_text_eqs_sent_s1
 	master_metrics['texts_sent_s2'] = number_of_text_eqs_sent_s2
+	# the longest drought is really the greatest time difference contained in  
+	# either of the two time_diffs
+	# do the loops once for each time diff list because they are used multiple times.
+	non_double_texts_time_diffs_s1 = [td['time diff'] for td in time_diffs_s1 if not td['double text']]
+	non_double_texts_time_diffs_s2 = [td['time diff'] for td in time_diffs_s2 if not td['double text']]
+
+	if len(non_double_texts_time_diffs_s1)>0:
+		s1_longest = max(non_double_texts_time_diffs_s1) 
+	else:
+		s1_longest = 0
+	if len(non_double_texts_time_diffs_s2)>0:
+		s2_longest = max(non_double_texts_time_diffs_s2)
+	else:
+		s2_longest = 0
+
+		longest_drought_seconds = max([s1_longest,s2_longest])
+		master_metrics['longest_drought'] = longest_drought_seconds/60.0/60.0/24.0
+
+
 
 	# percentage of texts sent that are double texts
 	if number_of_text_eqs_sent_s1 > 0:	
 		# median number of seconds to reply
-		master_metrics['response_rate_s1'] = np.median([td['time diff'] for td in time_diffs_s1 if not td['double text']])
+		master_metrics['response_rate_s1'] = np.median(non_double_texts_time_diffs_s1)
 		# average number of seconds to reply
-		master_metrics['response_rate_mean_s1'] = np.mean([td['time diff'] for td in time_diffs_s1 if not td['double text']])
+		master_metrics['response_rate_mean_s1'] = np.mean(non_double_texts_time_diffs_s1)
 		# proportion of texts sent that are "double texts"
 		master_metrics['double_text_rate_s1'] = calc_rate_of_occurrence('double text',time_diffs_s1,number_of_text_eqs_sent_s1)
 		# average text length in words
@@ -168,9 +189,9 @@ def calculate_all_metrics(tes):
 
 	if number_of_text_eqs_sent_s2 > 0:
 		# median number of seconds to reply
-		master_metrics['response_rate_s2'] = np.median([td['time diff'] for td in time_diffs_s2 if not td['double text']])
+		master_metrics['response_rate_s2'] = np.median(non_double_texts_time_diffs_s2)
 		# average number of seconds to reply
-		master_metrics['response_rate_mean_s2'] = np.mean([td['time diff'] for td in time_diffs_s2 if not td['double text']])
+		master_metrics['response_rate_mean_s2'] = np.mean(non_double_texts_time_diffs_s2)
 		# proportion of texts sent that are "double texts"
 		master_metrics['double_text_rate_s2'] = calc_rate_of_occurrence('double text',time_diffs_s2,number_of_text_eqs_sent_s2)
 		# average text length in words
@@ -192,7 +213,6 @@ def calc_rate_of_occurrence(special_key,list_of_dicts,total_number):
 	res = 100.0*(sum([td[special_key] for td in list_of_dicts])
 			/float(total_number))
 	return res
-
 
 def calc_time_between_text_equivalents(tes_1,tes_2):
 	return_vals = {}

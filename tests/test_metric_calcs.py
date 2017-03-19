@@ -88,6 +88,19 @@ class TestMetricCalculations(unittest.TestCase):
 		number = rd['texts_sent_s1']
 		self.assertEquals(double,75.0,"wrong text rate")
 
+	def test_metric_test_longest_drought(self):
+		#the first timestamp just for reference
+		#2016-08-06 15:11:44
+		te1 = TextEquivalent("Me","2016-08-06 15:11:44","Hi")
+		te2 = TextEquivalent("Me","2016-08-06 15:13:44","Wassup")
+		te3 = TextEquivalent("Me","2016-08-06 16:11:44","Hi")
+		te4 = TextEquivalent("Friend","2016-08-16 16:11:44","Wassup")
+		rd = calculate_all_metrics([te1,te2,te3,te4])
+
+		drought = rd['longest_drought']
+		self.assertEquals(drought,10.0,"wrong drought days: " + str(drought) + 
+			" DNE " + str(10.0))
+
 	def test_metric_test_laugh_rate_50_percent(self):
 		#the first timestamp just for reference
 		#2016-08-06 15:11:44
@@ -208,7 +221,7 @@ class TestMetricCalculations(unittest.TestCase):
 
 	def test_no_emoji_detection(self):
 		te7 = TextEquivalent("Me","2016-08-06 15:11:44","hi how are you, no thats not me")
-		self.assertFalse(calc_emoji(te7)['emoji_bool'],"Should not contain a link")
+		self.assertFalse(calc_emoji(te7)['emoji_bool'],"Should not contain an emoji")
 
 
 
