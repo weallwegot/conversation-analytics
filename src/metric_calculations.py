@@ -219,7 +219,6 @@ def calc_longest_streak(timestamps):
 
 	streaks = []
 	streak = 0
-	end_days = [31,30,29,28]
 	for i in range(len(timestamps)-1):
 		early_t = timestamps[i]
 		late_t = timestamps[i+1]
@@ -227,6 +226,17 @@ def calc_longest_streak(timestamps):
 		early_t_day = early_t.isoweekday()
 
 		if not early_t_day == 7:
+			"""
+			it is ok for it to be 1 day, because these are chat exchanges
+			and the timestamp is dictated by the time the "earlier text"
+			was sent. so you can have early_t be 1 am on Monday
+			and late_t be 2 am on Tuesday and the streak will be extended
+			even though technically more than 24 hours have passed between
+			the timestamps. this is because after the 1 am on Monday the
+			other text participant could have responded at 11 PM that monday
+			Is this any different results then if you counted the timestamp
+			as the time of the "reply" instead of the initiator? No its not.
+			"""
 			if (early_t_day+1 == late_t_day) and ((late_t-early_t).days in [0,1]):
 				streak += 1
 			elif (early_t_day == late_t_day) and ((late_t-early_t).days == 0):
