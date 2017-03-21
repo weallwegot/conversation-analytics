@@ -16,6 +16,7 @@ import re
 from convo_objects.TextEquivalent import TextEquivalent
 from calc_engine import metric_calculations as mc 
 from read_parse import read_and_parse_text_file
+from calc_engine import filter_poly as fil
 
 
 #########
@@ -29,7 +30,10 @@ full_path = data_folder + os.sep + text_file_name
 
 
 block_t_in_sec = 90
-r = mc.calculate_all_metrics(read_and_parse_text_file(full_path,block_t_in_sec))
+full_tes = read_and_parse_text_file(full_path,block_t_in_sec)
+filt = fil.filter_by_day_of_week([1,2,3,4,5,6,7],full_tes)['filtered_tes']
+print(str(len(filt)))
+r = mc.calculate_all_metrics(filt)
 print(str(r))
 
 

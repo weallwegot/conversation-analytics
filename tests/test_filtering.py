@@ -24,6 +24,11 @@ class TestFilters(unittest.TestCase):
 		te4 = TextEquivalent("Friend","2016-08-06 15:17:44","gooood")
 		self.tes = [self.te1,self.te2,te3,te4]
 
+	def test_sanity_check_filter(self):
+		tes_dict=filter_by_day_of_week([1,2,3,4,5,6,7],self.text_eqs)
+		test_res = tes_dict['filtered_tes']
+		self.assertEquals(len(test_res),len(self.text_eqs),
+			"Filtering every day of the week should be same as no filter")
 
 
 	def test_filter_by_year(self):
@@ -78,11 +83,11 @@ class TestFilters(unittest.TestCase):
 
 
 	def test_filter_by_day_of_week(self):
-		tes_dict=filter_by_day_of_week([6],self.text_eqs)
+		tes_dict=filter_by_day_of_week([1],self.text_eqs)
 		test_res = tes_dict['filtered_tes']
 		self.assertTrue(len(test_res)>0,"No messages captured in filter")
 		for te in test_res:
-			self.assertEquals(te.date_day_of_week,6,"Day of week should be 6 " +
+			self.assertEquals(te.date_day_of_week,1,"Day of week should be 1 " +
 				"but it is " + str(te.date_day_of_week))
 
 	def test_filter_by_day_of_week_multiple(self):
