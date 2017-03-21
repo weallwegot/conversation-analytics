@@ -14,8 +14,9 @@ import datetime
 import re
 #module imports
 from convo_objects.TextEquivalent import TextEquivalent
-import metric_calculations as mc 
+from calc_engine import metric_calculations as mc 
 from read_parse import read_and_parse_text_file
+
 
 #########
 #Read

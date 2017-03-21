@@ -5,10 +5,10 @@ import os
 import datetime
 from src.convo_objects.TextEquivalent import TextEquivalent 
 from src.read_parse import read_and_parse_text_file
-from src.metric_calculations import calc_time_between_text_equivalents
-from src.metric_calculations import calc_length_text_equivalent
-from src.metric_calculations import calculate_all_metrics
-from src.metric_calculations import calc_laugh,calc_curse,calc_link,calc_emoji
+from src.calc_engine.metric_calculations import calc_time_between_text_equivalents
+from src.calc_engine.metric_calculations import calc_length_text_equivalent
+from src.calc_engine.metric_calculations import calculate_all_metrics
+from src.calc_engine.metric_calculations import calc_laugh,calc_curse,calc_link,calc_emoji
 
 
 

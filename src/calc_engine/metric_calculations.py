@@ -1,9 +1,6 @@
 #think abuot how to make this extensible for group conversations
 #think about how to make it extensible for meta data
 	#things like likes, hearts, dislikes in imessage
-######
-#Parse
-######
 
 """
 things to consider when analyzing
@@ -12,19 +9,14 @@ how do emojis look in unicode or whatever string format
 
 what is the criteria for a conversation being terminated and starting anew
 versus just an extended pause.
-
 """
 
 #TODO
-# - do some preliminary calcs
 # - metrics of how interested the other person in a text conversation is.
-# - average time of response. 
 # - emoji usage comparison. 
 # - laughs. 
 # 	- favorite way to express humor [lmao, lol, haha, loll]
 # 	- average number of ha's in a laugh
-# - follow up questions asked. [how to quantify, not clear/dont really make sense]
-# - response text length to initial text length. 
 # - most terminated conversations
 # - analyze which times of the day are most active for conversation
 # - frequency of cursing 
@@ -35,9 +27,6 @@ versus just an extended pause.
 # - period of the day
 # - are long periods of silence followed with a "sorry"? lmao.
 # - the use of punctuation to show effort score
-# - are links shared between the two?
-# - longest streak of consecutive days talked
-# - longest streak of consecutive days not talked
 # https://developers.google.com/edu/python/regular-expressions
 # not sure what else.
 
