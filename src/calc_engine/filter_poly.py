@@ -79,11 +79,20 @@ def filter_by_year(list_of_years,tes):
 	return dict_filtered_tes
 
 def filter_by_date_range(start_date,end_date,tes):
+	filtered_tes = []
 	dict_filtered_tes = {
 	'filtered_tes':None,
 	'filter_criteria':None,
 	'number_returned':None
 	}
+	for te in tes:
+		if start_date <= te.timestamp <= end_date:
+			filtered_tes.append(te)
+
+	dict_filtered_tes['filtered_tes'] = filtered_tes
+
 
 
 	return dict_filtered_tes
+
+

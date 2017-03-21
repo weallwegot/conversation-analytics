@@ -29,23 +29,25 @@ class TestFilters(unittest.TestCase):
 	def test_filter_by_year(self):
 		tes_dict=filter_by_year([2017],self.text_eqs)
 		test_res = tes_dict['filtered_tes']
-
+		self.assertTrue(len(test_res)>0,"No messages captured in filter")
 		for te in test_res:
+
 			self.assertEquals(te.timestamp.year,2017,"Year should be 2017 " +
 				"but it is " + str(te.timestamp.year))
 
 	def test_filter_by_year_multiple(self):
 		tes_dict=filter_by_year([2017,2016],self.text_eqs)
 		test_res = tes_dict['filtered_tes']
-
+		self.assertTrue(len(test_res)>0,"No messages captured in filter")
 		for te in test_res:
+
 			self.assertIn(te.timestamp.year,[2017,2016],"Year should be 2017 or 2016" +
 				"but it is " + str(te.timestamp.year))
 
 	def test_filter_by_month(self):
 		tes_dict=filter_by_month_of_year([9],self.text_eqs)
 		test_res = tes_dict['filtered_tes']
-
+		self.assertTrue(len(test_res)>0,"No messages captured in filter")
 		for te in test_res:
 			self.assertEquals(te.timestamp.month,9,"Month should be 9 " +
 				"but it is " + str(te.timestamp.month))
@@ -53,7 +55,7 @@ class TestFilters(unittest.TestCase):
 	def test_filter_by_month_multiple(self):
 		tes_dict=filter_by_month_of_year([9,1],self.text_eqs)
 		test_res = tes_dict['filtered_tes']
-
+		self.assertTrue(len(test_res)>0,"No messages captured in filter")
 		for te in test_res:
 			self.assertIn(te.timestamp.month,[9,1],"Month should be 9 or 1 " +
 				"but it is " + str(te.timestamp.month))
@@ -61,7 +63,7 @@ class TestFilters(unittest.TestCase):
 	def test_filter_by_day_of_month(self):
 		tes_dict=filter_by_day_of_month([6],self.text_eqs)
 		test_res = tes_dict['filtered_tes']
-
+		self.assertTrue(len(test_res)>0,"No messages captured in filter")
 		for te in test_res:
 			self.assertEquals(te.timestamp.day,6,"Day should be 6 " +
 				"but it is " + str(te.timestamp.day))
@@ -69,7 +71,7 @@ class TestFilters(unittest.TestCase):
 	def test_filter_by_day_of_month_multiple(self):
 		tes_dict=filter_by_day_of_month([8,11],self.text_eqs)
 		test_res = tes_dict['filtered_tes']
-
+		self.assertTrue(len(test_res)>0,"No messages captured in filter")
 		for te in test_res:
 			self.assertIn(te.timestamp.day,[8,11],"Day should be 6 or 11 " +
 				"but it is " + str(te.timestamp.day))
@@ -78,7 +80,7 @@ class TestFilters(unittest.TestCase):
 	def test_filter_by_day_of_week(self):
 		tes_dict=filter_by_day_of_week([6],self.text_eqs)
 		test_res = tes_dict['filtered_tes']
-
+		self.assertTrue(len(test_res)>0,"No messages captured in filter")
 		for te in test_res:
 			self.assertEquals(te.date_day_of_week,6,"Day of week should be 6 " +
 				"but it is " + str(te.date_day_of_week))
@@ -86,13 +88,40 @@ class TestFilters(unittest.TestCase):
 	def test_filter_by_day_of_week_multiple(self):
 		tes_dict=filter_by_day_of_week([3,1],self.text_eqs)
 		test_res = tes_dict['filtered_tes']
-
+		self.assertTrue(len(test_res)>0,"No messages captured in filter")
 		for te in test_res:
 			self.assertIn(te.date_day_of_week,[3,1],"Day of week should \
 				be 3 or 1 " +
 				"but it is " + str(te.date_day_of_week))
 
 
+	def test_filter_by_time_of_day(self):
+		tes_dict=filter_by_time_of_day([20],self.text_eqs)
+		test_res = tes_dict['filtered_tes']
+		self.assertTrue(len(test_res)>0,"No messages captured in filter")
+		for te in test_res:
+			self.assertEquals(te.timestamp.hour,20,"Time (hour) of day should be 20 " +
+				"but it is " + str(te.timestamp.hour))
+
+	def test_filter_by_time_of_day_multiple(self):
+		tes_dict=filter_by_time_of_day([15,3,1,10,8,22],self.text_eqs)
+		test_res = tes_dict['filtered_tes']
+		self.assertTrue(len(test_res)>0,"No messages captured in filter")
+
+		for te in test_res:
+			
+			self.assertIn(te.timestamp.hour,[15,3,1,10,8,22],"Time (hour) of day should \
+				be 3, 15, 1, 10, 8, or 22 " +
+				"but it is " + str(te.timestamp.hour))
+
+	def test_filter_by_date_range(self):
+		begin = datetime.datetime(2016,8,3)
+		end = datetime.datetime(2017,2,1)
+		tes_dict=filter_by_date_range(begin,end,self.text_eqs)
+		test_res = tes_dict['filtered_tes']
+		self.assertTrue(len(test_res)>0,"No messages captured in filter")
+		for te in test_res:
+			self.assertTrue(begin <= te.timestamp <= end, "Date is not between specified dates")
 
 
 
