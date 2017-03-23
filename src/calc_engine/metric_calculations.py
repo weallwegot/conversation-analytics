@@ -213,6 +213,7 @@ def calc_most_least_active_times(tes):
 	"""
 	calculates most and least active times
 	on the basis of number of messages sent
+	TODO: include rate of response in formula for "most active"
 	"""
 	master_metrics = {
 	'most_active_day_of_week':None,
