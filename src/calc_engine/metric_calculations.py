@@ -32,7 +32,10 @@ versus just an extended pause.
 
 import numpy as np
 import datetime
+import calendar
 import re
+
+import filter_poly as filt
 
 #one method for all metrics so the loop only happens once
 #tes will likely be a dictionary with some meta data
@@ -204,6 +207,95 @@ def calculate_all_metrics(tes):
 
 
 	return (master_metrics)
+
+
+def calc_most_least_active_times(tes):
+	"""
+	calculates most and least active times
+	on the basis of number of messages sent
+	"""
+	master_metrics = {
+	'most_active_day_of_week':None,
+	'least_active_day_of_week':None,
+	'most_active_day_of_month':None,
+	'least_active_day_of_month':None,
+	'most_active_month_of_year':None,
+	'least_active_month_of_year':None,
+	'most_active_hour_of_day':None,
+	'least_active_hour_of_day':None,
+	}
+
+	#days of week
+	day_of_week_dict = {}
+	for day_of_week in range(1,8):
+		new_tes = filt.filter_by_day_of_week([day_of_week],tes)['filtered_tes']
+		mets = calculate_all_metrics(new_tes)
+		g = mets['texts_sent_s1'] +  mets['texts_sent_s2']
+		day_of_week_dict[str(day_of_week)] = g
+
+	#month of year
+	month_of_year_dict = {}
+	for month in range(1,13):
+		new_tes = filt.filter_by_month_of_year([month],tes)['filtered_tes']
+		mets = calculate_all_metrics(new_tes)
+		g = mets['texts_sent_s1'] +  mets['texts_sent_s2']
+		month_of_year_dict[str(month)] = g
+
+	#days of month
+	day_of_month_dict = {}
+	for day_of_month in range(1,32):
+		new_tes = filt.filter_by_day_of_month([day_of_month],tes)['filtered_tes']
+		mets = calculate_all_metrics(new_tes)
+		g = mets['texts_sent_s1'] +  mets['texts_sent_s2']
+		day_of_month_dict[str(day_of_month)] = g
+
+	#hour of day
+	hour_of_day_dict = {}
+	for hour in range(1,25):
+		new_tes = filt.filter_by_time_of_day([hour],tes)['filtered_tes']
+		mets = calculate_all_metrics(new_tes)
+		g = mets['texts_sent_s1'] +  mets['texts_sent_s2']
+		hour_of_day_dict[str(hour)] = g
+
+	maxkey_dw = max(day_of_week_dict, key=day_of_week_dict.get)
+	minkey_dw = min(day_of_week_dict, key=day_of_week_dict.get)
+
+	maxkey_dm = max(day_of_month_dict, key=day_of_month_dict.get)
+	minkey_dm = min(day_of_month_dict, key=day_of_month_dict.get)
+
+	maxkey_my = max(month_of_year_dict, key=month_of_year_dict.get)
+	minkey_my = min(month_of_year_dict, key=month_of_year_dict.get)
+
+	maxkey_hd = max(hour_of_day_dict, key=hour_of_day_dict.get)
+	minkey_hd = min(hour_of_day_dict, key=hour_of_day_dict.get)
+
+	master_metrics = {
+	'most_active_day_of_week':display_weekday(maxkey_dw),
+	'least_active_day_of_week':display_weekday(minkey_dw),
+	'most_active_day_of_month':maxkey_dm,
+	'least_active_day_of_month':minkey_dm,
+	'most_active_month_of_year':calendar.month_name[int(maxkey_my)],
+	'least_active_month_of_year':calendar.month_name[int(minkey_my)],
+	'most_active_hour_of_day':maxkey_hd,
+	'least_active_hour_of_day':minkey_hd,
+	}
+
+
+	return (master_metrics)
+#used isoweekday & calendar module is 0 indexed
+#so making simple mapping implementation
+def display_weekday(string_week):
+	day_d = {
+	'1':'Monday',
+	'2':'Tuesday',
+	'3':'Wednesday',
+	'4':'Thursday',
+	'5':'Friday',
+	'6':'Saturday',
+	'7':'Sunday',
+	}
+	return(day_d[string_week])
+
 def calc_longest_streak(timestamps):
 
 	streaks = []

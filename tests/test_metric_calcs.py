@@ -11,7 +11,7 @@ from src.calc_engine.metric_calculations import calc_time_between_text_equivalen
 from src.calc_engine.metric_calculations import calc_length_text_equivalent
 from src.calc_engine.metric_calculations import calculate_all_metrics
 from src.calc_engine.metric_calculations import calc_laugh,calc_curse,calc_link,calc_emoji
-
+from src.calc_engine.metric_calculations import calc_most_least_active_times
 
 
 """
@@ -235,6 +235,22 @@ class TestMetricCalculations(unittest.TestCase):
 		self.assertFalse(calc_emoji(te7)['emoji_bool'],"Should not contain an emoji")
 
 
+	def test_metric_for_time_activity(self):
+		te1 = TextEquivalent("Me","2016-08-11 15:11:44","Hi")
+		te2 = TextEquivalent("Me","2016-08-11 15:13:44","Wassup")
+		te3 = TextEquivalent("Me","2016-08-11 15:17:44","Hi")
+		te4 = TextEquivalent("Friend","2016-08-16 16:11:44","Wassup")
+		rd = calc_most_least_active_times([te1,te2,te3,te4])
 
+		highhour = rd['most_active_hour_of_day']
+		self.assertEquals(highhour,'15',"wrong most active hour: " + str(highhour) + 
+			" DNE " + str(15))
+
+		self.assertEquals(rd['most_active_day_of_month'],'11',"wrong most active day of month: " 
+			+ str(rd['most_active_day_of_month']) + " DNE " + str(11))
+
+
+		self.assertEquals(rd['most_active_day_of_week'],'Thursday',"wrong most active day of week: " 
+			+ rd['most_active_day_of_week'] + " DNE " + 'Thursday')
 
 
