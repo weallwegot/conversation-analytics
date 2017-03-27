@@ -215,7 +215,7 @@ def calc_most_least_active_times(tes):
 	on the basis of number of messages sent
 	TODO: include rate of response in formula for "most active"
 	"""
-	master_metrics = {
+	master_time_metrics = {
 	'most_active_day_of_week':None,
 	'least_active_day_of_week':None,
 	'most_active_day_of_month':None,
@@ -232,7 +232,11 @@ def calc_most_least_active_times(tes):
 		new_tes = filt.filter_by_day_of_week([day_of_week],tes)['filtered_tes']
 		mets = calculate_all_metrics(new_tes)
 		g = mets['texts_sent_s1'] +  mets['texts_sent_s2']
-		day_of_week_dict[str(day_of_week)] = g
+		# some factor that also takes into account response time.
+		# reciprocal because a smaller response time means more active.
+		if mets['response_rate_s1'] and mets['response_rate_s2']:
+			z = 100*(1/mets['response_rate_s1'] + 1/mets['response_rate_s2'])
+		day_of_week_dict[str(day_of_week)] = g + z
 
 	#month of year
 	month_of_year_dict = {}
@@ -240,7 +244,11 @@ def calc_most_least_active_times(tes):
 		new_tes = filt.filter_by_month_of_year([month],tes)['filtered_tes']
 		mets = calculate_all_metrics(new_tes)
 		g = mets['texts_sent_s1'] +  mets['texts_sent_s2']
-		month_of_year_dict[str(month)] = g
+		# some factor that also takes into account response time.
+		# reciprocal because a smaller response time means more active.
+		if mets['response_rate_s1'] and mets['response_rate_s2']:
+			z = 100*(1/mets['response_rate_s1'] + 1/mets['response_rate_s2'])
+		month_of_year_dict[str(month)] = g + z
 
 	#days of month
 	day_of_month_dict = {}
@@ -248,7 +256,11 @@ def calc_most_least_active_times(tes):
 		new_tes = filt.filter_by_day_of_month([day_of_month],tes)['filtered_tes']
 		mets = calculate_all_metrics(new_tes)
 		g = mets['texts_sent_s1'] +  mets['texts_sent_s2']
-		day_of_month_dict[str(day_of_month)] = g
+		# some factor that also takes into account response time.
+		# reciprocal because a smaller response time means more active.
+		if mets['response_rate_s1'] and mets['response_rate_s2']:
+			z = 100*(1/mets['response_rate_s1'] + 1/mets['response_rate_s2'])
+		day_of_month_dict[str(day_of_month)] = g + z
 
 	#hour of day
 	hour_of_day_dict = {}
@@ -256,7 +268,11 @@ def calc_most_least_active_times(tes):
 		new_tes = filt.filter_by_time_of_day([hour],tes)['filtered_tes']
 		mets = calculate_all_metrics(new_tes)
 		g = mets['texts_sent_s1'] +  mets['texts_sent_s2']
-		hour_of_day_dict[str(hour)] = g
+		# some factor that also takes into account response time.
+		# reciprocal because a smaller response time means more active.
+		if mets['response_rate_s1'] and mets['response_rate_s2']:
+			z = 100*(1/mets['response_rate_s1'] + 1/mets['response_rate_s2'])
+		hour_of_day_dict[str(hour)] = g + z
 
 	maxkey_dw = max(day_of_week_dict, key=day_of_week_dict.get)
 	minkey_dw = min(day_of_week_dict, key=day_of_week_dict.get)
@@ -270,7 +286,11 @@ def calc_most_least_active_times(tes):
 	maxkey_hd = max(hour_of_day_dict, key=hour_of_day_dict.get)
 	minkey_hd = min(hour_of_day_dict, key=hour_of_day_dict.get)
 
-	master_metrics = {
+	print(day_of_week_dict)
+	print("Standard deviation: " + str(np.std(day_of_week_dict.values())))
+	print("Median: " + str(np.median(day_of_week_dict.values())))
+
+	master_time_metrics = {
 	'most_active_day_of_week':display_weekday(maxkey_dw),
 	'least_active_day_of_week':display_weekday(minkey_dw),
 	'most_active_day_of_month':maxkey_dm,
@@ -282,7 +302,7 @@ def calc_most_least_active_times(tes):
 	}
 
 
-	return (master_metrics)
+	return (master_time_metrics)
 #used isoweekday & calendar module is 0 indexed
 #so making simple mapping implementation
 def display_weekday(string_week):
