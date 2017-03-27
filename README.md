@@ -57,8 +57,6 @@ s1 & s2 denote different conversations participants.
 	time_metrics = {
 	'most_active_day_of_week':'Tuesday',
 	'least_active_day_of_week':'Thursday',
-	'most_active_day_of_month':'20',
-	'least_active_day_of_month':'31',
 	'most_active_month_of_year':'February',
 	'least_active_month_of_year':'May',
 	'most_active_hour_of_day':'14',
