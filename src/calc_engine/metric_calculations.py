@@ -186,6 +186,8 @@ def calculate_all_metrics(tes):
 		master_metrics['link_rate_s1'] = calc_rate_of_occurrence('link_bool',links_s1,number_of_text_eqs_sent_s1)
 		# find the rate of emoji usage
 		master_metrics['emoji_rate_s1'] = calc_rate_of_occurrence('emoji_bool',emojis_s1,number_of_text_eqs_sent_s1)
+		# find the top 5 emojis
+		master_metrics['top_5_emojis_s1'] = get_top_x_occurrences('emojis_used',emojis_s1,5)
 
 	if number_of_text_eqs_sent_s2 > 0:
 		# median number of seconds to reply
@@ -204,6 +206,8 @@ def calculate_all_metrics(tes):
 		master_metrics['link_rate_s2'] = calc_rate_of_occurrence('link_bool',links_s2,number_of_text_eqs_sent_s2)
 		# find the rate of emoji usage
 		master_metrics['emoji_rate_s2'] = calc_rate_of_occurrence('emoji_bool',emojis_s2,number_of_text_eqs_sent_s2)
+		# find the top 5 emojis
+		master_metrics['top_5_emojis_s2'] = get_top_x_occurrences('emojis_used',emojis_s2,5)
 
 
 	return (master_metrics)
@@ -225,6 +229,7 @@ def calc_most_least_active_times(tes):
 	'most_active_hour_of_day':None,
 	'least_active_hour_of_day':None,
 	}
+	response_weighting = 6000
 
 	#days of week
 	day_of_week_dict = {}
@@ -232,11 +237,12 @@ def calc_most_least_active_times(tes):
 		new_tes = filt.filter_by_day_of_week([day_of_week],tes)['filtered_tes']
 		mets = calculate_all_metrics(new_tes)
 		g = mets['texts_sent_s1'] +  mets['texts_sent_s2']
+		day_of_week_dict[str(day_of_week)] = g
 		# some factor that also takes into account response time.
 		# reciprocal because a smaller response time means more active.
 		if mets['response_rate_s1'] and mets['response_rate_s2']:
-			z = 100*(1/mets['response_rate_s1'] + 1/mets['response_rate_s2'])
-		day_of_week_dict[str(day_of_week)] = g + z
+			z = response_weighting*(1/mets['response_rate_s1'] + 1/mets['response_rate_s2'])
+			day_of_week_dict[str(day_of_week)] = g + z
 
 	#month of year
 	month_of_year_dict = {}
@@ -244,11 +250,13 @@ def calc_most_least_active_times(tes):
 		new_tes = filt.filter_by_month_of_year([month],tes)['filtered_tes']
 		mets = calculate_all_metrics(new_tes)
 		g = mets['texts_sent_s1'] +  mets['texts_sent_s2']
+		month_of_year_dict[str(month)] = g
 		# some factor that also takes into account response time.
 		# reciprocal because a smaller response time means more active.
+
 		if mets['response_rate_s1'] and mets['response_rate_s2']:
-			z = 100*(1/mets['response_rate_s1'] + 1/mets['response_rate_s2'])
-		month_of_year_dict[str(month)] = g + z
+			z = response_weighting*(1/mets['response_rate_s1'] + 1/mets['response_rate_s2'])
+			month_of_year_dict[str(month)] = g + z
 
 	#days of month
 	day_of_month_dict = {}
@@ -256,11 +264,12 @@ def calc_most_least_active_times(tes):
 		new_tes = filt.filter_by_day_of_month([day_of_month],tes)['filtered_tes']
 		mets = calculate_all_metrics(new_tes)
 		g = mets['texts_sent_s1'] +  mets['texts_sent_s2']
+		day_of_month_dict[str(day_of_month)] = g 
 		# some factor that also takes into account response time.
 		# reciprocal because a smaller response time means more active.
 		if mets['response_rate_s1'] and mets['response_rate_s2']:
-			z = 100*(1/mets['response_rate_s1'] + 1/mets['response_rate_s2'])
-		day_of_month_dict[str(day_of_month)] = g + z
+			z = response_weighting*(1/mets['response_rate_s1'] + 1/mets['response_rate_s2'])
+			day_of_month_dict[str(day_of_month)] = g + z
 
 	#hour of day
 	hour_of_day_dict = {}
@@ -268,11 +277,12 @@ def calc_most_least_active_times(tes):
 		new_tes = filt.filter_by_time_of_day([hour],tes)['filtered_tes']
 		mets = calculate_all_metrics(new_tes)
 		g = mets['texts_sent_s1'] +  mets['texts_sent_s2']
+		hour_of_day_dict[str(hour)] = g 
 		# some factor that also takes into account response time.
 		# reciprocal because a smaller response time means more active.
 		if mets['response_rate_s1'] and mets['response_rate_s2']:
-			z = 100*(1/mets['response_rate_s1'] + 1/mets['response_rate_s2'])
-		hour_of_day_dict[str(hour)] = g + z
+			z = response_weighting*(1/mets['response_rate_s1'] + 1/mets['response_rate_s2'])
+			hour_of_day_dict[str(hour)] = g + z
 
 	maxkey_dw = max(day_of_week_dict, key=day_of_week_dict.get)
 	minkey_dw = min(day_of_week_dict, key=day_of_week_dict.get)
@@ -286,7 +296,7 @@ def calc_most_least_active_times(tes):
 	maxkey_hd = max(hour_of_day_dict, key=hour_of_day_dict.get)
 	minkey_hd = min(hour_of_day_dict, key=hour_of_day_dict.get)
 
-	# print(day_of_week_dict)
+	print(day_of_week_dict)
 	# print("Standard deviation: " + str(np.std(day_of_week_dict.values())))
 	# print("Median: " + str(np.median(day_of_week_dict.values())))
 
@@ -365,7 +375,39 @@ def calc_longest_streak(timestamps):
 		return streak
 	return max(streaks)
 
+# function to find the top occurrences of a given instance
+# for instance top 5 emojis
+# top 5 curse words
+# top 5 laughing expressions
+def get_top_x_occurrences(special_key,list_of_dicts,occurrence_number):
+	results = []
+	results_dict = {}
+	for lil_d in list_of_dicts:
+		#this is a list/set
+		if special_key in lil_d.keys():
+			these_instances = lil_d[special_key] 
+			for this_instance in these_instances:
+				if not this_instance in results_dict.keys():
+					results_dict[this_instance] = 1
+				else:
+					results_dict[this_instance] += 1
 
+
+	num = len(results_dict.keys())
+	#http://stackoverflow.com/questions/7197315/5-maximum-values-in-a-python-dictionary
+	if(num) < occurrence_number:
+		results = sorted(results_dict, key=results_dict.get, reverse=True)[:num]
+	else:
+		results = sorted(results_dict, key=results_dict.get, reverse=True)[:occurrence_number]
+
+	if len(results)>0:
+		print(results[0][1])
+
+	#theres some weird unicode empty ass strings in the 0th index spot
+	#but also sometimes in the 1 index spot too. need to make a function
+	#to return the meaningful portion of these... 
+	#TODO: make function to take the meat out of results
+	return [g[1] for g in results]
 
 # method to calculate a rate as a percentage of occurrence
 def calc_rate_of_occurrence(special_key,list_of_dicts,total_number):
@@ -450,8 +492,13 @@ def calc_emoji(te):
 	# with wide build could use some regex like this -> [\U0001d300-\U0001d356]
 	# http://stackoverflow.com/questions/19149186/how-to-find-and-count-emoticons-in-a-string-using-python
 	txt_utf_8 = te.all_text.decode('utf-8')
+	this_match = re.findall(ur'(\ud838[\udc50-\udfff])|([\ud839-\ud83d][\udc00-\udfff])|(\ud83e[\udc00-\udfbf])|([\udc50-\udfff]\ud838)|([\udc00-\udfff][\ud839-\ud83d])|([\udc00-\udfbf]\ud83e)',txt_utf_8)
 	if re.search(ur'(\ud838[\udc50-\udfff])|([\ud839-\ud83d][\udc00-\udfff])|(\ud83e[\udc00-\udfbf])|([\udc50-\udfff]\ud838)|([\udc00-\udfff][\ud839-\ud83d])|([\udc00-\udfbf]\ud83e)',txt_utf_8):
 		return_vals['emoji_bool'] = True
+		#cast it as a set so that there are no repeated unicodes
+		return_vals['emojis_used'] = set(this_match)
+		#print(this_match.group())
+		#print(str(this_match))
 	else:
 		return_vals['emoji_bool'] = False
 	return return_vals
