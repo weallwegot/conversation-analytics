@@ -13,3 +13,23 @@ def display_weekday(string_week):
 	'7':'Sunday',
 	}
 	return(day_d[string_week])
+
+
+def convert_emoji(unicode_raw):
+	emoji_d = {
+	'U0001F600':'grinning face'
+
+
+
+
+
+
+	}
+
+
+
+
+
+
+
+	return(emoji_d[unicode_raw])
