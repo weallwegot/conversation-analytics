@@ -49,3 +49,7 @@ class TestUtilities(unittest.TestCase):
 		code = w.convert_emoji_name('weary face')
 		self.assertEquals(name,'weary face')
 		self.assertEquals(code,u'U+1F629')
+		self.assertEquals(w.convert_emoji_name('nonsense'),'NA')
+		self.assertEquals(w.convert_emoji_code('nonsense'),'NA')
+
+
