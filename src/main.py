@@ -38,6 +38,8 @@ r = mc.calculate_all_metrics(full_tes)
 
 ub = utils.UtilityBoss()
 
+print(r['top_5_emojis_s2'])
+
 s1_emojis = [ub.convert_emoji_code(code) for code in r['top_5_emojis_s1']]
 s2_emojis = [ub.convert_emoji_code(code) for code in r['top_5_emojis_s2']]
 
