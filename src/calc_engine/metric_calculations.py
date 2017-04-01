@@ -34,7 +34,7 @@ import numpy as np
 import datetime
 import calendar
 import re
-from src.utilities.utils import flatten_list
+from src.utilities.utils import flatten_list, display_weekday
 from src.utilities.utils import SKINS
 
 import filter_poly as filt
@@ -317,19 +317,6 @@ def calc_most_least_active_times(tes):
 
 
 	return (master_time_metrics)
-#used isoweekday & calendar module is 0 indexed
-#so making simple mapping implementation
-def display_weekday(string_week):
-	day_d = {
-	'1':'Monday',
-	'2':'Tuesday',
-	'3':'Wednesday',
-	'4':'Thursday',
-	'5':'Friday',
-	'6':'Saturday',
-	'7':'Sunday',
-	}
-	return(day_d[string_week])
 
 def calc_longest_streak(timestamps):
 
