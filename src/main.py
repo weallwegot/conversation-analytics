@@ -38,8 +38,12 @@ r = mc.calculate_all_metrics(full_tes)
 
 ub = utils.UtilityBoss()
 
-new = [ub.convert_emoji_code(code) for code in r['top_5_emojis_s1']]
-print(str(new))
+s1_emojis = [ub.convert_emoji_code(code) for code in r['top_5_emojis_s1']]
+s2_emojis = [ub.convert_emoji_code(code) for code in r['top_5_emojis_s2']]
+
+r['top_5_emojis_s1'] = s1_emojis
+r['top_5_emojis_s2'] = s2_emojis
+
 
 r2 = mc.calc_most_least_active_times(full_tes)
 print(str(r))
