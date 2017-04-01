@@ -6,19 +6,23 @@ import itertools
 #so making simple mapping implementation
 
 
-SKINS = [u'\U0001f3fb',u'\U0001f3fc',u'\U0001f3fd',u'\U0001f3fe',u'\U0001f3ff']
+SKINTONES = [u'\U0001f3fb',u'\U0001f3fc',u'\U0001f3fd',u'\U0001f3fe',u'\U0001f3ff']
 
 
 class UtilityBoss:
 	def __init__(self):
 
 		"""
-		I know this is hideous
-		dont say anything about it
-		it is (maybe) temporary
-		making a request 
-		and then parsing out the tags
-		while fun is really not necessary
+		I know this is hideous.
+		Please don't say anything about it.
+		It is (maybe) temporary.
+		Making a http request 
+		and then parsing out the raw html file for tags of interest,
+		while fun, is really not necessary to do every time you want to convert
+		So to save time i did that once printed the output and made it into a dictionary
+		It's ugly but worth the save in time. It takes a couple of seconds to parse it out
+		In the future to keep up with updates maybe itll be a scheduled proced like
+		every month or something to keep up with new unicode releases
 		TODO: move the dictionary to its own file
 		so that no one ever has to see it.
 		"""

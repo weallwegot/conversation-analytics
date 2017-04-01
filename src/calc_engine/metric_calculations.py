@@ -4,9 +4,8 @@
 
 """
 things to consider when analyzing
-
 how do emojis look in unicode or whatever string format
-
+what about the combination of emoji codes to signify skin tone
 what is the criteria for a conversation being terminated and starting anew
 versus just an extended pause.
 """
@@ -17,14 +16,7 @@ versus just an extended pause.
 # - laughs. 
 # 	- favorite way to express humor [lmao, lol, haha, loll]
 # 	- average number of ha's in a laugh
-# - most terminated conversations
-# - analyze which times of the day are most active for conversation
-# - frequency of cursing 
-# - favorite emojis
-# - which day of the week is most active for conversation
-# - how do all of these metrics change depending on the day of the week
-# - or the time of the month
-# - period of the day
+# - most terminated conversations [this is kind of just the inverse of double text?]
 # - are long periods of silence followed with a "sorry"? lmao.
 # - the use of punctuation to show effort score
 # https://developers.google.com/edu/python/regular-expressions
@@ -35,7 +27,7 @@ import datetime
 import calendar
 import re
 from src.utilities.utils import flatten_list, display_weekday
-from src.utilities.utils import SKINS
+from src.utilities.utils import SKINTONES
 
 import filter_poly as filt
 
@@ -77,7 +69,8 @@ def calculate_all_metrics(tes):
 	# will there be a new dictionary thats mostly the same, but for days of week?
 	# for days of the month
 	# for messages that start with sender 1 versus sender 2 ?
-	# all of these lists are lists of dictionaries
+	
+	# all of these lists will be lists of dictionaries
 	time_diffs_s1 = []
 	time_diffs_s2 = []
 	avg_lengths_s1 = []
@@ -100,7 +93,6 @@ def calculate_all_metrics(tes):
 	for i in range(len(tes)):
 		# it is important to subtract later from earlier for proper time calculation
 		earlier_te = tes[i]
-
 
 		# The calculations for time between are broken out
 		# because they require 2 Text Equivalents Simulataneously
@@ -145,7 +137,6 @@ def calculate_all_metrics(tes):
 
 	# do the processing of data calcs aggregated
 	# insert the data into the master metrics dictionary
-
 	# number of texts sent
 	master_metrics['texts_sent_s1'] = number_of_text_eqs_sent_s1
 	master_metrics['texts_sent_s2'] = number_of_text_eqs_sent_s2
@@ -165,6 +156,7 @@ def calculate_all_metrics(tes):
 		s2_longest = 0
 
 	longest_drought_seconds = max([s1_longest,s2_longest])
+	# Convert seconds to days
 	master_metrics['longest_drought'] = longest_drought_seconds/60.0/60.0/24.0
 	master_metrics['longest_streak'] = calc_longest_streak(timestamps)
 
@@ -221,7 +213,7 @@ def calc_most_least_active_times(tes):
 	"""
 	calculates most and least active times
 	on the basis of number of messages sent
-	TODO: include rate of response in formula for "most active"
+	and rate of response 
 	"""
 	master_time_metrics = {
 	'most_active_day_of_week':None,
@@ -371,16 +363,10 @@ def get_top_x_occurrences(special_key,list_of_dicts,occurrence_number):
 	results = []
 	results_dict = {}
 	for lil_d in list_of_dicts:
-		#this is a list/set
 		if special_key in lil_d.keys():
 			these_instances = lil_d[special_key]
-
 			for this_instance in these_instances:
-				#print(this_instance)
 				z=this_instance
-				print(z)
-				#z = [z for z in g if len(z)>0][0]
-
 				if not z in results_dict.keys():
 					results_dict[z] = 1
 				else:
@@ -395,14 +381,6 @@ def get_top_x_occurrences(special_key,list_of_dicts,occurrence_number):
 	else:
 		results = sorted(results_dict, key=results_dict.get, reverse=True)[:occurrence_number]
 
-	if len(results)>0:
-		#print(results[0][1])
-		pass
-
-	#theres some weird unicode empty ass strings in the 0th index spot
-	#but also sometimes in the 1 index spot too. need to make a function
-	#to return the meaningful portion of these... 
-	#TODO: make function to take the meat out of results
 	return results
 
 # method to calculate a rate as a percentage of occurrence
@@ -488,7 +466,6 @@ def calc_emoji(te):
 	# with wide build could use some regex like this -> [\U0001d300-\U0001d356]
 	# http://stackoverflow.com/questions/19149186/how-to-find-and-count-emoticons-in-a-string-using-python
 	txt_utf_8 = te.all_text.decode('utf-8')
-	skins = [u'\U0001f3fb',u'\U0001f3fc',u'\U0001f3fd',u'\U0001f3fe',u'\U0001f3ff']
 	this_match = re.findall(ur'(\ud838[\udc50-\udfff])|([\ud839-\ud83d][\udc00-\udfff])|(\ud83e[\udc00-\udfbf])|([\udc50-\udfff]\ud838)|([\udc00-\udfff][\ud839-\ud83d])|([\udc00-\udfbf]\ud83e)',txt_utf_8)
 	if re.search(ur'(\ud838[\udc50-\udfff])|([\ud839-\ud83d][\udc00-\udfff])|(\ud83e[\udc00-\udfbf])|([\udc50-\udfff]\ud838)|([\udc00-\udfff][\ud839-\ud83d])|([\udc00-\udfbf]\ud83e)',txt_utf_8):
 		return_vals['emoji_bool'] = True
@@ -509,7 +486,7 @@ def calc_emoji(te):
 		"""
 		If any of the emoji codes are for skin tone
 		checked my looking for the intersection between
-		the skins list/set
+		the SKINTONES list/set
 		There is another process to follow.
 		That process is basically adding the skin tone
 		that matches to the end of all the other emoji codes
@@ -517,9 +494,9 @@ def calc_emoji(te):
 		that are actually 2 emoji codes. one for the standard emoji
 		and another emoji code for the skin tone.
 		"""
-		if (list(set(this_match_new) & set(skins))):
+		if (list(set(this_match_new) & set(SKINTONES))):
 			new_list_with_skin_appended_to_each = []
-			skinlist = list(set(this_match_new) & set(skins))
+			skinlist = list(set(this_match_new) & set(SKINTONES))
 			# looping through all of the skin tags
 			# appending them to each value in the first pass list
 			# thus we can get the combo codes together.
@@ -543,7 +520,7 @@ def calc_emoji(te):
 			#print('last pass after combining: ' + str(first_pass))
 			# now if its just skin tone alone, get rid of it
 			for element in first_pass:
-				if element in SKINS:
+				if element in SKINTONES:
 					first_pass.remove(element)
 
 		else:
