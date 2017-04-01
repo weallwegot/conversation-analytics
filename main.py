@@ -11,18 +11,18 @@ https://github.com/PeterKaminski09/baskup to dump data
 #standard imports
 import os
 #module imports
-from convo_objects.TextEquivalent import TextEquivalent
-from calc_engine import metric_calculations as mc 
-from read_parse import read_and_parse_text_file
-from calc_engine import filter_poly as fil
-from utilities import utils
+from src.convo_objects.TextEquivalent import TextEquivalent
+from src.calc_engine import metric_calculations as mc 
+from src.read_parse import read_and_parse_text_file
+from src.calc_engine import filter_poly as fil
+from src.utilities import utils
 
 
 #########
 #Read
 #########
 working_dir = os.getcwd()
-data_folder = working_dir + os.sep + os.pardir + os.sep + "data" 
+data_folder = working_dir + os.sep + "data" 
 text_file_name = "anon_convo.txt"
 full_path = data_folder + os.sep + text_file_name
 
