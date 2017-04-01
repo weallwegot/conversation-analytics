@@ -37,7 +37,6 @@ class UtilityBoss:
 		.upper()\
 		.replace('\\','')
 		real_code_key = unicode_raw.replace('000','+')
-		print("code key: " + real_code_key)
 		#print(self.emoji_d_code_keys.keys())
 		if real_code_key in self.emoji_d_code_keys.keys():
 
@@ -47,12 +46,12 @@ class UtilityBoss:
 
 	def convert_emoji_name(self,emojiname):
 		if emojiname in self.emoji_d_name_keys.keys():
-			return(self.emoji_d_name_keys[emoji_d_name])
+			return(self.emoji_d_name_keys[emojiname])
 		else:
 			return('NA')
 
 
-def display_weekday(string_week):
+def display_weekday(string_number_day):
 	day_d = {
 	'1':'Monday',
 	'2':'Tuesday',
@@ -62,6 +61,6 @@ def display_weekday(string_week):
 	'6':'Saturday',
 	'7':'Sunday',
 	}
-	return(day_d[string_week])
+	return(day_d[string_number_day])
 
 
