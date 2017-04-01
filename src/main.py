@@ -10,8 +10,6 @@ https://github.com/PeterKaminski09/baskup to dump data
 
 #standard imports
 import os
-import datetime
-import re
 #module imports
 from convo_objects.TextEquivalent import TextEquivalent
 from calc_engine import metric_calculations as mc 
@@ -38,7 +36,8 @@ r = mc.calculate_all_metrics(full_tes)
 
 ub = utils.UtilityBoss()
 
-print(r['top_5_emojis_s2'])
+print('top 5 emojis S2 before converting to names: ' + str(r['top_5_emojis_s2']))
+print('top 5 emojis S1 before converting to names: ' + str(r['top_5_emojis_s1']))
 
 s1_emojis = [ub.convert_emoji_code(code) for code in r['top_5_emojis_s1']]
 s2_emojis = [ub.convert_emoji_code(code) for code in r['top_5_emojis_s2']]
@@ -47,8 +46,8 @@ r['top_5_emojis_s1'] = s1_emojis
 r['top_5_emojis_s2'] = s2_emojis
 
 
-r2 = mc.calc_most_least_active_times(full_tes)
+#r2 = mc.calc_most_least_active_times(full_tes)
 print(str(r))
-print(str(r2))
+#print(str(r2))
 
 

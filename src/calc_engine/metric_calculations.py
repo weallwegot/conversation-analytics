@@ -34,6 +34,8 @@ import numpy as np
 import datetime
 import calendar
 import re
+from utilities.utils import flatten_list
+from utilities.utils import SKINS
 
 import filter_poly as filt
 
@@ -187,7 +189,8 @@ def calculate_all_metrics(tes):
 		# find the rate of emoji usage
 		master_metrics['emoji_rate_s1'] = calc_rate_of_occurrence('emoji_bool',emojis_s1,number_of_text_eqs_sent_s1)
 		# find the top 5 emojis
-		master_metrics['top_5_emojis_s1'] = get_top_x_occurrences('emojis_used',emojis_s1,5)
+		master_metrics['top_5_emojis_s1'] = get_top_x_occurrences('emojis_used',emojis_s1,10)
+		print("I just ran top 5 emoji on s1")
 
 	if number_of_text_eqs_sent_s2 > 0:
 		# median number of seconds to reply
@@ -207,7 +210,8 @@ def calculate_all_metrics(tes):
 		# find the rate of emoji usage
 		master_metrics['emoji_rate_s2'] = calc_rate_of_occurrence('emoji_bool',emojis_s2,number_of_text_eqs_sent_s2)
 		# find the top 5 emojis
-		master_metrics['top_5_emojis_s2'] = get_top_x_occurrences('emojis_used',emojis_s2,5)
+		master_metrics['top_5_emojis_s2'] = get_top_x_occurrences('emojis_used',emojis_s2,10)
+		print("I just ran top 5 emoji on s2")
 
 
 	return (master_metrics)
@@ -385,15 +389,22 @@ def get_top_x_occurrences(special_key,list_of_dicts,occurrence_number):
 	for lil_d in list_of_dicts:
 		#this is a list/set
 		if special_key in lil_d.keys():
-			these_instances = lil_d[special_key] 
+			these_instances = lil_d[special_key]
+
 			for this_instance in these_instances:
-				if not this_instance in results_dict.keys():
-					results_dict[this_instance] = 1
+				#print(this_instance)
+				z=this_instance
+				print(z)
+				#z = [z for z in g if len(z)>0][0]
+
+				if not z in results_dict.keys():
+					results_dict[z] = 1
 				else:
-					results_dict[this_instance] += 1
+					results_dict[z] += 1
 
 
 	num = len(results_dict.keys())
+	#print(str(results_dict))
 	#http://stackoverflow.com/questions/7197315/5-maximum-values-in-a-python-dictionary
 	if(num) < occurrence_number:
 		results = sorted(results_dict, key=results_dict.get, reverse=True)[:num]
@@ -408,7 +419,7 @@ def get_top_x_occurrences(special_key,list_of_dicts,occurrence_number):
 	#but also sometimes in the 1 index spot too. need to make a function
 	#to return the meaningful portion of these... 
 	#TODO: make function to take the meat out of results
-	return [g[1] for g in results]
+	return results
 
 # method to calculate a rate as a percentage of occurrence
 def calc_rate_of_occurrence(special_key,list_of_dicts,total_number):
@@ -493,13 +504,72 @@ def calc_emoji(te):
 	# with wide build could use some regex like this -> [\U0001d300-\U0001d356]
 	# http://stackoverflow.com/questions/19149186/how-to-find-and-count-emoticons-in-a-string-using-python
 	txt_utf_8 = te.all_text.decode('utf-8')
+	skins = [u'\U0001f3fb',u'\U0001f3fc',u'\U0001f3fd',u'\U0001f3fe',u'\U0001f3ff']
 	this_match = re.findall(ur'(\ud838[\udc50-\udfff])|([\ud839-\ud83d][\udc00-\udfff])|(\ud83e[\udc00-\udfbf])|([\udc50-\udfff]\ud838)|([\udc00-\udfff][\ud839-\ud83d])|([\udc00-\udfbf]\ud83e)',txt_utf_8)
 	if re.search(ur'(\ud838[\udc50-\udfff])|([\ud839-\ud83d][\udc00-\udfff])|(\ud83e[\udc00-\udfbf])|([\udc50-\udfff]\ud838)|([\udc00-\udfff][\ud839-\ud83d])|([\udc00-\udfbf]\ud83e)',txt_utf_8):
 		return_vals['emoji_bool'] = True
 		#cast it as a set so that there are no repeated unicodes
-		return_vals['emojis_used'] = set(this_match)
-		#print(this_match.group())
-		#print(str(this_match))
+		#print('all matches ' + str(this_match))
+		this_match_new = []
+		# this is essentially processing the matches
+		# the list comprehension is getting rid of matches 
+		# that just look like u'' . empty unicode strings
+		# i dont know enough about the regex expression to change it
+		for i in this_match:
+			this_match_temp = [unicode(z) for z in i if len(z)>0][0]
+			this_match_new.append(this_match_temp)
+		# cast as a set to get rid of duplicates
+		first_pass = list(set(this_match_new))
+		# return this to the value
+		return_vals['emojis_used'] = first_pass
+		"""
+		If any of the emoji codes are for skin tone
+		checked my looking for the intersection between
+		the skins list/set
+		There is another process to follow.
+		That process is basically adding the skin tone
+		that matches to the end of all the other emoji codes
+		this is so that we can count accurately the emojis 
+		that are actually 2 emoji codes. one for the standard emoji
+		and another emoji code for the skin tone.
+		"""
+		if (list(set(this_match_new) & set(skins))):
+			new_list_with_skin_appended_to_each = []
+			skinlist = list(set(this_match_new) & set(skins))
+			# looping through all of the skin tags
+			# appending them to each value in the first pass list
+			# thus we can get the combo codes together.
+			# but dont combine them if the firstval is the skinval
+			for skinval in skinlist:
+				templist = [firstval + u' ' + skinval for firstval in first_pass 
+				if not firstval==skinval]
+				#print('temp list' + str(templist))
+				new_list_with_skin_appended_to_each.append(templist)
+			#print('new list with skin appended: ' + str(new_list_with_skin_appended_to_each))
+			#print('first pass: ' + str(first_pass))
+			new_list_with_skin_appended_to_each = flatten_list(new_list_with_skin_appended_to_each)
+			#print('new list with skin appended AFTER: ' + str(new_list_with_skin_appended_to_each))
+
+			# after making new lists with each skin appended to each val
+			# (in all likelhood the skinlist is probably one element)
+			# append this list to the original first pass list
+			for combelement in new_list_with_skin_appended_to_each:
+				first_pass.append(combelement)
+			#first_pass.append(new_list_with_skin_appended_to_each)
+			#print('last pass after combining: ' + str(first_pass))
+			# now if its just skin tone alone, get rid of it
+			for element in first_pass:
+				if element in SKINS:
+					first_pass.remove(element)
+
+		else:
+			first_pass = first_pass
+
+		return_vals['emojis_used'] = first_pass
+		#print('last pass: ' + str(return_vals['emojis_used']))
+
+
+
 	else:
 		return_vals['emoji_bool'] = False
 	return return_vals

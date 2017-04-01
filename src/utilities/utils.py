@@ -6,10 +6,39 @@ import itertools
 #so making simple mapping implementation
 
 
+SKINS = [u'\U0001f3fb',u'\U0001f3fc',u'\U0001f3fd',u'\U0001f3fe',u'\U0001f3ff']
+
+
 class UtilityBoss:
 	def __init__(self):
 
+		"""
+		I know this is hideous
+		dont say anything about it
+		it is (maybe) temporary
+		making a request 
+		and then parsing out the tags
+		while fun is really not necessary
+		TODO: move the dictionary to its own file
+		so that no one ever has to see it.
+		"""
 
+		#this is making a url request to the official unicode page
+		# response = urllib2.urlopen("http://unicode.org/emoji/charts/full-emoji-list.html")
+		# emoji_html = response.read()
+		# only_names = SoupStrainer(attrs={"class": "name"})
+		# only_codes = SoupStrainer(attrs={"class": "code"})
+
+
+		# soup_names = BeautifulSoup(emoji_html,"html.parser",parse_only=only_names)
+		# soup_codes = BeautifulSoup(emoji_html,"html.parser",parse_only=only_codes)
+
+		# emoji_d_name = {}
+		# emoji_d_code = {}
+
+		# for name,code in itertools.izip(soup_names.strings,soup_codes.strings):
+		# 	emoji_d_name[name] = code
+		# 	emoji_d_code[code] = name
 
 		self.emoji_d_code_keys = {
 		'U+1F4B9': u'chart increasing with yen', 
@@ -145,7 +174,8 @@ class UtilityBoss:
 		       u'U+1F91F U+1F3FF': u'love-you gesture: dark skin tone', u'U+1F91F U+1F3FD': u'love-you gesture: medium skin tone', u'U+1F469 U+1F3FE U+200D U+1F692': u'woman firefighter: medium-dark skin tone', u'U+1F480': u'skull', u'U+1F481': u'person tipping hand', u'U+1F469 U+1F3FE U+200D U+1F52C': u'woman scientist: medium-dark skin tone', u'U+1F483': u'woman dancing', u'U+1F484': u'lipstick',
 		      u'U+1F485': u'nail polish', u'U+1F486': u'person getting massage', u'U+1F487': u'person getting haircut', u'U+1F488': u'barber pole',
 		       u'U+1F489': u'syringe', u'U+1F442 U+1F3FD': u'ear: medium skin tone', u'U+1F442 U+1F3FE': u'ear: medium-dark skin tone', u'U+1F442 U+1F3FF': u'ear: dark skin tone', u'U+1F1F2 U+1F1F0': u'Macedonia', u'U+1F442 U+1F3FB': u'ear: light skin tone',
-		        u'U+1F477 U+1F3FC U+200D U+2640 U+FE0F': u'woman construction worker: medium-light skin tone', u'U+1F95F': u'dumpling', u'U+1F95D': u'kiwi fruit', u'U+1F95E': u'pancakes', u'U+1F95B': u'glass of milk', u'U+1F95C': u'peanuts', u'U+1F95A': u'egg', u'U+2328': u'keyboard', u'U+1F937 U+1F3FF U+200D U+2640 U+FE0F': u'woman shrugging: dark skin tone', u'U+1F614': u'pensive face', u'U+1F9D9': u'mage', u'U+1F9DA U+1F3FE U+200D U+2642 U+FE0F': u'man fairy: medium-dark skin tone', u'U+1F9D1': u'adult',
+		        u'U+1F477 U+1F3FC U+200D U+2640 U+FE0F': u'woman construction worker: medium-light skin tone', u'U+1F95F': u'dumpling', u'U+1F95D': u'kiwi fruit', u'U+1F95E': u'pancakes', u'U+1F95B': u'glass of milk', u'U+1F95C': u'peanuts', u'U+1F95A': u'egg', u'U+2328': u'keyboard', u'U+1F937 U+1F3FF U+200D U+2640 U+FE0F': u'woman shrugging: dark skin tone', u'U+1F614': u'pensive face', 
+		        u'U+1F9D9': u'mage', u'U+1F9DA U+1F3FE U+200D U+2642 U+FE0F': u'man fairy: medium-dark skin tone', u'U+1F9D1': u'adult',
 		         u'U+1F9D8 U+1F3FD U+200D U+2642 U+FE0F': u'man in lotus position: medium skin tone', u'U+1F468 U+200D U+2695 U+FE0F': u'man health worker', u'U+1F9D2': u'child', u'U+1F9D5': u'woman with headscarf', u'U+1F9D4': u'bearded person', u'U+1F9D7': u'person climbing', u'U+1F610': u'neutral face', u'U+26EA': u'church', u'U+1F575 U+1F3FC': u'detective: medium-light skin tone',
 		    u'U+1F575 U+1F3FB': u'detective: light skin tone', u'U+1F9DD U+200D U+2640 U+FE0F': u'woman elf', u'U+1F575 U+1F3FE': u'detective: medium-dark skin tone', u'U+1F575 U+1F3FD': u'detective: medium skin tone', u'U+1F9D9 U+1F3FF U+200D U+2640 U+FE0F': u'woman mage: dark skin tone',
 		     u'U+1F3C2 U+1F3FB': u'snowboarder: light skin tone', u'U+1F3C2 U+1F3FC': u'snowboarder: medium-light skin tone', u'U+1F3C2 U+1F3FF': u'snowboarder: dark skin tone', u'U+1F3C2 U+1F3FD': u'snowboarder: medium skin tone', u'U+1F3C2 U+1F3FE': u'snowboarder: medium-dark skin tone', u'U+2049': u'exclamation question mark', u'U+1F64E U+1F3FC U+200D U+2642 U+FE0F': u'man pouting: medium-light skin tone', u'U+1F9DA': u'fairy', u'U+1F9DC': u'merperson', u'U+1F9DB': u'vampire', u'U+1F9DE': u'genie',
@@ -153,23 +183,31 @@ class UtilityBoss:
 		       u'U+1F1F1 U+1F1F0': u'Sri Lanka', u'U+1F4F5': u'no mobile phones', u'U+1F590 U+1F3FD': u'raised hand with fingers splayed: medium skin tone', u'U+1F590 U+1F3FE': u'raised hand with fingers splayed: medium-dark skin tone', u'U+1F590 U+1F3FF': u'raised hand with fingers splayed: dark skin tone', u'U+2620': u'skull and crossbones', u'U+1F590 U+1F3FB': u'raised hand with fingers splayed: light skin tone', u'U+1F590 U+1F3FC': u'raised hand with fingers splayed: medium-light skin tone', 
 		    u'U+1F926 U+1F3FB U+200D U+2642 U+FE0F': u'man facepalming: light skin tone', u'U+1F46E U+1F3FF U+200D U+2640 U+FE0F': u'woman police officer: dark skin tone',
 		     u'U+1F1F2 U+1F1F6': u'Martinique', u'U+1F9D9 U+1F3FD U+200D U+2640 U+FE0F': u'woman mage: medium skin tone', u'U+1F468 U+200D U+1F466 U+200D U+1F466': u'family: man, boy, boy', u'U+1F1EB U+1F1EF': u'Fiji', u'U+1F1F0 U+1F1FF': u'Kazakhstan', u'U+1F575 U+1F3FF U+200D U+2640 U+FE0F': u'woman detective: dark skin tone', u'U+1F9D7 U+1F3FE U+200D U+2642 U+FE0F': u'man climbing: medium-dark skin tone', u'U+1F646 U+1F3FF U+200D U+2640 U+FE0F': u'woman gesturing OK: dark skin tone',
-		      u'U+2139': u'information', u'U+1F468 U+200D U+1F469 U+200D U+1F467': u'family: man, woman, girl', u'U+1F468 U+200D U+1F469 U+200D U+1F466': u'family: man, woman, boy', u'U+1F93E U+1F3FD U+200D U+2642 U+FE0F': u'man playing handball: medium skin tone', u'U+1F939 U+1F3FE U+200D U+2640 U+FE0F': u'woman juggling: medium-dark skin tone', u'U+1F42D': u'mouse face', u'U+270B U+1F3FF': u'raised hand: dark skin tone', u'U+1F937 U+1F3FF U+200D U+2642 U+FE0F': u'man shrugging: dark skin tone', u'U+262F': u'yin yang', u'U+262A': u'star and crescent', u'U+1F93D U+1F3FF': u'person playing water polo: dark skin tone', u'U+1F21A': u'Japanese \u201cfree of charge\u201d button', u'U+1F6B6 U+1F3FC U+200D U+2640 U+FE0F': u'woman walking: medium-light skin tone', 
+		      u'U+2139': u'information', u'U+1F468 U+200D U+1F469 U+200D U+1F467': u'family: man, woman, girl', u'U+1F468 U+200D U+1F469 U+200D U+1F466': u'family: man, woman, boy', u'U+1F93E U+1F3FD U+200D U+2642 U+FE0F': u'man playing handball: medium skin tone', u'U+1F939 U+1F3FE U+200D U+2640 U+FE0F': u'woman juggling: medium-dark skin tone', u'U+1F42D': u'mouse face', u'U+270B U+1F3FF': u'raised hand: dark skin tone', u'U+1F937 U+1F3FF U+200D U+2642 U+FE0F': u'man shrugging: dark skin tone',
+		       u'U+262F': u'yin yang', u'U+262A': u'star and crescent', u'U+1F93D U+1F3FF': u'person playing water polo: dark skin tone', u'U+1F21A': u'Japanese \u201cfree of charge\u201d button', u'U+1F6B6 U+1F3FC U+200D U+2640 U+FE0F': u'woman walking: medium-light skin tone', 
 		    u'U+1F9D7 U+1F3FD': u'person climbing: medium skin tone', u'U+1F9D7 U+1F3FE': u'person climbing: medium-dark skin tone',
-		     u'U+1F9D7 U+1F3FF': u'person climbing: dark skin tone', u'U+1F9D7 U+1F3FB': u'person climbing: light skin tone', u'U+1F9D7 U+1F3FC': u'person climbing: medium-light skin tone', u'U+1F469 U+200D U+2764 U+FE0F U+200D U+1F468': u'couple with heart: woman, man',
-		      u'U+1F469 U+200D U+2764 U+FE0F U+200D U+1F469': u'couple with heart: woman, woman', u'U+1F3CC U+FE0F U+200D U+2642 U+FE0F': u'man golfing', u'U+1F469 U+200D U+1F393': u'woman student', u'U+1F486 U+1F3FE U+200D U+2642 U+FE0F': u'man getting massage: medium-dark skin tone', u'U+1F938 U+1F3FF': u'person cartwheeling: dark skin tone', u'U+1F469 U+1F3FB U+200D U+1F680': u'woman astronaut: light skin tone', u'U+1F938 U+1F3FD': u'person cartwheeling: medium skin tone', 
+		     u'U+1F9D7 U+1F3FF': u'person climbing: dark skin tone', u'U+1F9D7 U+1F3FB': u'person climbing: light skin tone',
+		      u'U+1F9D7 U+1F3FC': u'person climbing: medium-light skin tone',
+		       u'U+1F469 U+200D U+2764 U+FE0F U+200D U+1F468': u'couple with heart: woman, man',
+		      u'U+1F469 U+200D U+2764 U+FE0F U+200D U+1F469': u'couple with heart: woman, woman',
+		       u'U+1F3CC U+FE0F U+200D U+2642 U+FE0F': u'man golfing', u'U+1F469 U+200D U+1F393': u'woman student', u'U+1F486 U+1F3FE U+200D U+2642 U+FE0F': u'man getting massage: medium-dark skin tone', u'U+1F938 U+1F3FF': u'person cartwheeling: dark skin tone', u'U+1F469 U+1F3FB U+200D U+1F680': u'woman astronaut: light skin tone', u'U+1F938 U+1F3FD': u'person cartwheeling: medium skin tone', 
 		    u'U+1F938 U+1F3FE': u'person cartwheeling: medium-dark skin tone', u'U+1F938 U+1F3FB': u'person cartwheeling: light skin tone', u'U+1F938 U+1F3FC': u'person cartwheeling: medium-light skin tone', u'U+1F482 U+1F3FC U+200D U+2642 U+FE0F': u'man guard: medium-light skin tone',
 		     u'U+1F469 U+200D U+1F373': u'woman cook', u'U+1F46E U+1F3FF U+200D U+2642 U+FE0F': u'man police officer: dark skin tone', u'U+1F481 U+1F3FF U+200D U+2642 U+FE0F': u'man tipping hand: dark skin tone', u'U+1F926 U+1F3FB U+200D U+2640 U+FE0F': u'woman facepalming: light skin tone', u'U+1F473 U+1F3FD U+200D U+2642 U+FE0F': u'man wearing turban: medium skin tone', 
 		u'U+27B0': u'curly loop', u'U+2668': u'hot springs', u'U+1F0CF': u'joker', u'U+1F92C': u'face with symbols over mouth', u'U+1F92B': u'shushing face',
-		 u'U+1F92A': u'crazy face', u'U+1F92F': u'exploding head', u'U+1F92E': u'face vomiting', u'U+1F92D': u'face with hand over mouth', u'U+1F232': u'Japanese \u201cprohibited\u201d button', u'U+1F486 U+1F3FD': u'person getting massage: medium skin tone', u'U+1F486 U+1F3FE': u'person getting massage: medium-dark skin tone', u'U+1F486 U+1F3FF': u'person getting massage: dark skin tone', u'U+1F920': u'cowboy hat face', u'U+1F927': u'sneezing face', u'U+1F926': u'person facepalming',
+		 u'U+1F92A': u'crazy face', u'U+1F92F': u'exploding head', u'U+1F92E': u'face vomiting',
+		  u'U+1F92D': u'face with hand over mouth', u'U+1F232': u'Japanese \u201cprohibited\u201d button', u'U+1F486 U+1F3FD': u'person getting massage: medium skin tone', u'U+1F486 U+1F3FE': u'person getting massage: medium-dark skin tone', u'U+1F486 U+1F3FF': u'person getting massage: dark skin tone', u'U+1F920': u'cowboy hat face', u'U+1F927': u'sneezing face', u'U+1F926': u'person facepalming',
 		  u'U+1F925': u'lying face', u'U+1F486 U+1F3FC': u'person getting massage: medium-light skin tone', 
 		u'U+1F929': u'star-struck', u'U+1F928': u'face with raised eyebrow', u'U+1F696': u'oncoming taxi', u'U+1F64B U+1F3FD U+200D U+2640 U+FE0F': u'woman raising hand: medium skin tone', u'U+1F687': u'metro', u'U+1F9E6': u'socks', u'U+1F469 U+1F3FB U+200D U+1F33E': u'woman farmer: light skin tone', u'U+1F332': u'evergreen tree', u'U+1F9DC U+1F3FD U+200D U+2640 U+FE0F': u'mermaid: medium skin tone', u'U+1F685': u'high-speed train with bullet nose', u'U+1F468 U+1F3FF U+200D U+1F3ED': u'man factory worker: dark skin tone',
 		 u'U+1F468 U+1F3FF U+200D U+1F3EB': u'man teacher: dark skin tone', u'U+1F238': u'Japanese \u201capplication\u201d button', u'U+27BF': u'double curly loop', u'U+1F46F U+200D U+2642 U+FE0F': u'men with bunny ears partying',
 		 u'U+1F469 U+200D U+2696 U+FE0F': u'woman judge', u'U+1F6B4 U+200D U+2642 U+FE0F': u'man biking', u'U+1F6B5 U+1F3FD U+200D U+2640 U+FE0F': u'woman mountain biking: medium skin tone', u'U+1F938 U+200D U+2640 U+FE0F': 
 		u'woman cartwheeling', u'U+1F939 U+1F3FF U+200D U+2642 U+FE0F': u'man juggling: dark skin tone', u'U+1F9D6 U+200D U+2642 U+FE0F': u'man in steamy room', u'U+1F58A': u'pen', u'U+1F58C': u'paintbrush', u'U+1F58B': u'fountain pen', u'U+1F58D': u'crayon', u'U+1F1F7 U+1F1F4': u'Romania', u'U+1F1F8 U+1F1E7': u'Solomon Islands', u'U+1F926 U+1F3FC U+200D U+2642 U+FE0F': u'man facepalming: medium-light skin tone', u'U+1F486 U+1F3FB': u'person getting massage: light skin tone', u'U+1F1F7 U+1F1F8': u'Serbia',
 		 u'U+1F939 U+1F3FC U+200D U+2642 U+FE0F': u'man juggling: medium-light skin tone', u'U+1F1F7 U+1F1FA': u'Russia', u'U+1F1F7 U+1F1FC': u'Rwanda', u'U+1F9DD U+1F3FF U+200D U+2640 U+FE0F': u'woman elf: dark skin tone', 
-		u'U+1F3CB U+1F3FB U+200D U+2642 U+FE0F': u'man lifting weights: light skin tone', u'U+1F9E4': u'gloves', u'U+1F9E5': u'coat', u'U+1F9E2': u'billed cap', u'U+1F9E3': u'scarf', u'U+1F9E0': u'brain', u'U+1F9E1': u'orange heart', u'U+1F587': u'linked paperclips',
-		 u'U+1F473 U+1F3FF U+200D U+2642 U+FE0F': u'man wearing turban: dark skin tone', u'U+1F3C4 U+1F3FD U+200D U+2642 U+FE0F': u'man surfing: medium skin tone', u'U+270A U+1F3FD': u'raised fist: medium skin tone', u'U+26F0': u'mountain', u'U+26F1': u'umbrella on ground', u'U+1F468 U+1F3FC U+200D U+1F4BC': u'man office worker: medium-light skin tone', u'U+1F468 U+1F3FC U+200D U+1F4BB': u'man technologist: medium-light skin tone', u'U+26F4': u'ferry', u'U+26F5': u'sailboat',
-		  u'U+1F64B U+1F3FB U+200D U+2640 U+FE0F': u'woman raising hand: light skin tone', u'U+26F7': u'skier', u'U+26F8': u'ice skate', u'U+26F9': u'person bouncing ball', u'U+1F64D U+1F3FC U+200D U+2640 U+FE0F': u'woman frowning: medium-light skin tone', u'U+1F471 U+200D U+2642 U+FE0F': u'blond-haired man', 
+		u'U+1F3CB U+1F3FB U+200D U+2642 U+FE0F': u'man lifting weights: light skin tone',
+		 u'U+1F9E4': u'gloves', u'U+1F9E5': u'coat', u'U+1F9E2': u'billed cap', u'U+1F9E3': u'scarf', u'U+1F9E0': u'brain', u'U+1F9E1': u'orange heart', u'U+1F587': u'linked paperclips',
+		 u'U+1F473 U+1F3FF U+200D U+2642 U+FE0F': u'man wearing turban: dark skin tone',
+		  u'U+1F3C4 U+1F3FD U+200D U+2642 U+FE0F': u'man surfing: medium skin tone', u'U+270A U+1F3FD': u'raised fist: medium skin tone', u'U+26F0': u'mountain', u'U+26F1': u'umbrella on ground', u'U+1F468 U+1F3FC U+200D U+1F4BC': u'man office worker: medium-light skin tone', u'U+1F468 U+1F3FC U+200D U+1F4BB': u'man technologist: medium-light skin tone', u'U+26F4': u'ferry', u'U+26F5': u'sailboat',
+		  u'U+1F64B U+1F3FB U+200D U+2640 U+FE0F': u'woman raising hand: light skin tone',
+		   u'U+26F7': u'skier', u'U+26F8': u'ice skate', u'U+26F9': u'person bouncing ball', u'U+1F64D U+1F3FC U+200D U+2640 U+FE0F': u'woman frowning: medium-light skin tone', u'U+1F471 U+200D U+2642 U+FE0F': u'blond-haired man', 
 		 u'U+1F3C4 U+1F3FD U+200D U+2640 U+FE0F': u'woman surfing: medium skin tone',
 		  u'U+1F457': u'dress', u'U+1F46E U+1F3FB U+200D U+2642 U+FE0F': u'man police officer: light skin tone', u'U+1F455': u't-shirt',
 		   u'U+1F454': u'necktie', u'U+1F453': u'glasses', u'U+1F469 U+1F3FE U+200D U+2708 U+FE0F': u'woman pilot: medium-dark skin tone', u'U+1F451': u'crown', 
@@ -543,22 +581,7 @@ class UtilityBoss:
 		          }
 
 
-		#this is making a url request to the official unicode page
-		# response = urllib2.urlopen("http://unicode.org/emoji/charts/full-emoji-list.html")
-		# emoji_html = response.read()
-		# only_names = SoupStrainer(attrs={"class": "name"})
-		# only_codes = SoupStrainer(attrs={"class": "code"})
 
-
-		# soup_names = BeautifulSoup(emoji_html,"html.parser",parse_only=only_names)
-		# soup_codes = BeautifulSoup(emoji_html,"html.parser",parse_only=only_codes)
-
-		# emoji_d_name = {}
-		# emoji_d_code = {}
-
-		# for name,code in itertools.izip(soup_names.strings,soup_codes.strings):
-		# 	emoji_d_name[name] = code
-		# 	emoji_d_code[code] = name
 
 		self.emoji_d_name_keys = {y:x for x,y in self.emoji_d_code_keys.iteritems()}
 		# self.emoji_d_code_keys = emoji_d_code
@@ -567,11 +590,13 @@ class UtilityBoss:
 
 
 	def convert_emoji_code(self,unicode_raw):
+		print(str(unicode_raw.encode('unicode_escape')))
 		unicode_raw = unicode_raw\
 		.encode('unicode_escape')\
 		.upper()\
 		.replace('\\','')
 		real_code_key = unicode_raw.replace('000','+')
+		print(real_code_key)
 		#print(self.emoji_d_code_keys.keys())
 		if real_code_key in self.emoji_d_code_keys.keys():
 
@@ -597,6 +622,10 @@ def display_weekday(string_number_day):
 	'7':'Sunday',
 	}
 	return(day_d[string_number_day])
+#http://stackoverflow.com/questions/952914/making-a-flat-list-out-of-list-of-lists-in-python
+def flatten_list(list_of_many_lists):
+	merged = list(itertools.chain.from_iterable(list_of_many_lists))
+	return(merged)
 
 
 
