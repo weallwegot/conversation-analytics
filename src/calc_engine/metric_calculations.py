@@ -300,9 +300,6 @@ def calc_most_least_active_times(tes):
 	maxkey_hd = max(hour_of_day_dict, key=hour_of_day_dict.get)
 	minkey_hd = min(hour_of_day_dict, key=hour_of_day_dict.get)
 
-	#print(day_of_week_dict)
-	# print("Standard deviation: " + str(np.std(day_of_week_dict.values())))
-	# print("Median: " + str(np.median(day_of_week_dict.values())))
 
 	master_time_metrics = {
 	'most_active_day_of_week':display_weekday(maxkey_dw),
