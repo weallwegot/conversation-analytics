@@ -401,7 +401,8 @@ def get_top_x_occurrences(special_key,list_of_dicts,occurrence_number):
 		results = sorted(results_dict, key=results_dict.get, reverse=True)[:occurrence_number]
 
 	if len(results)>0:
-		print(results[0][1])
+		#print(results[0][1])
+		pass
 
 	#theres some weird unicode empty ass strings in the 0th index spot
 	#but also sometimes in the 1 index spot too. need to make a function
