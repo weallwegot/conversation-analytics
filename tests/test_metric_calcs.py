@@ -189,7 +189,7 @@ class TestMetricCalculations(unittest.TestCase):
 
 	def test_emoji_detection(self):
 		
-		te7 = TextEquivalent("Me","2016-08-06 15:11:44","💁🏾💁🏾💁🏾💁🏾")
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44",unicode("💁🏾💁🏾💁🏾💁🏾"))
 		self.assertTrue(calc_emoji(te7)['emoji_bool'],"Should contain an emoji: " + te7.all_text)
 		te7 = TextEquivalent("Me","2016-08-06 15:11:44","🤗")
 		self.assertTrue(calc_emoji(te7)['emoji_bool'],"Should contain an emoji: " + te7.all_text )
