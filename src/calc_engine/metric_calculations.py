@@ -34,8 +34,8 @@ import numpy as np
 import datetime
 import calendar
 import re
-from utilities.utils import flatten_list
-from utilities.utils import SKINS
+from src.utilities.utils import flatten_list
+from src.utilities.utils import SKINS
 
 import filter_poly as filt
 
