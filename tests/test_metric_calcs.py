@@ -5,6 +5,7 @@ import unittest
 
 import os
 import datetime
+import sys
 from src.convo_objects.TextEquivalent import TextEquivalent 
 from src.read_parse import read_and_parse_text_file
 from src.calc_engine.metric_calculations import calc_time_between_text_equivalents
@@ -12,6 +13,9 @@ from src.calc_engine.metric_calculations import calc_length_text_equivalent
 from src.calc_engine.metric_calculations import calculate_all_metrics
 from src.calc_engine.metric_calculations import calc_laugh,calc_curse,calc_link,calc_emoji
 from src.calc_engine.metric_calculations import calc_most_least_active_times
+
+reload(sys)
+sys.setdefaultencoding('utf-8')
 
 
 """
@@ -189,7 +193,7 @@ class TestMetricCalculations(unittest.TestCase):
 
 	def test_emoji_detection(self):
 		
-		te7 = TextEquivalent("Me","2016-08-06 15:11:44",unicode("💁🏾💁🏾💁🏾💁🏾").encode('unicode_escape'))
+		te7 = TextEquivalent("Me","2016-08-06 15:11:44",unicode("💁🏾💁🏾💁🏾💁🏾").decode('unicode_escape'))
 		self.assertTrue(calc_emoji(te7)['emoji_bool'],"Should contain an emoji: " + te7.all_text)
 		te7 = TextEquivalent("Me","2016-08-06 15:11:44","🤗")
 		self.assertTrue(calc_emoji(te7)['emoji_bool'],"Should contain an emoji: " + te7.all_text )
