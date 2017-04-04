@@ -1,10 +1,12 @@
 
 
 def create_day_tuples(tes_list):
-	#find integer of first day and last day
-	#partition into bins
+	#find integer of first day and last day (can use mdates in matplotlib)
+	#or timestamps in UNIX time
+	#partition into bins on a per hour basis
 	#if TextEquivalent is between the bins add to count
 	#similar approach can be used for response time trending
+	#or to do the full metric calculation on all of the TextEqu. that fall in the bin
 	#checkout numpy and cumsum()
 	"""
 	http://stackoverflow.com/questions/3034162/plotting-a-cumulative-graph-of-python-datetimes
