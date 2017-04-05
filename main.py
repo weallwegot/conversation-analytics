@@ -10,6 +10,7 @@ https://github.com/PeterKaminski09/baskup to dump data
 
 #standard imports
 import os
+from math import pi
 #module imports
 from src.convo_objects.TextEquivalent import TextEquivalent
 from src.calc_engine import metric_calculations as mc 
@@ -19,6 +20,9 @@ from src.utilities import utils
 from src.data_viz.visualize import create_volume_trends
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+
+import bokeh.plotting as bkp
+from bokeh.models import DatetimeTickFormatter
 #########
 #Read
 #########
@@ -55,11 +59,21 @@ print(str(r))
 zz = create_volume_trends(full_tes)
 
 
-plt.bar(mdates.num2date(zz['x_ticks']),zz['y_vals'])
-plt.grid(b=True)
-plt.ylabel('Number of Texts Sent')
-plt.show()
+# plt.bar(mdates.num2date(zz['x_ticks']),zz['y_vals'])
+# plt.grid(b=True)
+# plt.ylabel('Number of Texts Sent')
+# plt.show()
 
+plot = bkp.figure(plot_width=500,plot_height=500)
+plot.xaxis.formatter=DatetimeTickFormatter(
+        hours=["%d %B %Y"],
+        days=["%d %B %Y"],
+        months=["%d %B %Y"],
+        years=["%d %B %Y"],
+    )
+plot.xaxis.major_label_orientation = pi/4
+plot.vbar(x=mdates.num2date(zz['x_ticks']),top=zz['y_vals'],width=0.1)
+bkp.show(plot)
 
 # plt.bar(mdates.num2date(zz['x_ticks']),zz['cumsum'])
 # plt.grid(b=True)

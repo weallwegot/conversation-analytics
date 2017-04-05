@@ -72,7 +72,8 @@ def create_volume_trends(tes_list):
 
 def give_me_everything(tes_list):
 	a=tes_list
-
+	# this is inefficient because its doing the same processing 
+	# for each function call. refactor.
 	return({'volume':create_volume_trends(a),
 		    'response':create_response_time_trends(a),
 		    'emoji':create_emoji_trends(a),
@@ -83,10 +84,38 @@ def give_me_everything(tes_list):
 		   })
 
 def create_response_time_trends(tes_list):
+	# Do the days of the week
+	days_of_week = range(1,7)
+	wait_day_time_s1 = []
+	wait_day_time_s2 = []
+	for curr_day in days_of_week:
+		day_tes = filter_poly.filter_by_day_of_week([curr_day])
+		day_calcs = metric_calculations.calculate_all_metrics(day_tes)
+		wait_day_time_s1.append(day_calcs['response_rate_s1'])
+		wait_day_time_s2.append(day_calcs['response_rate_s2'])
+
+
+	# Do the hours of the day
+	hours_of_day = range(1,24)
+	wait_hr_time_s1 = []
+	wait_hr_time_s2 = []
+	for curr_hour in days_of_week:
+		hour_tes = filter_poly.filter_by_time_of_day([curr_hour])
+		hour_calcs = metric_calculations.calculate_all_metrics(hour_tes)
+		wait_hr_time_s1.append(hour_calcs['response_rate_s1'])
+		wait_hr_time_s2.append(hour_calcs['response_rate_s2'])
 
 
 
-	return({})
+
+
+	return({'hour_x':hours_of_day,
+			'hour_y_s1': wait_hr_time_s1,
+			'hour_y_s2': wait_hr_time_s2,
+			'day_x':days_of_week,
+			'day_y_s1':wait_day_time_s1,
+			'day_y_s2':wait_day_time_s2
+			})
 
 def create_emoji_trends(tes_list):
 
