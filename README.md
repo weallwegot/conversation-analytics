@@ -11,6 +11,18 @@ For more details on the projects,  check out [the wiki pages](https://github.com
 
 obtain your text conversations as .txt by
 running the shell script in [this project, titled Baskup](https://github.com/PeterKaminski09/baskup) .
+If you want to access the visualization (you do) then you will need bokeh and its dependencies:
+- NumPy
+- Jinja2
+- Six
+- Requests
+- Tornado >= 4.0
+- PyYaml
+- DateUtil
+- Bokeh
+
+This is best done if you have conda installed and can be done with the simple command:
+`conda install bokeh`
 
 
 # sample data output
