@@ -28,7 +28,13 @@ def create_tuples(tes_list):
 	tick_quant = (1.0/24.0) 
 	time_axis = np.arange(start_num,end_num,tick_quant) 
 	all_stamps = [mdates.date2num(te.timestamp) for te in tes_list]
-	bin_indices_of_time = np.digitize(all_stamps,time_axis) #index that each time belongs to
+	"""
+	#time_axis are the bins.
+	#qll_stamps are the timestamps for ever Text Equivalent
+	#np.digitize will place each timestamp into a bin the value of each elemnt
+	"""
+	bin_indices_of_time = np.digitize(all_stamps,time_axis) 
+
 	"""
 	each position in list is a tick of tine
 	the value for a given index is the number of text equivalent timestamps
@@ -37,6 +43,9 @@ def create_tuples(tes_list):
 	so if time axis last argument is 1.0/24.0 (assuming mdates.date2num ticks)
 	then the tick = 1 hour (or a 24th of a day)
 	NOTE: that last argument will change if we go to UNIX timestamps 
+	np.bincount() will return a list that
+	corresponds to the number of timestamps that fell into that bin.
+	[33, 2, 21] means 33 timestamps in first bin. 2 timestamps in 2nd bin. 21 timestamps in 3rd bin
 	"""
 	bincounts = np.bincount(bin_indices_of_time) 
 	# initialize list to hold (x,y) pairs (date_as_number,number_of_texts_sent)
@@ -54,7 +63,7 @@ def create_tuples(tes_list):
 		x_ticks.append(index_2_num)
 		#store just the y values
 		y_vals.append(number_of_texts_sent_this_tick)
-
+	#cumulative summation
 	cum_sum_texts = np.cumsum(y_vals)
 
 	return({'cumsum':cum_sum_texts,'x_ticks':x_ticks,'y_vals':y_vals})

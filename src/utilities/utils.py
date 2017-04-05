@@ -594,13 +594,13 @@ class UtilityBoss:
 
 
 	def convert_emoji_code(self,unicode_raw):
-		print(str(unicode_raw.encode('unicode_escape')))
+		#print(str(unicode_raw.encode('unicode_escape')))
 		unicode_raw = unicode_raw\
 		.encode('unicode_escape')\
 		.upper()\
 		.replace('\\','')
 		real_code_key = unicode_raw.replace('000','+')
-		print(real_code_key)
+		#print(real_code_key)
 		#print(self.emoji_d_code_keys.keys())
 		if real_code_key in self.emoji_d_code_keys.keys():
 
