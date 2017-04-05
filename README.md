@@ -5,7 +5,9 @@
 
 
 # conversation-analytics
-understand social dynamics in a two-way conversation
+understand social dynamics in a two-way conversation, have hard data to back up your intuition about your relationships.
+For more details on the projects,  check out the wiki pages.
+https://github.com/weAllWeGot/conversation-analytics/wiki
 
 obtain your text conversations as .txt by
 running the shell script in this repo:
