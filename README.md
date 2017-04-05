@@ -72,15 +72,5 @@ s1 & s2 denote different conversations participants.
 ```
 
 
-# Future
-- gather people's conversational data, with a relationship outcome
-- binary classification w/ logistic regression 
-- can we predict future relationship status/health ?
-- MLE gradient descent
-- Front end with web application to make visualization fun & pretty
-- desktop application 
-	-sends recorded metrics back to central database
-	-allows for beautiful visualization over time
-	-show trends and rank conversation engagement
 
 
