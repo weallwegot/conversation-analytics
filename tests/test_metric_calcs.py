@@ -65,8 +65,8 @@ class TestMetricCalculations(unittest.TestCase):
 		te1 = TextEquivalent("Me","2016-08-06 15:11:44","Hi hi hi")
 		te2 = TextEquivalent("Me","2016-08-06 15:13:44","Wassup")
 		time_dict = calc_length_text_equivalent(te1)
-		self.assertEquals(time_dict['length_chars'],8,"length is wrong")
-		self.assertEquals(time_dict['length_words'],3,"length is wrong")
+		self.assertEquals(time_dict['length_chars'],8,"length is wrong number of characters")
+		self.assertEquals(time_dict['length_words'],3,"length is wrong number of words")
 
 	def test_metric_end_to_end_response_rate(self):
 		rd = calculate_all_metrics(self.tes)
@@ -178,6 +178,7 @@ class TestMetricCalculations(unittest.TestCase):
 		self.assertTrue(calc_link(te7)['link_bool'],"Should contain a link")
 		te7 = TextEquivalent("Me","2016-08-06 15:11:44","https://twitter.com/OluwaSumnSumn")
 		self.assertTrue(calc_link(te7)['link_bool'],"Should contain a link")
+		#todo: is this recognized?
 		#te7 = TextEquivalent("Me","2016-08-06 15:11:44","linkedin.com")
 		#self.assertTrue(calc_link(te7)['link_bool'],"Should contain a link")
 		
