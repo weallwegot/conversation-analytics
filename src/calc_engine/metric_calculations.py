@@ -182,7 +182,6 @@ def calculate_all_metrics(tes):
 		master_metrics['emoji_rate_s1'] = calc_rate_of_occurrence('emoji_bool',emojis_s1,number_of_text_eqs_sent_s1)
 		# find the top 5 emojis
 		master_metrics['top_5_emojis_s1'] = get_top_x_occurrences('emojis_used',emojis_s1,10)
-		print("I just ran top 5 emoji on s1")
 
 	if number_of_text_eqs_sent_s2 > 0:
 		# median number of seconds to reply
@@ -203,7 +202,6 @@ def calculate_all_metrics(tes):
 		master_metrics['emoji_rate_s2'] = calc_rate_of_occurrence('emoji_bool',emojis_s2,number_of_text_eqs_sent_s2)
 		# find the top 5 emojis
 		master_metrics['top_5_emojis_s2'] = get_top_x_occurrences('emojis_used',emojis_s2,10)
-		print("I just ran top 5 emoji on s2")
 
 
 	return (master_metrics)
