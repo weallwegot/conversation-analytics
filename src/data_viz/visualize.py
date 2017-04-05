@@ -1,11 +1,11 @@
 
-#from matplotlib import dates as mdates
+from src.calc_engine import metric_calculations,filter_poly
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import datetime
 import numpy as np
 
-def create_tuples(tes_list):
+def create_volume_trends(tes_list):
 	#find integer of first day and last day (can use mdates in matplotlib)
 	#or timestamp in UNIX time
 	#partition into bins on a per hour basis
@@ -69,6 +69,54 @@ def create_tuples(tes_list):
 	return({'cumsum':cum_sum_texts,'x_ticks':x_ticks,'y_vals':y_vals})
 
 	#plt.bar(mdates.num2date(x_ticks),y_vals)
+
+def give_me_everything(tes_list):
+	a=tes_list
+
+	return({'volume':create_volume_trends(a),
+		    'response':create_response_time_trends(a),
+		    'emoji':create_emoji_trends(a),
+		    'laugh':create_laugh_trends(a),
+		    'curse':create_curse_trends(a),
+		    'link':create_link_trends(a),
+		    'double text':create_double_text_trends(a)
+		   })
+
+def create_response_time_trends(tes_list):
+
+
+
+	return({})
+
+def create_emoji_trends(tes_list):
+
+
+
+	return({})
+
+def create_laugh_trends(tes_list):
+
+
+
+	return({})
+
+def create_curse_trends(tes_list):
+
+
+
+	return({})
+
+def create_link_trends(tes_list):
+
+
+
+	return({})
+
+def create_double_text_trends(tes_list):
+
+
+
+	return({})
 
 
 

@@ -24,7 +24,7 @@ class TestFilters(unittest.TestCase):
 		te4 = TextEquivalent("Friend","2016-08-06 15:17:44","gooood")
 		self.tes = [self.te1,self.te2,te3,te4]
 
-	def test_sanity_check_filter(self):
+	def test_sanity_check_filter_days_of_week(self):
 		tes_dict=filter_by_day_of_week([1,2,3,4,5,6,7],self.text_eqs)
 		test_res = tes_dict['filtered_tes']
 		self.assertEquals(len(test_res),len(self.text_eqs),

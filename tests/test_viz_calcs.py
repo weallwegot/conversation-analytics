@@ -4,7 +4,7 @@ import datetime
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from src.convo_objects.TextEquivalent import TextEquivalent 
-from src.data_viz.visualize import create_tuples
+from src.data_viz.visualize import create_volume_trends
 from src.read_parse import read_and_parse_text_file
 from src.calc_engine.filter_poly import (filter_by_day_of_week,
 filter_by_time_of_day,
@@ -28,7 +28,7 @@ class TestVizCalcs(unittest.TestCase):
 		self.tes = [self.te1,self.te2,te3,te4]
 
 	def test_tuple_creations_cmulative_stats_binning(self):
-		z = create_tuples(self.tes)
+		z = create_volume_trends(self.tes)
 		y=z['y_vals']
 		x=z['x_ticks']
 		cs=z['cumsum']

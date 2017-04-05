@@ -16,7 +16,7 @@ from src.calc_engine import metric_calculations as mc
 from src.read_parse import read_and_parse_text_file
 from src.calc_engine import filter_poly as fil
 from src.utilities import utils
-from src.data_viz.visualize import create_tuples
+from src.data_viz.visualize import create_volume_trends
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 #########
@@ -52,7 +52,7 @@ print(str(r))
 #print(str(r2))
 
 
-zz = create_tuples(full_tes)
+zz = create_volume_trends(full_tes)
 
 
 plt.bar(mdates.num2date(zz['x_ticks']),zz['y_vals'])
