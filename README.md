@@ -5,15 +5,17 @@
 
 
 # conversation-analytics
-understand social dynamics in a two-way conversation
+understand social dynamics in a two-way conversation, have hard data to back up your intuition about your relationships.
+
+For more details on the projects,  check out [the wiki pages](https://github.com/weAllWeGot/conversation-analytics/wiki).
 
 obtain your text conversations as .txt by
-running the shell script in this repo:
-https://github.com/PeterKaminski09/baskup 
+running the shell script in [this project, titled Baskup](https://github.com/PeterKaminski09/baskup) .
 
 
-# preliminary output
+# sample data output
 s1 & s2 denote different conversations participants.
+For more in depth explanations of the calculations & assumptions, see [the wiki pages](https://github.com/weAllWeGot/conversation-analytics/wiki).
 ```python
 # response rates are in seconds
 	# the first is a median, the other is an average
@@ -72,15 +74,5 @@ s1 & s2 denote different conversations participants.
 ```
 
 
-# Future
-- gather people's conversational data, with a relationship outcome
-- binary classification w/ logistic regression 
-- can we predict future relationship status/health ?
-- MLE gradient descent
-- Front end with web application to make visualization fun & pretty
-- desktop application 
-	-sends recorded metrics back to central database
-	-allows for beautiful visualization over time
-	-show trends and rank conversation engagement
 
 
