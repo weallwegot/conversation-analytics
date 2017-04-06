@@ -17,12 +17,24 @@ from src.calc_engine import metric_calculations as mc
 from src.read_parse import read_and_parse_text_file
 from src.calc_engine import filter_poly as fil
 from src.utilities import utils
-from src.data_viz.visualize import create_volume_trends
+from src.data_viz.visualize import create_volume_trends, create_time_trends
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 
 import bokeh.plotting as bkp
 from bokeh.models import DatetimeTickFormatter
+from bokeh.charts import Bar, output_file, show
+import pandas as pd
+from bokeh.sampledata.autompg import autompg as df
+
+# print(str(df))
+
+# p = Bar(df, label='yr', values='mpg', agg='median', group='origin',
+#         title="Median MPG by YR, grouped by ORIGIN", legend='top_right')
+
+# output_file("bar.html")
+
+# show(p)
 #########
 #Read
 #########
@@ -58,7 +70,12 @@ print(str(r))
 
 zz = create_volume_trends(full_tes)
 
+zzz = create_time_trends(full_tes)
 
+
+p_waits = Bar(zzz['hours_df'],label='hour_x',group='participant',values='hour_y',
+	title='Wait Times By Participant in Conversation',legend='top_right')
+bkp.show(p_waits)
 # plt.bar(mdates.num2date(zz['x_ticks']),zz['y_vals'])
 # plt.grid(b=True)
 # plt.ylabel('Number of Texts Sent')
@@ -72,7 +89,7 @@ plot.xaxis.formatter=DatetimeTickFormatter(
         years=["%d %B %Y"],
     )
 plot.xaxis.major_label_orientation = pi/4
-plot.vbar(x=mdates.num2date(zz['x_ticks']),top=zz['y_vals'],width=0.1)
+plot.vbar(x=mdates.num2date(zz['x_ticks']),top=zz['cumsum'],width=0.1)
 bkp.show(plot)
 
 # plt.bar(mdates.num2date(zz['x_ticks']),zz['cumsum'])

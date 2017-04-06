@@ -616,6 +616,7 @@ class UtilityBoss:
 
 
 def display_weekday(string_number_day):
+	string_number_day = str(string_number_day)
 	day_d = {
 	'1':'Monday',
 	'2':'Tuesday',

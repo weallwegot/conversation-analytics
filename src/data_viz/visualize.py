@@ -4,6 +4,8 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import datetime
 import numpy as np
+from src.utilities.utils import display_weekday
+import pandas as pd
 
 def create_volume_trends(tes_list):
 	#find integer of first day and last day (can use mdates in matplotlib)
@@ -83,38 +85,63 @@ def give_me_everything(tes_list):
 		    'double text':create_double_text_trends(a)
 		   })
 
-def create_response_time_trends(tes_list):
+def create_time_trends(tes_list):
 	# Do the days of the week
-	days_of_week = range(1,7)
+	days_of_week = range(1,8)
 	wait_day_time_s1 = []
 	wait_day_time_s2 = []
 	for curr_day in days_of_week:
-		day_tes = filter_poly.filter_by_day_of_week([curr_day])
+		day_tes = filter_poly.filter_by_day_of_week([curr_day],tes_list)['filtered_tes']
 		day_calcs = metric_calculations.calculate_all_metrics(day_tes)
 		wait_day_time_s1.append(day_calcs['response_rate_s1'])
 		wait_day_time_s2.append(day_calcs['response_rate_s2'])
 
+	day_of_week_words = [display_weekday(g) for g in days_of_week]
+
 
 	# Do the hours of the day
-	hours_of_day = range(1,24)
+	hours_of_day = range(1,25)
 	wait_hr_time_s1 = []
 	wait_hr_time_s2 = []
-	for curr_hour in days_of_week:
-		hour_tes = filter_poly.filter_by_time_of_day([curr_hour])
+	for curr_hour in hours_of_day:
+		hour_tes = filter_poly.filter_by_time_of_day([curr_hour],tes_list)['filtered_tes']
 		hour_calcs = metric_calculations.calculate_all_metrics(hour_tes)
 		wait_hr_time_s1.append(hour_calcs['response_rate_s1'])
 		wait_hr_time_s2.append(hour_calcs['response_rate_s2'])
 
 
+	hour_d_1 = {'hour_x':hours_of_day,
+		'hour_y': wait_hr_time_s1,
+		'participant': ['Me']*len(hours_of_day) }
+	hour_d_2 = {'hour_x':hours_of_day,
+		'hour_y': wait_hr_time_s2,
+		'participant': ['Friend']*len(hours_of_day) 
+		}
+
+	df_hour = pd.DataFrame(hour_d_1)
+	df_hour = df_hour.append(pd.DataFrame(hour_d_2))
+
+	print(str(df_hour))
+
+	day_d_1 =	{
+		'day_x':day_of_week_words,
+		'day_y':wait_day_time_s1,
+		'participant':['Me']*len(day_of_week_words)
+		}
+
+	day_d_2 = {
+		'day_x':day_of_week_words,
+		'day_y':wait_day_time_s2,
+		'participant':['Friend']*len(day_of_week_words)
+		}
+
+	df_day = pd.DataFrame(day_d_1)
+	df_day = df_day.append(pd.DataFrame(day_d_2))
+	print(str(df_day))
 
 
-
-	return({'hour_x':hours_of_day,
-			'hour_y_s1': wait_hr_time_s1,
-			'hour_y_s2': wait_hr_time_s2,
-			'day_x':days_of_week,
-			'day_y_s1':wait_day_time_s1,
-			'day_y_s2':wait_day_time_s2
+	return({'hours_df':df_hour,
+			'days_df': df_day
 			})
 
 def create_emoji_trends(tes_list):
