@@ -1,5 +1,5 @@
 
-import pandas.DataFrame 
+import pandas as pd
 from src.calc_engine import metric_calculations,filter_poly
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
@@ -73,18 +73,6 @@ def create_volume_trends(tes_list):
 
 	#plt.bar(mdates.num2date(x_ticks),y_vals)
 
-def give_me_everything(tes_list):
-	a=tes_list
-	# this is inefficient because its doing the same processing 
-	# for each function call. refactor.
-	return({'volume':create_volume_trends(a),
-		    'response':create_response_time_trends(a),
-		    'emoji':create_emoji_trends(a),
-		    'laugh':create_laugh_trends(a),
-		    'curse':create_curse_trends(a),
-		    'link':create_link_trends(a),
-		    'double text':create_double_text_trends(a)
-		   })
 """
 go through the calculation after dividing Text Equivalents into days of week
 then again after dividing Text Equivalents into hours of day
@@ -105,6 +93,8 @@ def create_time_trends(tes_list):
 	link_day_s2 = []
 	double_day_s1 = []
 	double_day_s2 = []
+	top_ems_day_s1 = []
+	top_ems_day_s2 = []
 	for curr_day in days_of_week:
 		day_tes = filter_poly.filter_by_day_of_week([curr_day],tes_list)['filtered_tes']
 		day_calcs = metric_calculations.calculate_all_metrics(day_tes)
@@ -120,6 +110,8 @@ def create_time_trends(tes_list):
 		link_day_s2.append(day_calcs['link_rate_s2'])
 		double_day_s1.append(day_calcs['double_text_rate_s1'])
 		double_day_s2.append(day_calcs['double_text_rate_s2'])
+		top_ems_day_s1.append(day_calcs['top_5_emojis_s1'])
+		top_ems_day_s2.append(day_calcs['top_5_emojis_s2'])
 
 	day_of_week_words = [display_weekday(g) for g in days_of_week]
 
@@ -175,7 +167,7 @@ def create_time_trends(tes_list):
 		'double_text_rate':double_hr_s2,
 		'participant': ['Friend']*len(hours_of_day) 
 		}
-
+	#append the data frames for both participants
 	df_hour = pd.DataFrame(hour_d_1)
 	df_hour = df_hour.append(pd.DataFrame(hour_d_2))
 
@@ -202,7 +194,7 @@ def create_time_trends(tes_list):
 		'double_text_rate':double_day_s2,
 		'participant':['Friend']*len(day_of_week_words)
 		}
-
+	#append the data frames for both participants
 	df_day = pd.DataFrame(day_d_1)
 	df_day = df_day.append(pd.DataFrame(day_d_2))
 	print(str(df_day))
@@ -211,36 +203,6 @@ def create_time_trends(tes_list):
 	return({'hours_df':df_hour,
 			'days_df': df_day
 			})
-
-def create_emoji_trends(tes_list):
-
-
-
-	return({})
-
-def create_laugh_trends(tes_list):
-
-
-
-	return({})
-
-def create_curse_trends(tes_list):
-
-
-
-	return({})
-
-def create_link_trends(tes_list):
-
-
-
-	return({})
-
-def create_double_text_trends(tes_list):
-
-
-
-	return({})
 
 
 
