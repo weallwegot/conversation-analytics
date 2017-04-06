@@ -95,6 +95,8 @@ def create_time_trends(tes_list):
 	double_day_s2 = []
 	top_ems_day_s1 = []
 	top_ems_day_s2 = []
+	volume_day_s1 = []
+	volume_day_s2 = []
 	# needed to convert emoji codes to names
 	ub = UtilityBoss()
 	for curr_day in days_of_week:
@@ -112,6 +114,8 @@ def create_time_trends(tes_list):
 		link_day_s2.append(day_calcs['link_rate_s2'])
 		double_day_s1.append(day_calcs['double_text_rate_s1'])
 		double_day_s2.append(day_calcs['double_text_rate_s2'])
+		volume_day_s1.append(day_calcs['texts_sent_s1'])
+		volume_day_s2.append(day_calcs['texts_sent_s2'])
 		if day_calcs['top_emojis_s1']:
 			day_s1_emojis = [ub.convert_emoji_code(code) for code in day_calcs['top_emojis_s1']]
 			top_ems_day_s1.append(day_s1_emojis)
@@ -142,6 +146,8 @@ def create_time_trends(tes_list):
 	double_hr_s2 = []
 	top_ems_hr_s1 = []
 	top_ems_hr_s2 = []
+	volume_hr_s1 = []
+	volume_hr_s2 = []
 	for curr_hour in hours_of_day:
 		hour_tes = filter_poly.filter_by_time_of_day([curr_hour],tes_list)['filtered_tes']
 		hour_calcs = metric_calculations.calculate_all_metrics(hour_tes)
@@ -157,6 +163,8 @@ def create_time_trends(tes_list):
 		link_hr_s2.append(hour_calcs['link_rate_s2'])
 		double_hr_s1.append(hour_calcs['double_text_rate_s1'])
 		double_hr_s2.append(hour_calcs['double_text_rate_s2'])
+		volume_hr_s1.append(hour_calcs['texts_sent_s1'])
+		volume_hr_s2.append(hour_calcs['texts_sent_s2'])
 		if hour_calcs['top_emojis_s1']:	
 			hr_s1_emojis = [ub.convert_emoji_code(code) for code in hour_calcs['top_emojis_s1']]
 			top_ems_hr_s1.append(hr_s1_emojis)
@@ -183,6 +191,7 @@ def create_time_trends(tes_list):
 		'link_rate':link_hr_s1,
 		'double_text_rate':double_hr_s1,
 		'top_emojis':top_ems_hr_s1,
+		'texts_sent':volume_hr_s1,
 		'participant': ['Me']*len(hours_of_day) }
 
 	hour_d_2 = {'hour_x':hours_of_day,
@@ -193,13 +202,12 @@ def create_time_trends(tes_list):
 		'link_rate':link_hr_s2,
 		'double_text_rate':double_hr_s2,
 		'top_emojis':top_ems_hr_s2,
+		'texts_sent':volume_hr_s2,
 		'participant': ['Friend']*len(hours_of_day) 
 		}
 	#append the data frames for both participants
 	df_hour = pd.DataFrame(hour_d_1)
 	df_hour = df_hour.append(pd.DataFrame(hour_d_2))
-
-	print(str(df_hour))
 
 	day_d_1 =	{
 		'day_x':day_of_week_words,
@@ -210,6 +218,7 @@ def create_time_trends(tes_list):
 		'link_rate':link_day_s1,
 		'double_text_rate':double_day_s1,
 		'top_emojis':top_ems_day_s1,
+		'texts_sent':volume_day_s1,
 		'participant':['Me']*len(day_of_week_words)
 		}
 
@@ -222,12 +231,12 @@ def create_time_trends(tes_list):
 		'link_rate':link_day_s2,
 		'double_text_rate':double_day_s2,
 		'top_emojis':top_ems_day_s2,
+		'texts_sent':volume_day_s2,
 		'participant':['Friend']*len(day_of_week_words)
 		}
 	#append the data frames for both participants
 	df_day = pd.DataFrame(day_d_1)
 	df_day = df_day.append(pd.DataFrame(day_d_2))
-	print(str(df_day))
 
 
 	return({'hours_df':df_hour,

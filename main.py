@@ -51,6 +51,9 @@ filt = fil.filter_by_day_of_week([1,2,3,4,5,6,7],full_tes)['filtered_tes']
 
 r = mc.calculate_all_metrics(full_tes)
 
+###################################
+##   Convert Emoji To Readable   ##
+###################################
 ub = utils.UtilityBoss()
 
 
@@ -71,6 +74,21 @@ zzz = create_time_trends(full_tes)
 
 output_file("main.html")
 
+print(str(zzz['hours_df']))
+
+print(str(zzz['days_df']))
+
+target = open('data_frame_table.txt','w')
+target.write("Hours DF: " + str(zzz['hours_df']))
+target.write("Days DF: " + str(zzz['days_df']))
+
+target.close()
+
+p_vol_hr = Bar(data=zzz['hours_df'],label='hour_x',group='participant',values='texts_sent',
+	title='Number of Texts Sent By Time of Day',legend='top_right',ylabel='Number of Texts Sent')
+
+p_vol_day = Bar(data=zzz['days_df'],label='day_x',group='participant',values='texts_sent',
+	title='Number of Texts Sent By Day of Week',legend='top_right',ylabel='Number of Texts Sent')
 
 p_waits_hr = Bar(data=zzz['hours_df'],label='hour_x',group='participant',values='wait_time',
 	title='Wait Times By Time of Day',legend='top_right',ylabel='Wait Time (sec)')
@@ -133,6 +151,8 @@ plot_volume.vbar(x=mdates.num2date(zz['x_ticks']),top=zz['y_vals'],width=0.1)
 
 allplots = vplot(p_waits_hr,
 				p_waits_day,
+				p_vol_day,
+				p_vol_hr,
 				plot_volume_cumsum,
 				plot_volume,
 				p_emoji_day,
