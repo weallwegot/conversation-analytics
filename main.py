@@ -54,11 +54,11 @@ r = mc.calculate_all_metrics(full_tes)
 ub = utils.UtilityBoss()
 
 
-s1_emojis = [ub.convert_emoji_code(code) for code in r['top_5_emojis_s1']]
-s2_emojis = [ub.convert_emoji_code(code) for code in r['top_5_emojis_s2']]
+s1_emojis = [ub.convert_emoji_code(code) for code in r['top_emojis_s1']]
+s2_emojis = [ub.convert_emoji_code(code) for code in r['top_emojis_s2']]
 
-r['top_5_emojis_s1'] = s1_emojis
-r['top_5_emojis_s2'] = s2_emojis
+r['top_emojis_s1'] = s1_emojis
+r['top_emojis_s2'] = s2_emojis
 
 
 #r2 = mc.calc_most_least_active_times(full_tes)
@@ -71,15 +71,6 @@ zzz = create_time_trends(full_tes)
 
 output_file("main.html")
 
-"""
-		'day_x':day_of_week_words,
-		'wait_time': wait_day_time_s1,
-		'emoji_rate':emoji_day_s1,
-		'laugh_rate':laugh_day_s1,
-		'curse_rate':curse_day_s1,
-		'link_rate':link_day_s1,
-		'double_text_rate':double_day_s1,
-"""
 
 p_waits_hr = Bar(data=zzz['hours_df'],label='hour_x',group='participant',values='wait_time',
 	title='Wait Times By Time of Day',legend='top_right',ylabel='Wait Time (sec)')

@@ -52,11 +52,11 @@ For more in depth explanations of the calculations & assumptions, see [the wiki 
 	'emoji_rate_s2':3.56,
 	'average_length_s1':11.06,
 	'average_length_s2':8.97,
-	'top_10_emojis_s1':[u'thinking face', u'face with rolling eyes',
+	'top_emojis_s1':[u'thinking face', u'face with rolling eyes',
 	u'person shrugging: dark skin tone', u'person shrugging',
 	u'pensive face', u'weary face', u'face with tears of joy',
 	u'smiling face with smiling eyes', u'hugging face', u'eyes'],
-	'top_10_emojis_s2':[u'weary face', u'face with tears of joy',
+	'top_emojis_s2':[u'weary face', u'face with tears of joy',
 	u'face with rolling eyes', u'expressionless face',
 	u'thinking face', u'person tipping hand: medium-dark skin tone',
 	u'skull', u'person tipping hand', u'OK hand: medium-dark skin tone',
@@ -84,7 +84,7 @@ For more in depth explanations of the calculations & assumptions, see [the wiki 
 	'least_active_hour_of_day':'24',
 	}
 
-	
+
 
    curse_rate      day_x  double_text_rate  emoji_rate  laugh_rate  link_rate  participant  wait_time 
 0    2.205882     Monday          7.352941    5.147059   22.058824   1.838235           Me       65.0

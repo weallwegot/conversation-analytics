@@ -51,8 +51,8 @@ def calculate_all_metrics(tes):
 	'emoji_rate_s2':None,
 	'average_length_s1':None,
 	'average_length_s2':None,
-	'top_5_emojis_s1':None,
-	'top_5_emojis_s2':None,
+	'top_emojis_s1':None,
+	'top_emojis_s2':None,
 	'curse_rate_s1':None,
 	'curse_rate_s2':None,
 	'laugh_rate_s1':None,
@@ -180,8 +180,8 @@ def calculate_all_metrics(tes):
 		master_metrics['link_rate_s1'] = calc_rate_of_occurrence('link_bool',links_s1,number_of_text_eqs_sent_s1)
 		# find the rate of emoji usage
 		master_metrics['emoji_rate_s1'] = calc_rate_of_occurrence('emoji_bool',emojis_s1,number_of_text_eqs_sent_s1)
-		# find the top 5 emojis
-		master_metrics['top_5_emojis_s1'] = get_top_x_occurrences('emojis_used',emojis_s1,10)
+		# find the top emojis
+		master_metrics['top_emojis_s1'] = get_top_x_occurrences('emojis_used',emojis_s1,10)
 
 	if number_of_text_eqs_sent_s2 > 0:
 		# median number of seconds to reply
@@ -200,8 +200,8 @@ def calculate_all_metrics(tes):
 		master_metrics['link_rate_s2'] = calc_rate_of_occurrence('link_bool',links_s2,number_of_text_eqs_sent_s2)
 		# find the rate of emoji usage
 		master_metrics['emoji_rate_s2'] = calc_rate_of_occurrence('emoji_bool',emojis_s2,number_of_text_eqs_sent_s2)
-		# find the top 5 emojis
-		master_metrics['top_5_emojis_s2'] = get_top_x_occurrences('emojis_used',emojis_s2,10)
+		# find the top emojis
+		master_metrics['top_emojis_s2'] = get_top_x_occurrences('emojis_used',emojis_s2,10)
 
 
 	return (master_metrics)
@@ -354,9 +354,9 @@ def calc_longest_streak(timestamps):
 	return max(streaks)
 
 # function to find the top occurrences of a given instance
-# for instance top 5 emojis
-# top 5 curse words
-# top 5 laughing expressions
+# for instance top x emojis
+# top x curse words
+# top x laughing expressions
 def get_top_x_occurrences(special_key,list_of_dicts,occurrence_number):
 	results = []
 	results_dict = {}
