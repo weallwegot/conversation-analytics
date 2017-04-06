@@ -1,11 +1,12 @@
 
+import pandas.DataFrame 
 from src.calc_engine import metric_calculations,filter_poly
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import datetime
 import numpy as np
 from src.utilities.utils import display_weekday
-import pandas as pd
+
 
 def create_volume_trends(tes_list):
 	#find integer of first day and last day (can use mdates in matplotlib)

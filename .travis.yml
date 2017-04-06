@@ -6,6 +6,7 @@ install:
 - pip install coveralls
 - pip install beautifulsoup4
 - pip install matplotlib
+- pip install wheel
 - pip install pandas
 #command to run tests
 #before_script: python -m nltk.downloader stopwords
