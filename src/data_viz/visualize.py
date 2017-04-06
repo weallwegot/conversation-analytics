@@ -84,37 +84,94 @@ def give_me_everything(tes_list):
 		    'link':create_link_trends(a),
 		    'double text':create_double_text_trends(a)
 		   })
-
+"""
+go through the calculation after dividing Text Equivalents into days of week
+then again after dividing Text Equivalents into hours of day
+create one dataframe with each variable as a column
+"""
 def create_time_trends(tes_list):
 	# Do the days of the week
 	days_of_week = range(1,8)
 	wait_day_time_s1 = []
 	wait_day_time_s2 = []
+	emoji_day_s1 = []
+	emoji_day_s2 = []
+	laugh_day_s1 = []
+	laugh_day_s2 = []
+	curse_day_s1 = []
+	curse_day_s2 = []
+	link_day_s1 = []
+	link_day_s2 = []
+	double_day_s1 = []
+	double_day_s2 = []
 	for curr_day in days_of_week:
 		day_tes = filter_poly.filter_by_day_of_week([curr_day],tes_list)['filtered_tes']
 		day_calcs = metric_calculations.calculate_all_metrics(day_tes)
 		wait_day_time_s1.append(day_calcs['response_rate_s1'])
 		wait_day_time_s2.append(day_calcs['response_rate_s2'])
+		emoji_day_s1.append(day_calcs['emoji_rate_s1'])
+		emoji_day_s2.append(day_calcs['emoji_rate_s2'])
+		laugh_day_s1.append(day_calcs['laugh_rate_s1'])
+		laugh_day_s2.append(day_calcs['laugh_rate_s2'])
+		curse_day_s1.append(day_calcs['curse_rate_s1'])
+		curse_day_s2.append(day_calcs['curse_rate_s2'])
+		link_day_s1.append(day_calcs['link_rate_s1'])
+		link_day_s2.append(day_calcs['link_rate_s2'])
+		double_day_s1.append(day_calcs['double_text_rate_s1'])
+		double_day_s2.append(day_calcs['double_text_rate_s2'])
 
 	day_of_week_words = [display_weekday(g) for g in days_of_week]
+
 
 
 	# Do the hours of the day
 	hours_of_day = range(1,25)
 	wait_hr_time_s1 = []
 	wait_hr_time_s2 = []
+	emoji_hr_s1 = []
+	emoji_hr_s2 = []
+	laugh_hr_s1 = []
+	laugh_hr_s2 = []
+	curse_hr_s1 = []
+	curse_hr_s2 = []
+	link_hr_s1 = []
+	link_hr_s2 = []
+	double_hr_s1 = []
+	double_hr_s2 = []
 	for curr_hour in hours_of_day:
 		hour_tes = filter_poly.filter_by_time_of_day([curr_hour],tes_list)['filtered_tes']
 		hour_calcs = metric_calculations.calculate_all_metrics(hour_tes)
 		wait_hr_time_s1.append(hour_calcs['response_rate_s1'])
 		wait_hr_time_s2.append(hour_calcs['response_rate_s2'])
+		emoji_hr_s1.append(hour_calcs['emoji_rate_s1'])
+		emoji_hr_s2.append(hour_calcs['emoji_rate_s2'])
+		laugh_hr_s1.append(hour_calcs['laugh_rate_s1'])
+		laugh_hr_s2.append(hour_calcs['laugh_rate_s2'])
+		curse_hr_s1.append(hour_calcs['curse_rate_s1'])
+		curse_hr_s2.append(hour_calcs['curse_rate_s2'])
+		link_hr_s1.append(hour_calcs['link_rate_s1'])
+		link_hr_s2.append(hour_calcs['link_rate_s2'])
+		double_hr_s1.append(hour_calcs['double_text_rate_s1'])
+		double_hr_s2.append(hour_calcs['double_text_rate_s2'])
+
 
 
 	hour_d_1 = {'hour_x':hours_of_day,
-		'hour_y': wait_hr_time_s1,
+		'wait_time': wait_hr_time_s1,
+		'emoji_rate':emoji_hr_s1,
+		'laugh_rate':laugh_hr_s1,
+		'curse_rate':curse_hr_s1,
+		'link_rate':link_hr_s1,
+		'double_text_rate':double_hr_s1,
 		'participant': ['Me']*len(hours_of_day) }
+
 	hour_d_2 = {'hour_x':hours_of_day,
-		'hour_y': wait_hr_time_s2,
+		'wait_time': wait_hr_time_s2,
+		'emoji_rate':emoji_hr_s2,
+		'laugh_rate':laugh_hr_s2,
+		'curse_rate':curse_hr_s2,
+		'link_rate':link_hr_s2,
+		'double_text_rate':double_hr_s2,
 		'participant': ['Friend']*len(hours_of_day) 
 		}
 
@@ -125,13 +182,23 @@ def create_time_trends(tes_list):
 
 	day_d_1 =	{
 		'day_x':day_of_week_words,
-		'day_y':wait_day_time_s1,
+		'wait_time': wait_day_time_s1,
+		'emoji_rate':emoji_day_s1,
+		'laugh_rate':laugh_day_s1,
+		'curse_rate':curse_day_s1,
+		'link_rate':link_day_s1,
+		'double_text_rate':double_day_s1,
 		'participant':['Me']*len(day_of_week_words)
 		}
 
 	day_d_2 = {
 		'day_x':day_of_week_words,
-		'day_y':wait_day_time_s2,
+		'wait_time': wait_day_time_s2,
+		'emoji_rate':emoji_day_s2,
+		'laugh_rate':laugh_day_s2,
+		'curse_rate':curse_day_s2,
+		'link_rate':link_day_s2,
+		'double_text_rate':double_day_s2,
 		'participant':['Friend']*len(day_of_week_words)
 		}
 

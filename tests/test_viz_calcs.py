@@ -3,6 +3,7 @@ import os
 import datetime
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
+import pandas as pd
 from src.convo_objects.TextEquivalent import TextEquivalent 
 from src.data_viz.visualize import create_volume_trends
 from src.read_parse import read_and_parse_text_file
