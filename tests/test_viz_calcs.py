@@ -28,7 +28,7 @@ class TestVizCalcs(unittest.TestCase):
 		self.tes = [self.te1,self.te2,te3,te4]
 
 	def test_cumulative_statistics_binning(self):
-		z = create_volume_trends(self.tes)
+		z = create_volume_trends(self.tes,(1.0/24.0))
 		y=z['y_vals']
 		x=z['x_ticks']
 		cs=z['cumsum']

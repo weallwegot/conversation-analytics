@@ -15,7 +15,7 @@ import pytz
 go through the calculation for wait time but binned in successive time buckets
 so we can see how the trend is over the life of the texting relationship
 """
-def create_chrono_time_trends_all_calcs(tes_list):
+def create_chrono_time_trends_all_calcs(tes_list,tickquant_days):
 	#http://stackoverflow.com/questions/15307623/cant-compare-naive-and-aware-datetime-now-challenge-datetime-end
 	utc = pytz.UTC
 	# needed to convert emoji codes to names
@@ -25,7 +25,7 @@ def create_chrono_time_trends_all_calcs(tes_list):
 	"""
 	ticks of time are defined here
 	"""	
-	tick_quant = (5.0)
+	tick_quant = (tickquant_days)
 	time_axis = np.arange(start_num,end_num,tick_quant) 
 	all_stamps = [mdates.date2num(te.timestamp) for te in tes_list]
 
@@ -116,7 +116,7 @@ def create_chrono_time_trends_all_calcs(tes_list):
 	df_cum = df_cum.append(pd.DataFrame(dict_cum_2))
 
 
-def create_volume_trends(tes_list):
+def create_volume_trends(tes_list,tickquant_days):
 	#find integer of first day and last day (can use mdates in matplotlib)
 	#or timestamp in UNIX time
 	#partition into bins on a per hour basis
@@ -137,7 +137,7 @@ def create_volume_trends(tes_list):
 	1 hour bins (float division) -> this is too short
 	5 day long bins
 	"""
-	tick_quant = (5.0) 
+	tick_quant = (tickquant_days) 
 	time_axis = np.arange(start_num,end_num,tick_quant) 
 	all_stamps = [mdates.date2num(te.timestamp) for te in tes_list]
 	"""
