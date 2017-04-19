@@ -27,7 +27,7 @@ class TestVizCalcs(unittest.TestCase):
 		te4 = TextEquivalent("Friend","2016-08-06 19:17:44","gooood")
 		self.tes = [self.te1,self.te2,te3,te4]
 
-	def test_cmulative_statistics_binning(self):
+	def test_cumulative_statistics_binning(self):
 		z = create_volume_trends(self.tes)
 		y=z['y_vals']
 		x=z['x_ticks']
@@ -37,7 +37,8 @@ class TestVizCalcs(unittest.TestCase):
 			"Cumulative sums and y values need to be same length.")
 		self.assertEquals(len(x),len(y),
 			"X values of hours need to be equivalent to available Y values to plot.")
-		self.assertEquals(6, len(x), "There are 7 bin ticks to be created between the hours of 15 and 20.")
+		self.assertEquals(6, len(x), "There are 6 bin ticks to be created between the hours of 15 and 20. " + "Not " 
+			+ str(len(x)))
 		self.assertEquals(4, cs[-1], "Last value whould be the total number of Text Equivalents sent.")
 
 	"""
