@@ -8,6 +8,109 @@ import numpy as np
 from src.utilities.utils import display_weekday, UtilityBoss
 
 
+
+"""
+go through the calculation for wait time but binned in successive time buckets
+so we can see how the trend is over the life of the texting relationship
+"""
+def create_chrono_time_trends_all_calcs(tes_list):
+
+	start_num = mdates.date2num(tes_list[0].timestamp)
+	end_num = mdates.date2num(tes_list[-1].timestamp)
+	"""
+	ticks of time are defined here
+	"""	
+	tick_quant = (5.0)
+	time_axis = np.arange(start_num,end_num,tick_quant) 
+	all_stamps = [mdates.date2num(te.timestamp) for te in tes_list]
+
+	"""
+	#time_axis are the bins.
+	#qll_stamps are the timestamps for ever Text Equivalent
+	#np.digitize will place each timestamp into a bin the value of each elemnt
+	"""
+	bin_indices_of_time = np.digitize(all_stamps,time_axis) 
+	# i actually dont think this is what you want... 
+
+	# might have to loop thru. :weary-face: 
+	wait_day_time_s1 = []
+	wait_day_time_s2 = []
+	emoji_day_s1 = []
+	emoji_day_s2 = []
+	laugh_day_s1 = []
+	laugh_day_s2 = []
+	curse_day_s1 = []
+	curse_day_s2 = []
+	link_day_s1 = []
+	link_day_s2 = []
+	double_day_s1 = []
+	double_day_s2 = []
+	top_ems_day_s1 = []
+	top_ems_day_s2 = []
+	volume_day_s1 = []
+	volume_day_s2 = []
+	for index in range(0,len(time_axis)):
+		# filter on "between time_axis[i] and time_axis[i+1]"
+		# issue here is that the function for fitlereing timestamps as "in between"
+		# takes as an input the times as datetime.datetime objects.
+		early = mdates.num2date(time_axis[i])
+		late = mdates.num2date(time_axis[i+1])
+		tes_for_current_time_block = filter_poly.filter_by_date_range(early,late,tes_list)['filtered_tes']
+		ticks_calcs = metric_calculations.calculate_all_metrics(tes_for_current_time_block)
+		wait_ticks_time_s1.append(ticks_calcs['response_rate_s1'])
+		wait_ticks_time_s2.append(ticks_calcs['response_rate_s2'])
+		emoji_ticks_s1.append(ticks_calcs['emoji_rate_s1'])
+		emoji_ticks_s2.append(ticks_calcs['emoji_rate_s2'])
+		laugh_ticks_s1.append(ticks_calcs['laugh_rate_s1'])
+		laugh_ticks_s2.append(ticks_calcs['laugh_rate_s2'])
+		curse_ticks_s1.append(ticks_calcs['curse_rate_s1'])
+		curse_ticks_s2.append(ticks_calcs['curse_rate_s2'])
+		link_ticks_s1.append(ticks_calcs['link_rate_s1'])
+		link_ticks_s2.append(ticks_calcs['link_rate_s2'])
+		double_ticks_s1.append(ticks_calcs['double_text_rate_s1'])
+		double_ticks_s2.append(ticks_calcs['double_text_rate_s2'])
+		volume_ticks_s1.append(ticks_calcs['texts_sent_s1'])
+		volume_ticks_s2.append(ticks_calcs['texts_sent_s2'])
+		if ticks_calcs['top_emojis_s1']:
+			ticks_s1_emojis = [ub.convert_emoji_code(code) for code in ticks_calcs['top_emojis_s1']]
+			top_ems_ticks_s1.append(ticks_s1_emojis)
+		else:
+			top_ems_ticks_s1.append([])
+		if ticks_calcs['top_emojis_s2']:
+			ticks_s2_emojis = [ub.convert_emoji_code(code) for code in ticks_calcs['top_emojis_s2']]
+			top_ems_ticks_s2.append(ticks_s2_emojis)
+		else:
+			top_ems_ticks_s2.append([])
+
+	#cumulative totals for participant 1
+	dict_cum_1 =	{
+		'wait_time': wait_ticks_time_s1,
+		'emoji_rate':emoji_ticks_s1,
+		'laugh_rate':laugh_ticks_s1,
+		'curse_rate':curse_ticks_s1,
+		'link_rate':link_ticks_s1,
+		'double_text_rate':double_ticks_s1,
+		'top_emojis':top_ems_ticks_s1,
+		'texts_sent':volume_ticks_s1,
+		'participant':['Me']*len(time_axis)
+		}
+	#cumulative totals for participant 2
+	dict_cum_2 = {
+		'wait_time': wait_ticks_time_s2,
+		'emoji_rate':emoji_ticks_s2,
+		'laugh_rate':laugh_ticks_s2,
+		'curse_rate':curse_ticks_s2,
+		'link_rate':link_ticks_s2,
+		'double_text_rate':double_ticks_s2,
+		'top_emojis':top_ems_ticks_s2,
+		'texts_sent':volume_ticks_s2,
+		'participant':['Friend']*len(time_axis)
+		}
+	#append the data frames for both participants
+	df_cum = pd.DataFrame(dict_cum_1)
+	df_cum = df_day.append(pd.DataFrame(dict_cum_2))
+
+
 def create_volume_trends(tes_list):
 	#find integer of first day and last day (can use mdates in matplotlib)
 	#or timestamp in UNIX time
@@ -26,9 +129,10 @@ def create_volume_trends(tes_list):
 	end_num = mdates.date2num(tes_list[-1].timestamp)
 	"""
 	how long is a tick (in mdates date2num units)
-	1 hour bins (float division)
+	1 hour bins (float division) -> this is too short
+	5 day long bins
 	"""
-	tick_quant = (1.0/24.0) 
+	tick_quant = (5.0) 
 	time_axis = np.arange(start_num,end_num,tick_quant) 
 	all_stamps = [mdates.date2num(te.timestamp) for te in tes_list]
 	"""
@@ -59,6 +163,7 @@ def create_volume_trends(tes_list):
 	# convert the indices of the bincounts array to datetimes.
 	for index in range(0,len(bincounts)):
 		number_of_texts_sent_this_tick = bincounts[index]
+		#convert the index into an equivalent time
 		index_2_num = index*tick_quant+start_num
 		#store as tuples
 		tuples_list.append((index_2_num,number_of_texts_sent_this_tick))
@@ -242,6 +347,8 @@ def create_time_trends(tes_list):
 	return({'hours_df':df_hour,
 			'days_df': df_day
 			})
+
+
 
 
 

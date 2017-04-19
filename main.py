@@ -18,6 +18,7 @@ from src.read_parse import read_and_parse_text_file
 from src.calc_engine import filter_poly as fil
 from src.utilities import utils
 from src.data_viz.visualize import create_volume_trends, create_time_trends
+from src.data_viz.visualize import create_chrono_time_trends_all_calcs
 #plotting tings
 import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
@@ -72,6 +73,8 @@ zz = create_volume_trends(full_tes)
 
 zzz = create_time_trends(full_tes)
 
+noice = create_chrono_time_trends_all_calcs(full_tes)
+
 output_file("main.html")
 
 print(str(zzz['hours_df']))
@@ -81,6 +84,8 @@ print(str(zzz['days_df']))
 target = open('data_frame_table.txt','w')
 target.write("Hours DF: " + str(zzz['hours_df']))
 target.write("Days DF: " + str(zzz['days_df']))
+
+
 
 target.close()
 

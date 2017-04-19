@@ -85,9 +85,14 @@ def filter_by_date_range(start_date,end_date,tes):
 	'filter_criteria':None,
 	'number_returned':None
 	}
+	# if this is too slow
+	# we can break out of the loop once one of the timestamps
+	# is greater than the end_date
+	# however this actually assumes the tes are already chronologically ordered
 	for te in tes:
 		if start_date <= te.timestamp <= end_date:
 			filtered_tes.append(te)
+
 
 	dict_filtered_tes['filtered_tes'] = filtered_tes
 
