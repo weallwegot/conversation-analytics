@@ -90,33 +90,81 @@ target.write("Cumulatives DF: " + str(noice))
 
 target.close()
 
+"""
+All the plots below are the metrics as they
+are calculated over time in chronological order
+they display how your texting behavior and that of your partner
+change over the life of your texting conversations
+"""
+
 p_waits_cumulative = Bar(data=noice,label='x_ticks',group='participant',values='wait_time',
 	title='Wait Times Over Time',legend='top_right',ylabel='Wait Time (sec)')
 
-
+p_waits_cumulative.xaxis.formatter=DatetimeTickFormatter(
+        hours=["%d %B %Y"],
+        days=["%d %B %Y"],
+        months=["%d %B %Y"],
+        years=["%d %B %Y"],
+    )
+p_waits_cumulative.xaxis.major_label_orientation = pi/4
 
 p_emoji_cumulative = Bar(data=noice,label='x_ticks',group='participant',values='emoji_rate',
 	title='Emoji Rate Over Time',legend='top_right',ylabel='Emoji Rate (%)')
-
+p_emoji_cumulative.xaxis.formatter=DatetimeTickFormatter(
+        hours=["%d %B %Y"],
+        days=["%d %B %Y"],
+        months=["%d %B %Y"],
+        years=["%d %B %Y"],
+    )
+p_emoji_cumulative.xaxis.major_label_orientation = pi/4
 
 p_laugh_cumulative = Bar(data=noice,label='x_ticks',group='participant',values='laugh_rate',
 	title='Laugh Rate (%) Over Time',legend='top_right',ylabel='Laugh Rate (%)')
-
+p_laugh_cumulative.xaxis.formatter=DatetimeTickFormatter(
+        hours=["%d %B %Y"],
+        days=["%d %B %Y"],
+        months=["%d %B %Y"],
+        years=["%d %B %Y"],
+    )
+p_laugh_cumulative.xaxis.major_label_orientation = pi/4
 
 p_dt_cumulative = Bar(data=noice,label='x_ticks',group='participant',values='double_text_rate',
 	title='Double Text Rate (%) Over Time',legend='top_right',ylabel='Double Text Rate (%)')
-
+p_dt_cumulative.xaxis.formatter=DatetimeTickFormatter(
+        hours=["%d %B %Y"],
+        days=["%d %B %Y"],
+        months=["%d %B %Y"],
+        years=["%d %B %Y"],
+    )
+p_dt_cumulative.xaxis.major_label_orientation = pi/4
 
 p_link_cumulative = Bar(data=noice,label='x_ticks',group='participant',values='link_rate',
 	title='Link Rate (%) Over Time',legend='top_right',ylabel='Link Rate (%)')
-
+p_link_cumulative.xaxis.formatter=DatetimeTickFormatter(
+        hours=["%d %B %Y"],
+        days=["%d %B %Y"],
+        months=["%d %B %Y"],
+        years=["%d %B %Y"],
+    )
+p_link_cumulative.xaxis.major_label_orientation = pi/4
 
 
 p_curse_cumulative = Bar(data=noice,label='x_ticks',group='participant',values='curse_rate',
 	title='Curse Rate (%) Over Time',legend='top_right',ylabel='Curse Rate (%)')
+p_curse_cumulative.xaxis.formatter=DatetimeTickFormatter(
+        hours=["%d %B %Y"],
+        days=["%d %B %Y"],
+        months=["%d %B %Y"],
+        years=["%d %B %Y"],
+    )
+p_curse_cumulative.xaxis.major_label_orientation = pi/4
 
 
 
+"""
+All the plots below are the ones that are broken down by day of week
+and by the hour of the day
+"""
 p_vol_hr = Bar(data=zzz['hours_df'],label='hour_x',group='participant',values='texts_sent',
 	title='Number of Texts Sent By Time of Day',legend='top_right',ylabel='Number of Texts Sent')
 
@@ -159,7 +207,10 @@ p_curse_hr = Bar(data=zzz['hours_df'],label='hour_x',group='participant',values=
 p_curse_day = Bar(data=zzz['days_df'],label='day_x',group='participant',values='curse_rate',
 	title='Curse Rate (%) By Day of Week',legend='top_right',ylabel='Curse Rate (%)')
 
-
+"""
+The two plots below are cumulatives as well for number of texts sent
+they are separate because the algorithm for calculating them is different
+"""
 
 
 plot_volume_cumsum = bkp.figure(plot_width=500,plot_height=500,y_axis_label='Number of Text Equivalents')

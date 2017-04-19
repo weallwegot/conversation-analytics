@@ -54,6 +54,7 @@ def create_chrono_time_trends_all_calcs(tes_list,tickquant_days):
 	top_ems_ticks_s2 = []
 	volume_ticks_s1 = []
 	volume_ticks_s2 = []
+	ticks_as_dates = []
 	for i in range(0,len(time_axis)-1):
 		# filter on "between time_axis[i] and time_axis[i+1]"
 		# issue here is that the function for fitlereing timestamps as "in between"
@@ -86,9 +87,11 @@ def create_chrono_time_trends_all_calcs(tes_list,tickquant_days):
 			top_ems_ticks_s2.append(ticks_s2_emojis)
 		else:
 			top_ems_ticks_s2.append([])
+		ticks_as_dates.append(early)
+		ticks_as_dates.append(late)
 
 	#cumulative totals for participant 1
-	dict_cum_1 =	{'x_ticks':time_axis[:-1],
+	dict_cum_1 =	{'x_ticks':ticks_as_dates,
 		'wait_time': wait_ticks_time_s1,
 		'emoji_rate':emoji_ticks_s1,
 		'laugh_rate':laugh_ticks_s1,
@@ -100,7 +103,7 @@ def create_chrono_time_trends_all_calcs(tes_list,tickquant_days):
 		'participant':['Me']*(len(time_axis)-1)
 		}
 	#cumulative totals for participant 2
-	dict_cum_2 = {'x_ticks':time_axis[:-1],
+	dict_cum_2 = {'x_ticks':ticks_as_dates,
 		'wait_time': wait_ticks_time_s2,
 		'emoji_rate':emoji_ticks_s2,
 		'laugh_rate':laugh_ticks_s2,
