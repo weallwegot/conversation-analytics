@@ -6,6 +6,8 @@ import matplotlib.dates as mdates
 import datetime
 import numpy as np
 from src.utilities.utils import display_weekday, UtilityBoss
+# used to make sure time zones are both naive or aware for comparison filtering
+import pytz
 
 
 
@@ -14,7 +16,10 @@ go through the calculation for wait time but binned in successive time buckets
 so we can see how the trend is over the life of the texting relationship
 """
 def create_chrono_time_trends_all_calcs(tes_list):
-
+	#http://stackoverflow.com/questions/15307623/cant-compare-naive-and-aware-datetime-now-challenge-datetime-end
+	utc = pytz.UTC
+	# needed to convert emoji codes to names
+	ub = UtilityBoss()
 	start_num = mdates.date2num(tes_list[0].timestamp)
 	end_num = mdates.date2num(tes_list[-1].timestamp)
 	"""
@@ -33,23 +38,23 @@ def create_chrono_time_trends_all_calcs(tes_list):
 	# i actually dont think this is what you want... 
 
 	# might have to loop thru. :weary-face: 
-	wait_day_time_s1 = []
-	wait_day_time_s2 = []
-	emoji_day_s1 = []
-	emoji_day_s2 = []
-	laugh_day_s1 = []
-	laugh_day_s2 = []
-	curse_day_s1 = []
-	curse_day_s2 = []
-	link_day_s1 = []
-	link_day_s2 = []
-	double_day_s1 = []
-	double_day_s2 = []
-	top_ems_day_s1 = []
-	top_ems_day_s2 = []
-	volume_day_s1 = []
-	volume_day_s2 = []
-	for index in range(0,len(time_axis)):
+	wait_ticks_time_s1 = []
+	wait_ticks_time_s2 = []
+	emoji_ticks_s1 = []
+	emoji_ticks_s2 = []
+	laugh_ticks_s1 = []
+	laugh_ticks_s2 = []
+	curse_ticks_s1 = []
+	curse_ticks_s2 = []
+	link_ticks_s1 = []
+	link_ticks_s2 = []
+	double_ticks_s1 = []
+	double_ticks_s2 = []
+	top_ems_ticks_s1 = []
+	top_ems_ticks_s2 = []
+	volume_ticks_s1 = []
+	volume_ticks_s2 = []
+	for i in range(0,len(time_axis)-1):
 		# filter on "between time_axis[i] and time_axis[i+1]"
 		# issue here is that the function for fitlereing timestamps as "in between"
 		# takes as an input the times as datetime.datetime objects.
@@ -92,7 +97,7 @@ def create_chrono_time_trends_all_calcs(tes_list):
 		'double_text_rate':double_ticks_s1,
 		'top_emojis':top_ems_ticks_s1,
 		'texts_sent':volume_ticks_s1,
-		'participant':['Me']*len(time_axis)
+		'participant':['Me']*(len(time_axis)-1)
 		}
 	#cumulative totals for participant 2
 	dict_cum_2 = {
@@ -104,11 +109,11 @@ def create_chrono_time_trends_all_calcs(tes_list):
 		'double_text_rate':double_ticks_s2,
 		'top_emojis':top_ems_ticks_s2,
 		'texts_sent':volume_ticks_s2,
-		'participant':['Friend']*len(time_axis)
+		'participant':['Friend']*(len(time_axis)-1)
 		}
 	#append the data frames for both participants
 	df_cum = pd.DataFrame(dict_cum_1)
-	df_cum = df_day.append(pd.DataFrame(dict_cum_2))
+	df_cum = df_cum.append(pd.DataFrame(dict_cum_2))
 
 
 def create_volume_trends(tes_list):

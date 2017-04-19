@@ -1,4 +1,6 @@
 import metric_calculations as mc
+# used to make sure time zones are both naive or aware for comparison filtering
+import pytz
 
 def filter_by_day_of_week(list_of_days_of_week,tes):
 	filtered_tes = []
@@ -79,6 +81,8 @@ def filter_by_year(list_of_years,tes):
 	return dict_filtered_tes
 
 def filter_by_date_range(start_date,end_date,tes):
+	#http://stackoverflow.com/questions/15307623/cant-compare-naive-and-aware-datetime-now-challenge-datetime-end
+	utc = pytz.UTC
 	filtered_tes = []
 	dict_filtered_tes = {
 	'filtered_tes':None,
@@ -90,7 +94,7 @@ def filter_by_date_range(start_date,end_date,tes):
 	# is greater than the end_date
 	# however this actually assumes the tes are already chronologically ordered
 	for te in tes:
-		if start_date <= te.timestamp <= end_date:
+		if start_date.replace(tzinfo=utc) <= te.timestamp.replace(tzinfo=utc) <= end_date.replace(tzinfo=utc):
 			filtered_tes.append(te)
 
 
