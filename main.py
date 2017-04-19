@@ -96,16 +96,20 @@ are calculated over time in chronological order
 they display how your texting behavior and that of your partner
 change over the life of your texting conversations
 """
+my_ticks = mdates.num2date(noice['x_ticks'])
+print("Date ticks " + str(noice['date_ticks']))
+#print("My Ticks" + str(my_ticks))
+
 
 p_waits_cumulative = Bar(data=noice,label='x_ticks',group='participant',values='wait_time',
 	title='Wait Times Over Time',legend='top_right',ylabel='Wait Time (sec)')
 
-p_waits_cumulative.xaxis.formatter=DatetimeTickFormatter(
-        hours=["%d %B %Y"],
-        days=["%d %B %Y"],
-        months=["%d %B %Y"],
-        years=["%d %B %Y"],
-    )
+# p_waits_cumulative.xaxis.formatter=DatetimeTickFormatter(
+#         hours=["%d %B %Y"],
+#         days=["%d %B %Y"],
+#         months=["%d %B %Y"],
+#         years=["%d %B %Y"],
+#     )
 p_waits_cumulative.xaxis.major_label_orientation = pi/4
 
 p_emoji_cumulative = Bar(data=noice,label='x_ticks',group='participant',values='emoji_rate',
