@@ -68,12 +68,13 @@ r['top_emojis_s2'] = s2_emojis
 #r2 = mc.calc_most_least_active_times(full_tes)
 print(str(r))
 
-
-zz = create_volume_trends(full_tes)
+# the 2nd argument is for the length of the bins in the plot (in days)
+zz = create_volume_trends(full_tes,5.0)
 
 zzz = create_time_trends(full_tes)
 
-noice = create_chrono_time_trends_all_calcs(full_tes)
+# the 2nd argument is for the length of the bins in the plot (in days)
+noice = create_chrono_time_trends_all_calcs(full_tes,5.0)
 
 output_file("main.html")
 
@@ -84,10 +85,37 @@ print(str(zzz['days_df']))
 target = open('data_frame_table.txt','w')
 target.write("Hours DF: " + str(zzz['hours_df']))
 target.write("Days DF: " + str(zzz['days_df']))
-
+target.write("Cumulatives DF: " + str(noice))
 
 
 target.close()
+
+p_waits_cumulative = Bar(data=noice,label='x_ticks',group='participant',values='wait_time',
+	title='Wait Times Over Time',legend='top_right',ylabel='Wait Time (sec)')
+
+
+
+p_emoji_cumulative = Bar(data=noice,label='x_ticks',group='participant',values='emoji_rate',
+	title='Emoji Rate Over Time',legend='top_right',ylabel='Emoji Rate (%)')
+
+
+p_laugh_cumulative = Bar(data=noice,label='x_ticks',group='participant',values='laugh_rate',
+	title='Laugh Rate (%) Over Time',legend='top_right',ylabel='Laugh Rate (%)')
+
+
+p_dt_cumulative = Bar(data=noice,label='x_ticks',group='participant',values='double_text_rate',
+	title='Double Text Rate (%) Over Time',legend='top_right',ylabel='Double Text Rate (%)')
+
+
+p_link_cumulative = Bar(data=noice,label='x_ticks',group='participant',values='link_rate',
+	title='Link Rate (%) Over Time',legend='top_right',ylabel='Link Rate (%)')
+
+
+
+p_curse_cumulative = Bar(data=noice,label='x_ticks',group='participant',values='curse_rate',
+	title='Curse Rate (%) Over Time',legend='top_right',ylabel='Curse Rate (%)')
+
+
 
 p_vol_hr = Bar(data=zzz['hours_df'],label='hour_x',group='participant',values='texts_sent',
 	title='Number of Texts Sent By Time of Day',legend='top_right',ylabel='Number of Texts Sent')
@@ -154,7 +182,13 @@ plot_volume.xaxis.formatter=DatetimeTickFormatter(
 plot_volume.xaxis.major_label_orientation = pi/4
 plot_volume.vbar(x=mdates.num2date(zz['x_ticks']),top=zz['y_vals'],width=0.1)
 
-allplots = vplot(p_waits_hr,
+allplots = vplot(p_waits_cumulative,
+				p_emoji_cumulative,
+				p_laugh_cumulative,
+				p_dt_cumulative,
+				p_link_cumulative,
+				p_curse_cumulative,
+				p_waits_hr,
 				p_waits_day,
 				p_vol_day,
 				p_vol_hr,
