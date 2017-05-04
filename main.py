@@ -25,7 +25,7 @@ import matplotlib.dates as mdates
 from bokeh.io import gridplot, vplot, hplot
 import bokeh.plotting as bkp
 from bokeh.models import DatetimeTickFormatter
-from bokeh.charts import Bar, output_file, show
+from bokeh.charts import Bar, output_file, show, Area
 import pandas as pd
 
 
@@ -68,6 +68,9 @@ r['top_emojis_s2'] = s2_emojis
 #r2 = mc.calc_most_least_active_times(full_tes)
 print(str(r))
 
+#convert r to dataframe
+#write dataframe to csv
+
 # the 2nd argument is for the length of the bins in the plot (in days)
 zz = create_volume_trends(full_tes,5.0)
 
@@ -82,13 +85,22 @@ print(str(zzz['hours_df']))
 
 print(str(zzz['days_df']))
 
-target = open('data_frame_table.txt','w')
-target.write("Hours DF: " + str(zzz['hours_df']))
-target.write("Days DF: " + str(zzz['days_df']))
-target.write("Cumulatives DF: " + str(noice))
+# write this as a csv dummy
+# target = open('data_frame_table.txt','w')
+# target.write("Hours DF: " + str(zzz['hours_df']))
+# target.write("Days DF: " + str(zzz['days_df']))
+# target.write("Cumulatives DF: " + str(noice))
+
+noice.to_csv('time_trends_.csv')
+
+pd.DataFrame.from_dict(r).to_csv('metric_calc_.csv')
+
+zzz['hours_df'].to_csv('hours_df_.csv')
+
+zzz['days_df'].to_csv('days_df_.csv')
 
 
-target.close()
+#target.close()
 
 """
 All the plots below are the metrics as they
