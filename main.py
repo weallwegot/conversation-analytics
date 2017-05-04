@@ -11,6 +11,7 @@ https://github.com/PeterKaminski09/baskup to dump data
 #standard imports
 import os
 from math import pi
+import uuid
 #module imports
 from src.convo_objects.TextEquivalent import TextEquivalent
 from src.calc_engine import metric_calculations as mc 
@@ -28,6 +29,11 @@ from bokeh.models import DatetimeTickFormatter
 from bokeh.charts import Bar, output_file, show, Area
 import pandas as pd
 
+##############################
+## Assign UUID to Analysis  ##
+##############################
+
+analysis_id = str(uuid.uuid4())
 
 ###########################
 ## Read Data From File   ##
@@ -85,11 +91,9 @@ print(str(zzz['hours_df']))
 
 print(str(zzz['days_df']))
 
-# write this as a csv dummy
-# target = open('data_frame_table.txt','w')
-# target.write("Hours DF: " + str(zzz['hours_df']))
-# target.write("Days DF: " + str(zzz['days_df']))
-# target.write("Cumulatives DF: " + str(noice))
+# write id to text file
+target = open('my_info.txt','w')
+target.write("Your unique ID is: " + analysis_id)
 
 noice.to_csv('time_trends_.csv')
 
