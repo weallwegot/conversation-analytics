@@ -33,12 +33,21 @@ crashlytics.properties
 crashlytics-build.properties
 fabric.properties
 */.idea/*
+.idea/
 
 # C extensions
 *.so
 
-# Don't upload the actual conversations!!!!!!!
+# Don't upload the actual conversations or their data!!!!!!!
 anon_convo.txt
+*/data
+*.csv
+*.txt
+data/
+main.html
+
+
+
 
 # Distribution / packaging
 .Python
