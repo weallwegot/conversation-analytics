@@ -12,7 +12,6 @@ versus just an extended pause.
 
 #TODO
 # - metrics of how interested the other person in a text conversation is.
-# - emoji usage comparison. 
 # - laughs. 
 # 	- favorite way to express humor [lmao, lol, haha, loll]
 # 	- average number of ha's in a laugh
@@ -353,11 +352,14 @@ def calc_longest_streak(timestamps):
 		return streak
 	return max(streaks)
 
-# function to find the top occurrences of a given instance
-# for instance top x emojis
-# top x curse words
-# top x laughing expressions
+
 def get_top_x_occurrences(special_key,list_of_dicts,occurrence_number):
+	"""
+	function to find the top occurrences of a given instance
+	for instance top x emojis
+	top x curse words
+	top x laughing expressions
+	"""
 	results = []
 	results_dict = {}
 	for lil_d in list_of_dicts:
@@ -404,6 +406,9 @@ def calc_time_between_text_equivalents(tes_1,tes_2):
 	return return_vals
 
 def calc_length_text_equivalent(te):
+	"""
+	calculates the length of each text 
+	"""
 	return_vals = {}
 
 	return_vals['day of week'] = te.date_day_of_week
@@ -413,7 +418,12 @@ def calc_length_text_equivalent(te):
 
 	return return_vals
 
+
 def calc_laugh(te):
+	"""
+	param: te :: TextEquivalent 
+	detect if the TextEquivalent object contains laughter in it
+	"""
 	return_vals = {}
 	return_vals['day of week'] = te.date_day_of_week
 	return_vals['hour'] = te.timestamp.hour
@@ -427,6 +437,10 @@ def calc_laugh(te):
 	return return_vals
 
 def calc_curse(te):
+	"""
+	param: te :: TextEquivalent 
+	detect if the TextEquivalent object contains cursing in it
+	"""
 	return_vals = {}
 	return_vals['day of week'] = te.date_day_of_week
 	return_vals['hour'] = te.timestamp.hour
@@ -439,6 +453,10 @@ def calc_curse(te):
 	return return_vals
 
 def calc_link(te):
+	"""
+	param: te :: TextEquivalent 
+	detect if the TextEquivalent object contains a link in it
+	"""
 	return_vals = {}
 	return_vals['day of week'] = te.date_day_of_week
 	return_vals['hour'] = te.timestamp.hour
@@ -451,6 +469,11 @@ def calc_link(te):
 	return return_vals
 
 def calc_emoji(te):
+	"""
+	param: te :: TextEquivalent 
+	detect if the TextEquivalent object contains an emoji in it and what the emoji(s) are
+	TLDR: finds emojis in the text and does some special processing to make sur it doesnt miss skin tones used
+	"""
 	return_vals = {}
 	return_vals['day of week'] = te.date_day_of_week
 	return_vals['hour'] = te.timestamp.hour

@@ -1,6 +1,10 @@
 import metric_calculations as mc
 # used to make sure time zones are both naive or aware for comparison filtering
 import pytz
+"""
+Various functions for filtering out a list of TextEquivalent objects
+into different categories
+"""
 
 def filter_by_day_of_week(list_of_days_of_week,tes):
 	filtered_tes = []

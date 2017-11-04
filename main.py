@@ -78,11 +78,14 @@ print(str(r))
 #write dataframe to csv
 
 # the 2nd argument is for the length of the bins in the plot (in days)
+# calculates how many texts were sent over time. cumulatively
 zz = create_volume_trends(full_tes,5.0)
 
+# calculates data on the basis of hours and days of the week
 zzz = create_time_trends(full_tes)
 
-# the 2nd argument is for the length of the bins in the plot (in days)
+# the 2nd argument is for the length of the bins in the plot (in days).
+# creates long term trends for all the metrics.
 noice = create_chrono_time_trends_all_calcs(full_tes,5.0)
 
 output_file("main.html")
@@ -94,7 +97,9 @@ print(str(zzz['days_df']))
 # write id to text file
 target = open('my_info.txt','w')
 target.write("Your unique ID is: " + analysis_id)
+target.close()
 
+# write resulting data to csvs
 noice.to_csv('time_trends_.csv')
 
 pd.DataFrame.from_dict(r).to_csv('metric_calc_.csv')
@@ -104,7 +109,7 @@ zzz['hours_df'].to_csv('hours_df_.csv')
 zzz['days_df'].to_csv('days_df_.csv')
 
 
-#target.close()
+
 
 """
 All the plots below are the metrics as they

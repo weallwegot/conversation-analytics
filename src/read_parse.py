@@ -3,6 +3,11 @@ from convo_objects.TextEquivalent import TextEquivalent
 def read_and_parse_text_file(full_ass_path, block_text_threshold_seconds):
 	#the amount of time between texts for them to be considered 'sequential'
 	#BLOCK_TEXT_THRESHOLD_SECONDS 
+	"""
+	param: full_ass_path :: (str) -> path to the file where the text data is
+	param: block_text_threshold_seconds :: (int) -> number of seconds between sequential texts for 
+	them to be considered as "one" text. they will be merged. see `merge_sequential_text_equiv()`
+	"""
 	text_equivs = []
 
 	with open(full_ass_path,'r') as whole_ass_convo:
