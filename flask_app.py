@@ -30,7 +30,7 @@ CORS(app)
 
 @app.route('/')
 def fresh_session():
-    return current_app.send_static_file('index.html')
+    return render_template('index.html')
 
 
 
