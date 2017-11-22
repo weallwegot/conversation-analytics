@@ -39,12 +39,14 @@ fabric.properties
 *.so
 
 # Don't upload the actual conversations or their data!!!!!!!
+# or the phone numbers
 anon_convo.txt
 */data
 *.csv
 *.txt
 data/
 main.html
+config.json
 
 
 
