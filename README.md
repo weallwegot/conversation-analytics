@@ -4,6 +4,82 @@
 
 
 
+# Double Text Rate Broken Down by Day of Week and Time of Day
+
+![img](https://image.ibb.co/fygmDv/bokeh_plot_11.png)
+![img](https://image.ibb.co/cdq2mF/bokeh_plot_10.png)
+
+# Overall Emoji Usage
+
+top_emojis_Me:
+thinking face, face with rolling eyes,
+	person shrugging: dark skin tone, person shrugging,
+	pensive face, weary face, face with tears of joy,
+	smiling face with smiling eyes, hugging face,eyes
+
+
+top_emojis_Friend:
+weary face, face with tears of joy,
+	face with rolling eyes, expressionless face,
+	thinking face, person tipping hand: medium-dark skin tone,
+	skull, person tipping hand, OK hand: medium-dark skin tone,
+	hugging face
+
+# Median Wait Time to Get a Reply
+
+![img](https://image.ibb.co/hGsRDv/bokeh_plot_2.png)
+
+
+![img](https://image.ibb.co/fUcF6F/bokeh_plot_1.png)
+
+
+# Laughing Rate Broken Down by Day of Week and Time of Day
+
+![img](https://image.ibb.co/bWyzYv/bokeh_plot_9.png)
+
+
+![img](https://image.ibb.co/ngJNmF/bokeh_plot_8.png)
+
+
+
+# Number of Texts Sent by Time of Day
+
+
+![img](https://image.ibb.co/gywWfa/bokeh_plot_3.png)
+
+
+
+
+
+# Cursing Rates as a Percentage of Texts Sent
+
+![img](https://image.ibb.co/chToRF/bokeh_plot_15.png)
+
+![img](https://image.ibb.co/jHwKYv/bokeh_plot_14.png)
+
+# Number of Links Sent as a Percentage of Texts Sent
+
+
+![img](https://image.ibb.co/mEDNmF/bokeh_plot_13.png)
+
+
+![img](https://image.ibb.co/iuOcLa/bokeh_plot_12.png)
+
+
+# How Many Texts Were Sent on an Hourly Basis
+
+![img](https://image.ibb.co/euioRF/bokeh_plot_4.png)
+
+
+# How Many Texts Were Sent Cumulatively
+
+![img](https://image.ibb.co/cxC40a/bokeh_plot_5.png)
+
+
+
+
+
+
 # conversation-analytics
 understand social dynamics in a two-way conversation, have hard data to back up your intuition about your relationships.
 
