@@ -38,6 +38,7 @@ analysis_id = str(uuid.uuid4())
 working_dir = os.getcwd()
 data_folder = working_dir + os.sep + "data" 
 text_file_name = "anon_convo.txt"
+text_file_name = "ebunoluwa.txt"
 full_path = data_folder + os.sep + text_file_name
 
 ###########################
@@ -116,8 +117,6 @@ they display how your texting behavior and that of your partner
 change over the life of your texting conversations
 """
 
-print("Date ticks " + str(noice['date_ticks']))
-
 
 def newvbar(data,label,group,values,title,legend,ylabel,width=0.05):
 	return
@@ -184,8 +183,6 @@ p_link_cumulative = newvbar(data=noice,label='x_ticks',group='participant',value
 
 p_curse_cumulative = newvbar(data=noice,label='x_ticks',group='participant',values='curse_rate',
 	title='Curse Rate (%) Over Time',legend='top_right',ylabel='Curse Rate (%)')
-
-
 
 
 """
@@ -262,11 +259,5 @@ they are separate because the algorithm for calculating them is different
 p_cumulative_texts_sent = non_comparative_bar(dataframe=zz,xlabel='x_ticks',ylabel='cumsum',
 	title='Number of Text Equivalents Over Time',width=0.025)
 
-
-
 p_texts_per_day_bin = non_comparative_bar(dataframe=zz,xlabel='x_ticks',ylabel='y_vals',
 	title='Number of Texts Per {} Day Period'.format(CUMULATIVE_TEXT_DAY_BIN), width=0.025)
-
-
-
-
