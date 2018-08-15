@@ -3,6 +3,14 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# mac system file
+**.DS_Store
+
+# artifacts from plot lib
+
+*.html
+*.css
+*.js
 #dumb pycharm tings
 
 #partially bowered from jetbrains.gitignore project on github
@@ -39,12 +47,14 @@ fabric.properties
 *.so
 
 # Don't upload the actual conversations or their data!!!!!!!
+# or the phone numbers
 anon_convo.txt
 */data
 *.csv
 *.txt
 data/
 main.html
+config.json
 
 
 

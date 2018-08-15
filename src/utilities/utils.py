@@ -1,6 +1,6 @@
 
-import urllib2
-from bs4 import BeautifulSoup, SoupStrainer
+# import urllib2
+# from bs4 import BeautifulSoup, SoupStrainer
 import itertools
 #used isoweekday & calendar module is 0 indexed
 #so making simple mapping implementation
@@ -587,7 +587,7 @@ class UtilityBoss:
 
 
 
-		self.emoji_d_name_keys = {y:x for x,y in self.emoji_d_code_keys.iteritems()}
+		self.emoji_d_name_keys = {y:x for x,y in self.emoji_d_code_keys.items()}
 		# self.emoji_d_code_keys = emoji_d_code
 
 		#print(str(self.emoji_d_code_keys))

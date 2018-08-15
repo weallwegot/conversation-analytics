@@ -1,7 +1,6 @@
 
 import pandas as pd
 from src.calc_engine import metric_calculations,filter_poly
-import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 import datetime
 import numpy as np
@@ -20,18 +19,18 @@ def create_chrono_time_trends_all_calcs(tes_list,tickquant_days):
 	utc = pytz.UTC
 	# needed to convert emoji codes to names
 	ub = UtilityBoss()
-	start_num = mdates.date2num(tes_list[0].timestamp.replace(tzinfo=utc))
-	end_num = mdates.date2num(tes_list[-1].timestamp.replace(tzinfo=utc))
+	start_num = (tes_list[0].timestamp.replace(tzinfo=utc))
+	end_num = (tes_list[-1].timestamp.replace(tzinfo=utc))
 	"""
 	ticks of time are defined here
 	"""	
-	tick_quant = (tickquant_days)
+	tick_quant = datetime.timedelta(days=tickquant_days)
 	time_axis = np.arange(start_num,end_num,tick_quant) 
-	all_stamps = [mdates.date2num(te.timestamp) for te in tes_list]
+	# all_stamps = [te.timestamp for te in tes_list]
 
 	"""
 	#time_axis are the bins.
-	#qll_stamps are the timestamps for ever Text Equivalent
+	#all_stamps are the timestamps for every Text Equivalent
 	#np.digitize will place each timestamp into a bin the value of each elemnt
 	"""
 	# bin_indices_of_time = np.digitize(all_stamps,time_axis) 
@@ -59,8 +58,8 @@ def create_chrono_time_trends_all_calcs(tes_list,tickquant_days):
 		# filter on "between time_axis[i] and time_axis[i+1]"
 		# issue here is that the function for fitlereing timestamps as "in between"
 		# takes as an input the times as datetime.datetime objects.
-		early = mdates.num2date(time_axis[i])
-		late = mdates.num2date(time_axis[i+1])
+		early = (time_axis[i])
+		late = (time_axis[i+1])
 		tes_for_current_time_block = filter_poly.filter_by_date_range(early,late,tes_list)['filtered_tes']
 		ticks_calcs = metric_calculations.calculate_all_metrics(tes_for_current_time_block)
 		wait_ticks_time_s1.append(ticks_calcs['response_rate_s1'])
@@ -87,7 +86,11 @@ def create_chrono_time_trends_all_calcs(tes_list,tickquant_days):
 			top_ems_ticks_s2.append(ticks_s2_emojis)
 		else:
 			top_ems_ticks_s2.append([])
-		ticks_as_dates.append(early.replace(tzinfo=utc))
+		try:
+			ticks_as_dates.append(early.replace(tzinfo=utc))
+		except AttributeError:
+			# this is for the case where np datetime 64 is used instead of datetime
+			ticks_as_dates.append(early)
 		#ticks_as_dates.append(late)
 
 	#cumulative totals for participant 1
@@ -135,26 +138,34 @@ def create_volume_trends(tes_list,tickquant_days):
 	http://stackoverflow.com/questions/37293014/draw-a-cumulative-chart-from-a-pandas-dataframe
 	https://docs.scipy.org/doc/numpy/reference/generated/numpy.cumsum.html
 	"""
+
+	def _convert_to_unix_time(tstamp):
+		unix_epoch = np.datetime64(0,'s')
+		one_second = np.timedelta64(1,'s')
+		unix_time = (np.datetime64(tstamp) - unix_epoch)/one_second
+		return unix_time
+
 	daily_text_eqs = {}
-	start_num = mdates.date2num(tes_list[0].timestamp)
-	end_num = mdates.date2num(tes_list[-1].timestamp)
+	start_num = np.datetime64(tes_list[0].timestamp)
+	end_num = np.datetime64(tes_list[-1].timestamp)
 	"""
 	how long is a tick (in mdates date2num units)
 	1 hour bins (float division) -> this is too short
 	5 day long bins
 	"""
-	tick_quant = (tickquant_days) 
+	tick_quant = datetime.timedelta(days=tickquant_days) 
 	time_axis = np.arange(start_num,end_num,tick_quant) 
-	all_stamps = [mdates.date2num(te.timestamp) for te in tes_list]
+	all_stamps = [_convert_to_unix_time(te.timestamp) for te in tes_list]
+	time_axis = [_convert_to_unix_time(tick) for tick in time_axis]
 	"""
 	#time_axis are the bins.
-	#qll_stamps are the timestamps for ever Text Equivalent
+	#all_stamps are the timestamps for every Text Equivalent
 	#np.digitize will place each timestamp into a bin the value of each elemnt
 	"""
 	bin_indices_of_time = np.digitize(all_stamps,time_axis) 
 
 	"""
-	each position in list is a tick of tine
+	each position in list is a tick of time
 	the value for a given index is the number of text equivalent timestamps
 	that occurred in that bin
 	thus it is also the count of how many texts were sent in that time tick
@@ -175,7 +186,12 @@ def create_volume_trends(tes_list,tickquant_days):
 	for index in range(0,len(bincounts)):
 		number_of_texts_sent_this_tick = bincounts[index]
 		#convert the index into an equivalent time
-		index_2_num = index*tick_quant+start_num
+		try:
+			index_2_num = index*tick_quant+start_num
+		except TypeError:
+			# catch inconsistent datetimes np.datetime64 vs datetime.datetime vs timedelta vs np.timedelta64
+			index_2_num = np.timedelta64(index*tick_quant) + np.datetime64(start_num)
+
 		#store as tuples
 		tuples_list.append((index_2_num,number_of_texts_sent_this_tick))
 		#store just the x values
@@ -186,8 +202,6 @@ def create_volume_trends(tes_list,tickquant_days):
 	cum_sum_texts = np.cumsum(y_vals)
 
 	return({'cumsum':cum_sum_texts,'x_ticks':x_ticks,'y_vals':y_vals})
-
-	#plt.bar(mdates.num2date(x_ticks),y_vals)
 
 """
 go through the calculation after dividing Text Equivalents into days of week

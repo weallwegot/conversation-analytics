@@ -22,13 +22,12 @@ versus just an extended pause.
 # not sure what else.
 
 import numpy as np
-import datetime
 import calendar
 import re
 from src.utilities.utils import flatten_list, display_weekday
 from src.utilities.utils import SKINTONES
 
-import filter_poly as filt
+from src.calc_engine import filter_poly as filt
 
 #one method for all metrics so the loop only happens once
 #tes will likely be a dictionary with some meta data
@@ -376,7 +375,7 @@ def get_top_x_occurrences(special_key,list_of_dicts,occurrence_number):
 	num = len(results_dict.keys())
 	#print(str(results_dict))
 	#http://stackoverflow.com/questions/7197315/5-maximum-values-in-a-python-dictionary
-	if(num) < occurrence_number:
+	if num < occurrence_number:
 		results = sorted(results_dict, key=results_dict.get, reverse=True)[:num]
 	else:
 		results = sorted(results_dict, key=results_dict.get, reverse=True)[:occurrence_number]
@@ -393,6 +392,7 @@ def calc_time_between_text_equivalents(tes_1,tes_2):
 	return_vals = {}
 	# it is important to subtract later from earlier for proper time
 	tdelta = (tes_2.timestamp-tes_1.timestamp)
+	# TODO: implement Pint units handler module
 	return_vals['time diff'] = tdelta.seconds + tdelta.days*24.0*60.0*60.0
 	initiator = tes_1.sender 
 	return_vals['responder'] = tes_2.sender
@@ -470,9 +470,9 @@ def calc_link(te):
 
 def calc_emoji(te):
 	"""
-	param: te :: TextEquivalent 
+	:param te : TextEquivalent object to find
 	detect if the TextEquivalent object contains an emoji in it and what the emoji(s) are
-	TLDR: finds emojis in the text and does some special processing to make sur it doesnt miss skin tones used
+	TLDR: finds emojis in the text and does some special processing to make sure it doesnt miss skin tones used
 	"""
 	return_vals = {}
 	return_vals['day of week'] = te.date_day_of_week
@@ -486,9 +486,11 @@ def calc_emoji(te):
 	# http://stackoverflow.com/questions/31603075/how-can-i-represent-this-regex-to-not-get-a-bad-character-range-error
 	# with wide build could use some regex like this -> [\U0001d300-\U0001d356]
 	# http://stackoverflow.com/questions/19149186/how-to-find-and-count-emoticons-in-a-string-using-python
-	txt_utf_8 = te.all_text.decode('utf-8')
+	txt_utf_8 = te.all_text #.decode('utf-8')
+	# this_match = re.findall(r'[\U0001d300-\U0001d356]',txt_utf_8)
 	this_match = re.findall(ur'(\ud838[\udc50-\udfff])|([\ud839-\ud83d][\udc00-\udfff])|(\ud83e[\udc00-\udfbf])|([\udc50-\udfff]\ud838)|([\udc00-\udfff][\ud839-\ud83d])|([\udc00-\udfbf]\ud83e)',txt_utf_8)
 	if re.search(ur'(\ud838[\udc50-\udfff])|([\ud839-\ud83d][\udc00-\udfff])|(\ud83e[\udc00-\udfbf])|([\udc50-\udfff]\ud838)|([\udc00-\udfff][\ud839-\ud83d])|([\udc00-\udfbf]\ud83e)',txt_utf_8):
+	# if re.search(r'[\U0001d300-\U0001d356]',txt_utf_8):
 		return_vals['emoji_bool'] = True
 		#cast it as a set so that there are no repeated unicodes
 		#print('all matches ' + str(this_match))
