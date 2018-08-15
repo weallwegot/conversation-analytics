@@ -1,6 +1,6 @@
-import metric_calculations as mc
 # used to make sure time zones are both naive or aware for comparison filtering
 import pytz
+import numpy as np
 """
 Various functions for filtering out a list of TextEquivalent objects
 into different categories
@@ -98,11 +98,17 @@ def filter_by_date_range(start_date,end_date,tes):
 	# is greater than the end_date
 	# however this actually assumes the tes are already chronologically ordered
 	for te in tes:
-		if start_date.replace(tzinfo=utc) <= te.timestamp.replace(tzinfo=utc) <= end_date.replace(tzinfo=utc):
-			filtered_tes.append(te)
+		try:
+			if start_date.replace(tzinfo=utc) <= te.timestamp.replace(tzinfo=utc) <= end_date.replace(tzinfo=utc):
+				filtered_tes.append(te)
+		except AttributeError:
+			# this will get hit if you pass something other than a datetime object as there is no replace functino
+			if start_date <= np.datetime64(te.timestamp) <= end_date:
+				filtered_tes.append(te)
 
 
 	dict_filtered_tes['filtered_tes'] = filtered_tes
+	dict_filtered_tes['number_returned'] = len(filtered_tes)
 
 
 
