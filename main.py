@@ -21,12 +21,9 @@ from src.utilities import utils
 from src.data_viz.visualize import create_volume_trends, create_time_trends
 from src.data_viz.visualize import create_chrono_time_trends_all_calcs
 #plotting tings
-import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
-from bokeh.io import gridplot, vplot, hplot
-import bokeh.plotting as bkp
-from bokeh.models import DatetimeTickFormatter
-from bokeh.charts import Bar, output_file, show, Area
+import plotly.offline as py
+import plotly.graph_objs as go
+
 import pandas as pd
 
 ##############################
@@ -47,7 +44,7 @@ full_path = data_folder + os.sep + text_file_name
 ## Parse Data From File  ##
 ###########################
 
-block_t_in_sec = 90
+block_t_in_sec = 25
 full_tes = read_and_parse_text_file(full_path,block_t_in_sec)
 filt = fil.filter_by_day_of_week([1,2,3,4,5,6,7],full_tes)['filtered_tes']
 
@@ -79,16 +76,17 @@ print(str(r))
 
 # the 2nd argument is for the length of the bins in the plot (in days)
 # calculates how many texts were sent over time. cumulatively
-zz = create_volume_trends(full_tes,5.0)
+CUMULATIVE_TEXT_DAY_BIN = 1.0
+zz = create_volume_trends(full_tes,CUMULATIVE_TEXT_DAY_BIN)
 
 # calculates data on the basis of hours and days of the week
 zzz = create_time_trends(full_tes)
 
 # the 2nd argument is for the length of the bins in the plot (in days).
 # creates long term trends for all the metrics.
-noice = create_chrono_time_trends_all_calcs(full_tes,5.0)
+noice = create_chrono_time_trends_all_calcs(full_tes,2.0)
 
-output_file("main.html")
+# output_file("main.html")
 
 print(str(zzz['hours_df']))
 
@@ -117,72 +115,76 @@ are calculated over time in chronological order
 they display how your texting behavior and that of your partner
 change over the life of your texting conversations
 """
-my_ticks = mdates.num2date(noice['x_ticks'])
+
 print("Date ticks " + str(noice['date_ticks']))
-#print("My Ticks" + str(my_ticks))
 
 
-p_waits_cumulative = Bar(data=noice,label='x_ticks',group='participant',values='wait_time',
+def newvbar(data,label,group,values,title,legend,ylabel,width=0.05):
+	return
+	plc = figure()
+
+	data1 = data[data["participant"] == "Me"]
+	data2 = data[data["participant"] == "Friend"]
+
+	trace1 = go.Bar(x=data1[label],y=data1[values],name="Me")
+	trace2 = go.Bar(x=data2[label],y=data2[values],name="Friend")
+	bardata = [trace1,trace2]
+	
+	layout = go.Layout(
+		barmode='group',
+		title=title,
+		yaxis=dict(
+			title=ylabel
+		)
+	)
+
+	fig = go.Figure(data=bardata,layout=layout)
+	py.plot(fig)
+
+	# fig = plc.vbar(x=data[label],width=width,top=data[values],group=group,legend=legend,ylabel=ylabel,title=title)
+
+	# return fig
+
+def non_comparative_bar(dataframe,xlabel,ylabel,title,width=0.05):
+	plc = figure()
+
+	data = [go.Bar(
+	            x=dataframe[xlabel],
+	            y=dataframe[ylabel]
+	    )]
+
+	layout = go.Layout(title=title,
+					   yaxis=dict(
+					   	title=ylabel)
+					   )
+
+	fig = go.Figure(data=data,layout = layout)
+	py.plot(fig)
+
+
+p_waits_cumulative = newvbar(data=noice,label='x_ticks',group='participant',values='wait_time',
 	title='Wait Times Over Time',legend='top_right',ylabel='Wait Time (sec)')
 
-# p_waits_cumulative.xaxis.formatter=DatetimeTickFormatter(
-#         hours=["%d %B %Y"],
-#         days=["%d %B %Y"],
-#         months=["%d %B %Y"],
-#         years=["%d %B %Y"],
-#     )
-p_waits_cumulative.xaxis.major_label_orientation = pi/4
-
-p_emoji_cumulative = Bar(data=noice,label='x_ticks',group='participant',values='emoji_rate',
+p_emoji_cumulative = newvbar(data=noice,label='x_ticks',group='participant',values='emoji_rate',
 	title='Emoji Rate Over Time',legend='top_right',ylabel='Emoji Rate (%)')
-p_emoji_cumulative.xaxis.formatter=DatetimeTickFormatter(
-        hours=["%d %B %Y"],
-        days=["%d %B %Y"],
-        months=["%d %B %Y"],
-        years=["%d %B %Y"],
-    )
-p_emoji_cumulative.xaxis.major_label_orientation = pi/4
 
-p_laugh_cumulative = Bar(data=noice,label='x_ticks',group='participant',values='laugh_rate',
+
+p_laugh_cumulative = newvbar(data=noice,label='x_ticks',group='participant',values='laugh_rate',
 	title='Laugh Rate (%) Over Time',legend='top_right',ylabel='Laugh Rate (%)')
-p_laugh_cumulative.xaxis.formatter=DatetimeTickFormatter(
-        hours=["%d %B %Y"],
-        days=["%d %B %Y"],
-        months=["%d %B %Y"],
-        years=["%d %B %Y"],
-    )
-p_laugh_cumulative.xaxis.major_label_orientation = pi/4
 
-p_dt_cumulative = Bar(data=noice,label='x_ticks',group='participant',values='double_text_rate',
+
+p_dt_cumulative = newvbar(data=noice,label='x_ticks',group='participant',values='double_text_rate',
 	title='Double Text Rate (%) Over Time',legend='top_right',ylabel='Double Text Rate (%)')
-p_dt_cumulative.xaxis.formatter=DatetimeTickFormatter(
-        hours=["%d %B %Y"],
-        days=["%d %B %Y"],
-        months=["%d %B %Y"],
-        years=["%d %B %Y"],
-    )
-p_dt_cumulative.xaxis.major_label_orientation = pi/4
 
-p_link_cumulative = Bar(data=noice,label='x_ticks',group='participant',values='link_rate',
+
+p_link_cumulative = newvbar(data=noice,label='x_ticks',group='participant',values='link_rate',
 	title='Link Rate (%) Over Time',legend='top_right',ylabel='Link Rate (%)')
-p_link_cumulative.xaxis.formatter=DatetimeTickFormatter(
-        hours=["%d %B %Y"],
-        days=["%d %B %Y"],
-        months=["%d %B %Y"],
-        years=["%d %B %Y"],
-    )
-p_link_cumulative.xaxis.major_label_orientation = pi/4
 
 
-p_curse_cumulative = Bar(data=noice,label='x_ticks',group='participant',values='curse_rate',
+
+p_curse_cumulative = newvbar(data=noice,label='x_ticks',group='participant',values='curse_rate',
 	title='Curse Rate (%) Over Time',legend='top_right',ylabel='Curse Rate (%)')
-p_curse_cumulative.xaxis.formatter=DatetimeTickFormatter(
-        hours=["%d %B %Y"],
-        days=["%d %B %Y"],
-        months=["%d %B %Y"],
-        years=["%d %B %Y"],
-    )
-p_curse_cumulative.xaxis.major_label_orientation = pi/4
+
 
 
 
@@ -190,46 +192,66 @@ p_curse_cumulative.xaxis.major_label_orientation = pi/4
 All the plots below are the ones that are broken down by day of week
 and by the hour of the day
 """
-p_vol_hr = Bar(data=zzz['hours_df'],label='hour_x',group='participant',values='texts_sent',
+
+
+p_vol_hr = newvbar(data=zzz['hours_df'],label='hour_x',group='participant',values='texts_sent',
 	title='Number of Texts Sent By Time of Day',legend='top_right',ylabel='Number of Texts Sent')
 
-p_vol_day = Bar(data=zzz['days_df'],label='day_x',group='participant',values='texts_sent',
+
+p_vol_day = newvbar(data=zzz['days_df'],label='day_x',group='participant',values='texts_sent',
 	title='Number of Texts Sent By Day of Week',legend='top_right',ylabel='Number of Texts Sent')
 
-p_waits_hr = Bar(data=zzz['hours_df'],label='hour_x',group='participant',values='wait_time',
+
+p_waits_hr = newvbar(data=zzz['hours_df'],label='hour_x',group='participant',values='wait_time',
 	title='Wait Times By Time of Day',legend='top_right',ylabel='Wait Time (sec)')
 
-p_waits_day = Bar(data=zzz['days_df'],label='day_x',group='participant',values='wait_time',
+
+p_waits_day = newvbar(data=zzz['days_df'],label='day_x',group='participant',values='wait_time',
 	title='Wait Times By Day of Week',legend='top_right',ylabel='Wait Time (sec)')
 
-p_emoji_hr = Bar(data=zzz['hours_df'],label='hour_x',group='participant',values='emoji_rate',
+
+p_emoji_hr = newvbar(data=zzz['hours_df'],label='hour_x',group='participant',values='emoji_rate',
 	title='Emoji Rate By Time of Day',legend='top_right',ylabel='Emoji Rate (%)')
 
-p_emoji_day = Bar(data=zzz['days_df'],label='day_x',group='participant',values='emoji_rate',
+
+p_emoji_day = newvbar(data=zzz['days_df'],label='day_x',group='participant',values='emoji_rate',
 	title='Emoji Rate By Day of Week',legend='top_right',ylabel='Emoji Rate (%)')
 
-p_laugh_hr = Bar(data=zzz['hours_df'],label='hour_x',group='participant',values='laugh_rate',
+
+p_laugh_hr = newvbar(data=zzz['hours_df'],label='hour_x',group='participant',values='laugh_rate',
 	title='Laugh Rate (%) By Time of Day',legend='top_right',ylabel='Laugh Rate (%)')
 
-p_laugh_day = Bar(data=zzz['days_df'],label='day_x',group='participant',values='laugh_rate',
+
+p_laugh_day = newvbar(data=zzz['days_df'],label='day_x',group='participant',values='laugh_rate',
 	title='Laugh Rate (%) By Day of Week',legend='top_right',ylabel='Laugh Rate (%)')
 
-p_dt_hr = Bar(data=zzz['hours_df'],label='hour_x',group='participant',values='double_text_rate',
+
+p_dt_hr = newvbar(data=zzz['hours_df'],label='hour_x',group='participant',values='double_text_rate',
 	title='Double Text Rate (%) By Time of Day',legend='top_right',ylabel='Double Text Rate (%)')
 
-p_dt_day = Bar(data=zzz['days_df'],label='day_x',group='participant',values='double_text_rate',
+
+
+p_dt_day = newvbar(data=zzz['days_df'],label='day_x',group='participant',values='double_text_rate',
 	title='Double Text Rate (%) By Day of Week',legend='top_right',ylabel='Double Text Rate (%)')
 
-p_link_hr = Bar(data=zzz['hours_df'],label='hour_x',group='participant',values='link_rate',
+
+
+p_link_hr = newvbar(data=zzz['hours_df'],label='hour_x',group='participant',values='link_rate',
 	title='Link Rate (%) By Time of Day',legend='top_right',ylabel='Link Rate (%)')
 
-p_link_day = Bar(data=zzz['days_df'],label='day_x',group='participant',values='link_rate',
+
+
+p_link_day = newvbar(data=zzz['days_df'],label='day_x',group='participant',values='link_rate',
 	title='Link Rate (%) By Day of Week',legend='top_right',ylabel='Link Rate (%)')
 
-p_curse_hr = Bar(data=zzz['hours_df'],label='hour_x',group='participant',values='curse_rate',
+
+
+p_curse_hr = newvbar(data=zzz['hours_df'],label='hour_x',group='participant',values='curse_rate',
 	title='Curse Rate (%) By Time of Day',legend='top_right',ylabel='Curse Rate (%)')
 
-p_curse_day = Bar(data=zzz['days_df'],label='day_x',group='participant',values='curse_rate',
+
+
+p_curse_day = newvbar(data=zzz['days_df'],label='day_x',group='participant',values='curse_rate',
 	title='Curse Rate (%) By Day of Week',legend='top_right',ylabel='Curse Rate (%)')
 
 """
@@ -237,50 +259,13 @@ The two plots below are cumulatives as well for number of texts sent
 they are separate because the algorithm for calculating them is different
 """
 
+p_cumulative_texts_sent = non_comparative_bar(dataframe=zz,xlabel='x_ticks',ylabel='cumsum',
+	title='Number of Text Equivalents Over Time',width=0.025)
 
-plot_volume_cumsum = bkp.figure(plot_width=500,plot_height=500,y_axis_label='Number of Text Equivalents')
-plot_volume_cumsum.xaxis.formatter=DatetimeTickFormatter(
-        hours=["%d %B %Y"],
-        days=["%d %B %Y"],
-        months=["%d %B %Y"],
-        years=["%d %B %Y"],
-    )
-plot_volume_cumsum.xaxis.major_label_orientation = pi/4
-plot_volume_cumsum.vbar(x=mdates.num2date(zz['x_ticks']),top=zz['cumsum'],width=0.1)
 
-plot_volume = bkp.figure(plot_width=500,plot_height=500,y_axis_label='Number of Text Equivalents')
-plot_volume.xaxis.formatter=DatetimeTickFormatter(
-        hours=["%d %B %Y"],
-        days=["%d %B %Y"],
-        months=["%d %B %Y"],
-        years=["%d %B %Y"],
-    )
-plot_volume.xaxis.major_label_orientation = pi/4
-plot_volume.vbar(x=mdates.num2date(zz['x_ticks']),top=zz['y_vals'],width=0.1)
 
-allplots = vplot(p_waits_cumulative,
-				p_emoji_cumulative,
-				p_laugh_cumulative,
-				p_dt_cumulative,
-				p_link_cumulative,
-				p_curse_cumulative,
-				p_waits_hr,
-				p_waits_day,
-				p_vol_day,
-				p_vol_hr,
-				plot_volume_cumsum,
-				plot_volume,
-				p_emoji_day,
-				p_emoji_hr,
-				p_laugh_hr,
-				p_laugh_day,
-				p_dt_day,
-				p_dt_hr,
-				p_link_hr,
-				p_link_day,
-				p_curse_hr,
-				p_curse_day)
-bkp.show(allplots)
+p_texts_per_day_bin = non_comparative_bar(dataframe=zz,xlabel='x_ticks',ylabel='y_vals',
+	title='Number of Texts Per {} Day Period'.format(CUMULATIVE_TEXT_DAY_BIN), width=0.025)
 
 
 

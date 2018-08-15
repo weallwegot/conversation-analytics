@@ -3,6 +3,14 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+# mac system file
+**.DS_Store
+
+# artifacts from plot lib
+
+*.html
+*.css
+*.js
 #dumb pycharm tings
 
 #partially bowered from jetbrains.gitignore project on github
