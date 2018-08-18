@@ -486,12 +486,13 @@ def calc_emoji(te):
 	# http://stackoverflow.com/questions/31603075/how-can-i-represent-this-regex-to-not-get-a-bad-character-range-error
 	# with wide build could use some regex like this -> [\U0001d300-\U0001d356]
 	# http://stackoverflow.com/questions/19149186/how-to-find-and-count-emoticons-in-a-string-using-python
-	txt_utf_8 = te.all_text #.decode('utf-8')
+	txt_utf_8 = te.all_text.decode('utf-8')
 	# this_match = re.findall(r'[\U0001d300-\U0001d356]',txt_utf_8)
 	this_match = re.findall(ur'(\ud838[\udc50-\udfff])|([\ud839-\ud83d][\udc00-\udfff])|(\ud83e[\udc00-\udfbf])|([\udc50-\udfff]\ud838)|([\udc00-\udfff][\ud839-\ud83d])|([\udc00-\udfbf]\ud83e)',txt_utf_8)
 	if re.search(ur'(\ud838[\udc50-\udfff])|([\ud839-\ud83d][\udc00-\udfff])|(\ud83e[\udc00-\udfbf])|([\udc50-\udfff]\ud838)|([\udc00-\udfff][\ud839-\ud83d])|([\udc00-\udfbf]\ud83e)',txt_utf_8):
 	# if re.search(r'[\U0001d300-\U0001d356]',txt_utf_8):
 		return_vals['emoji_bool'] = True
+		print("Found emoji: {}".format(txt_utf_8))
 		#cast it as a set so that there are no repeated unicodes
 		#print('all matches ' + str(this_match))
 		this_match_new = []
