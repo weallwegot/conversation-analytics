@@ -38,7 +38,7 @@ analysis_id = str(uuid.uuid4())
 working_dir = os.getcwd()
 data_folder = working_dir + os.sep + "data" 
 text_file_name = "anon_convo.txt"
-text_file_name = "ebunoluwa.txt"
+text_file_name = "friend0.txt"
 full_path = data_folder + os.sep + text_file_name
 
 ###########################
@@ -119,8 +119,7 @@ change over the life of your texting conversations
 
 
 def newvbar(data,label,group,values,title,legend,ylabel,width=0.05):
-	return
-	plc = figure()
+	# return
 
 	data1 = data[data["participant"] == "Me"]
 	data2 = data[data["participant"] == "Friend"]
@@ -138,14 +137,13 @@ def newvbar(data,label,group,values,title,legend,ylabel,width=0.05):
 	)
 
 	fig = go.Figure(data=bardata,layout=layout)
-	py.plot(fig)
+	py.plot(fig,filename='{}.html'.format(title))
 
 	# fig = plc.vbar(x=data[label],width=width,top=data[values],group=group,legend=legend,ylabel=ylabel,title=title)
 
 	# return fig
 
 def non_comparative_bar(dataframe,xlabel,ylabel,title,width=0.05):
-	plc = figure()
 
 	data = [go.Bar(
 	            x=dataframe[xlabel],
@@ -158,7 +156,7 @@ def non_comparative_bar(dataframe,xlabel,ylabel,title,width=0.05):
 					   )
 
 	fig = go.Figure(data=data,layout = layout)
-	py.plot(fig)
+	py.plot(figfilename='{}.html'.format(title))
 
 
 p_waits_cumulative = newvbar(data=noice,label='x_ticks',group='participant',values='wait_time',

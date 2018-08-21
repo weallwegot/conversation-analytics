@@ -492,7 +492,7 @@ def calc_emoji(te):
 	if re.search(ur'(\ud838[\udc50-\udfff])|([\ud839-\ud83d][\udc00-\udfff])|(\ud83e[\udc00-\udfbf])|([\udc50-\udfff]\ud838)|([\udc00-\udfff][\ud839-\ud83d])|([\udc00-\udfbf]\ud83e)',txt_utf_8):
 	# if re.search(r'[\U0001d300-\U0001d356]',txt_utf_8):
 		return_vals['emoji_bool'] = True
-		print("Found emoji: {}".format(txt_utf_8))
+		# print("Found emoji: {}".format(txt_utf_8))
 		#cast it as a set so that there are no repeated unicodes
 		#print('all matches ' + str(this_match))
 		this_match_new = []
