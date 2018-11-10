@@ -37,6 +37,8 @@ def create_chrono_time_trends_all_calcs(tes_list,tickquant_days):
 	# i actually dont think this is what you want... 
 
 	# might have to loop thru. :weary-face: 
+	average_length_s1=[]
+	average_length_s2=[]
 	wait_ticks_time_s1 = []
 	wait_ticks_time_s2 = []
 	emoji_ticks_s1 = []
@@ -64,6 +66,8 @@ def create_chrono_time_trends_all_calcs(tes_list,tickquant_days):
 		ticks_calcs = metric_calculations.calculate_all_metrics(tes_for_current_time_block)
 		wait_ticks_time_s1.append(ticks_calcs['response_rate_s1'])
 		wait_ticks_time_s2.append(ticks_calcs['response_rate_s2'])
+		average_length_s1.append(ticks_calcs['average_length_s1'])
+		average_length_s2.append(ticks_calcs['average_length_s2'])
 		emoji_ticks_s1.append(ticks_calcs['emoji_rate_s1'])
 		emoji_ticks_s2.append(ticks_calcs['emoji_rate_s2'])
 		laugh_ticks_s1.append(ticks_calcs['laugh_rate_s1'])
@@ -95,6 +99,7 @@ def create_chrono_time_trends_all_calcs(tes_list,tickquant_days):
 
 	#cumulative totals for participant 1
 	dict_cum_1 =	{'x_ticks':time_axis[:-1],
+		'average_length':average_length_s1,
 		'date_ticks':ticks_as_dates,
 		'wait_time': wait_ticks_time_s1,
 		'emoji_rate':emoji_ticks_s1,
@@ -108,6 +113,7 @@ def create_chrono_time_trends_all_calcs(tes_list,tickquant_days):
 		}
 	#cumulative totals for participant 2
 	dict_cum_2 = {'x_ticks':time_axis[:-1],
+		'average_length':average_length_s2,
 		'date_ticks':ticks_as_dates,
 		'wait_time': wait_ticks_time_s2,
 		'emoji_rate':emoji_ticks_s2,
