@@ -12,6 +12,7 @@ https://github.com/PeterKaminski09/baskup to dump data
 import os
 from math import pi
 import uuid
+import pdb
 #module imports
 from src.convo_objects.TextEquivalent import TextEquivalent
 from src.calc_engine import metric_calculations as mc 
@@ -23,7 +24,9 @@ from src.data_viz.visualize import create_chrono_time_trends_all_calcs
 #plotting tings
 import plotly.offline as py
 import plotly.graph_objs as go
+from plotly import tools
 
+import numpy as np
 import pandas as pd
 
 ##############################
@@ -45,7 +48,7 @@ full_path = data_folder + os.sep + text_file_name
 ## Parse Data From File  ##
 ###########################
 
-block_t_in_sec = 25
+block_t_in_sec = 10
 full_tes = read_and_parse_text_file(full_path,block_t_in_sec)
 filt = fil.filter_by_day_of_week([1,2,3,4,5,6,7],full_tes)['filtered_tes']
 
@@ -54,7 +57,14 @@ filt = fil.filter_by_day_of_week([1,2,3,4,5,6,7],full_tes)['filtered_tes']
 ###########################
 
 
-r = mc.calculate_all_metrics(full_tes)
+num_tes = len(full_tes)
+
+r=mc.calculate_all_metrics(full_tes)
+
+#pdb.set_trace()
+
+#r = mc.calculate_all_metrics(full_tes)
+
 
 ###################################
 ##   Convert Emoji To Readable   ##
@@ -67,6 +77,11 @@ s2_emojis = [ub.convert_emoji_code(code) for code in r['top_emojis_s2']]
 
 r['top_emojis_s1'] = s1_emojis
 r['top_emojis_s2'] = s2_emojis
+
+z=r
+
+MYCOLOR = '#A53860'
+FRIENDCOLOR = '#61C9A8'
 
 
 #r2 = mc.calc_most_least_active_times(full_tes)
@@ -85,7 +100,71 @@ zzz = create_time_trends(full_tes)
 
 # the 2nd argument is for the length of the bins in the plot (in days).
 # creates long term trends for all the metrics.
-noice = create_chrono_time_trends_all_calcs(full_tes,2.0)
+noice = create_chrono_time_trends_all_calcs(full_tes,15.0)
+
+pdb.set_trace()
+
+def plot_subplot_comparatively(time_trend_df,metrics):
+
+	my_time_trend = noice[noice['participant']=='Me']
+
+	friend_time_trend = noice[noice['participant']=='Friend']
+
+	titles = [x.replace('_',' ') for x in metrics]
+
+	fig = tools.make_subplots(rows=len(metrics),cols=1,subplot_titles=titles)
+
+	count = 1
+
+	x_axes_phases = ["Brand New","Blissful Days","Im Good Luv, Enjoy"]
+
+	for metric in metrics:
+
+		if count == 1:
+			showlegend=True
+		else:
+			showlegend=False
+
+		trace1 = go.Scatter(x=x_axes_phases,
+							y=my_time_trend[metric],
+							showlegend=showlegend,
+							marker=dict(color=MYCOLOR),
+							name="Mines")
+
+		trace2 = go.Scatter(x=x_axes_phases,
+							y=friend_time_trend[metric],
+							showlegend=showlegend,
+							marker=dict(color=FRIENDCOLOR),
+							name="Hers")
+
+
+		# determine the units to be used for the plots
+		units = "percent (%)"
+		if metric == 'texts_sent':
+			units = "count"
+		elif metric == "wait_time":
+			units = "seconds"
+
+		fig.append_trace(trace1,count,1)
+		fig.append_trace(trace2,count,1)
+		# create the yaxis label
+		yaxis_label = units
+		fig['layout']['yaxis{}'.format(count)].update(title=yaxis_label)
+		count += 1
+
+
+	fig['layout'].update(height=1200,width=800,title='Phase Timeseries Trends')
+	py.plot(fig,filename='compared_subplots.html')
+
+
+# ignore non numeric columns
+my_metrics_of_interest = [x for x in list(noice.columns) if x in list(noice.select_dtypes(include=[np.number]).columns)]
+	
+plot_subplot_comparatively(noice,my_metrics_of_interest)
+
+
+
+
 
 # output_file("main.html")
 
@@ -119,13 +198,13 @@ change over the life of your texting conversations
 
 
 def newvbar(data,label,group,values,title,legend,ylabel,width=0.05):
-	# return
+	return
 
 	data1 = data[data["participant"] == "Me"]
 	data2 = data[data["participant"] == "Friend"]
 
-	trace1 = go.Bar(x=data1[label],y=data1[values],name="Me")
-	trace2 = go.Bar(x=data2[label],y=data2[values],name="Friend")
+	trace1 = go.Bar(x=data1[label],y=data1[values],name="Me",marker=dict(color=MYCOLOR))
+	trace2 = go.Bar(x=data2[label],y=data2[values],name="Friend",marker=dict(color=FRIENDCOLOR))
 	bardata = [trace1,trace2]
 	
 	layout = go.Layout(
@@ -144,6 +223,10 @@ def newvbar(data,label,group,values,title,legend,ylabel,width=0.05):
 	# return fig
 
 def non_comparative_bar(dataframe,xlabel,ylabel,title,width=0.05):
+	"""
+	Method for creating a bar plot with no comparative features.
+	"""
+	return
 
 	data = [go.Bar(
 	            x=dataframe[xlabel],
@@ -156,7 +239,7 @@ def non_comparative_bar(dataframe,xlabel,ylabel,title,width=0.05):
 					   )
 
 	fig = go.Figure(data=data,layout = layout)
-	py.plot(figfilename='{}.html'.format(title))
+	py.plot(fig,filename='{}.html'.format(title))
 
 
 p_waits_cumulative = newvbar(data=noice,label='x_ticks',group='participant',values='wait_time',
