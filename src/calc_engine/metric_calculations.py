@@ -106,8 +106,12 @@ def calculate_all_metrics(tes):
 				time_diffs_s2.append(time_diff_dict)
 
 			if not earlier_te.sender == later_te.sender:
-				# only append the day if there was an exchange between
-				# 2 different participants.
+				"""
+				only append the timestamp if there was an exchange between
+				2 different participants. this list will be used to calculate
+				streaks and droughts in the conversation so there has to be at 
+				least one mutual exchange
+				"""
 				timestamps.append(earlier_te.timestamp)
 
 
@@ -160,47 +164,64 @@ def calculate_all_metrics(tes):
 
 
 
-	# percentage of texts sent that are double texts
+
 	if number_of_text_eqs_sent_s1 > 0:	
-		# median number of seconds to reply
+		"""
+		median number of seconds to hear a reply. A.K.A WAIT TIME
+		this is because we are looking at the time difference when participant1 is the SENDER.
+		"""
 		master_metrics['response_rate_s1'] = np.median(non_double_texts_time_diffs_s1)
 		# average number of seconds to reply
 		master_metrics['response_rate_mean_s1'] = np.mean(non_double_texts_time_diffs_s1)
-		# proportion of texts sent that are "double texts"
-		master_metrics['double_text_rate_s1'] = calc_rate_of_occurrence('double text',time_diffs_s1,number_of_text_eqs_sent_s1)
+		"""
+		proportion of texts sent that are "double texts"
+		defined as:
+		sender & responder are the same. 
+		The time difference between the two texts is > 3.5*median_wait_time
+		"""
+		num_double_texts_s1 = len([x for x in time_diffs_s1 if x['double text'] and x['time diff'] > master_metrics['response_rate_s1']*3.5])
+		master_metrics['double_text_rate_s1'] = 100.*float(num_double_texts_s1)/number_of_text_eqs_sent_s1
 		# average text length in words
 		master_metrics['average_length_s1'] = np.mean([ld['length_words'] for ld in avg_lengths_s1])
 		# find rate of laughter
-		master_metrics['laugh_rate_s1'] = calc_rate_of_occurrence('laugh_bool',laughs_s1,number_of_text_eqs_sent_s1)
+		master_metrics['laugh_rate_s1'],laugh_num_s1 = calc_rate_of_occurrence('laugh_bool',laughs_s1,number_of_text_eqs_sent_s1)
 		# find rate of cursing
-		master_metrics['curse_rate_s1'] =  calc_rate_of_occurrence('curse_bool',curses_s1,number_of_text_eqs_sent_s1)
+		master_metrics['curse_rate_s1'],curse_num_s1 =  calc_rate_of_occurrence('curse_bool',curses_s1,number_of_text_eqs_sent_s1)
 		# find rate of link sharing
-		master_metrics['link_rate_s1'] = calc_rate_of_occurrence('link_bool',links_s1,number_of_text_eqs_sent_s1)
+		master_metrics['link_rate_s1'],link_num_s1 = calc_rate_of_occurrence('link_bool',links_s1,number_of_text_eqs_sent_s1)
 		# find the rate of emoji usage
-		master_metrics['emoji_rate_s1'] = calc_rate_of_occurrence('emoji_bool',emojis_s1,number_of_text_eqs_sent_s1)
+		master_metrics['emoji_rate_s1'],emoji_num_s1 = calc_rate_of_occurrence('emoji_bool',emojis_s1,number_of_text_eqs_sent_s1)
 		# find the top emojis
 		master_metrics['top_emojis_s1'] = get_top_x_occurrences('emojis_used',emojis_s1,10)
 
 	if number_of_text_eqs_sent_s2 > 0:
-		# median number of seconds to reply
+		# median number of seconds to hear a reply. A.K.A WAIT TIME
 		master_metrics['response_rate_s2'] = np.median(non_double_texts_time_diffs_s2)
 		# average number of seconds to reply
 		master_metrics['response_rate_mean_s2'] = np.mean(non_double_texts_time_diffs_s2)
-		# proportion of texts sent that are "double texts"
-		master_metrics['double_text_rate_s2'] = calc_rate_of_occurrence('double text',time_diffs_s2,number_of_text_eqs_sent_s2)
+		"""
+		proportion of texts sent that are "double texts"
+		defined as:
+		sender & responder are the same. 
+		The time difference between the two texts is > 3.5*median_wait_time
+		"""
+		num_double_texts_s2 = len([x for x in time_diffs_s1 if x['double text'] and x['time diff'] > master_metrics['response_rate_s2']*3.5])
+		master_metrics['double_text_rate_s2'] = 100.*float(num_double_texts_s2)/number_of_text_eqs_sent_s2
 		# average text length in words
 		master_metrics['average_length_s2'] = np.mean([ld['length_words'] for ld in avg_lengths_s2])
 		# find rate of laughter
-		master_metrics['laugh_rate_s2'] = calc_rate_of_occurrence('laugh_bool',laughs_s2,number_of_text_eqs_sent_s2)
+		master_metrics['laugh_rate_s2'],laugh_num_s2 = calc_rate_of_occurrence('laugh_bool',laughs_s2,number_of_text_eqs_sent_s2)
 		# find rate of cursing
-		master_metrics['curse_rate_s2'] =  calc_rate_of_occurrence('curse_bool',curses_s2,number_of_text_eqs_sent_s2)
+		master_metrics['curse_rate_s2'],curse_num_s2 =  calc_rate_of_occurrence('curse_bool',curses_s2,number_of_text_eqs_sent_s2)
 		# find rate of link sharing
-		master_metrics['link_rate_s2'] = calc_rate_of_occurrence('link_bool',links_s2,number_of_text_eqs_sent_s2)
+		master_metrics['link_rate_s2'],link_num_s2 = calc_rate_of_occurrence('link_bool',links_s2,number_of_text_eqs_sent_s2)
 		# find the rate of emoji usage
-		master_metrics['emoji_rate_s2'] = calc_rate_of_occurrence('emoji_bool',emojis_s2,number_of_text_eqs_sent_s2)
+		master_metrics['emoji_rate_s2'],emoji_num_s2 = calc_rate_of_occurrence('emoji_bool',emojis_s2,number_of_text_eqs_sent_s2)
 		# find the top emojis
 		master_metrics['top_emojis_s2'] = get_top_x_occurrences('emojis_used',emojis_s2,10)
 
+	# import pdb
+	# pdb.set_trace()
 
 	return (master_metrics)
 
@@ -384,11 +405,17 @@ def get_top_x_occurrences(special_key,list_of_dicts,occurrence_number):
 
 # method to calculate a rate as a percentage of occurrence
 def calc_rate_of_occurrence(special_key,list_of_dicts,total_number):
-	res = 100.0*(sum([td[special_key] for td in list_of_dicts])
-			/float(total_number))
-	return res
+	num_occurrences = float(sum([td[special_key] for td in list_of_dicts]))
+	res = 100.0*(num_occurrences/total_number)
+	return res,num_occurrences
 
 def calc_time_between_text_equivalents(tes_1,tes_2):
+	"""
+	calculate the time between texts and checks if 
+	there is a double text
+	TODO: refine double text definition. There should be a 
+	threshold of time
+	"""
 	return_vals = {}
 	# it is important to subtract later from earlier for proper time
 	tdelta = (tes_2.timestamp-tes_1.timestamp)
