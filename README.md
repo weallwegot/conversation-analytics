@@ -2,18 +2,18 @@
 
 [![Coverage Status](https://coveralls.io/repos/github/weAllWeGot/conversation-analytics/badge.svg?branch=master)](https://coveralls.io/github/weAllWeGot/conversation-analytics?branch=master)
 
-[Why Does this Project Exist?](https://andcomputers.io/unrequited-love-as-told-by-a-computer/)
+## [Why Does this Project Exist?](https://andcomputers.io/unrequited-love-as-told-by-a-computer/)
 
-[Developer's Walkthrough](https://andcomputers.io/conversational-analytics-a-technical-walkthrough/)
+## [Developer's Walkthrough](https://andcomputers.io/conversational-analytics-a-technical-walkthrough/)
 
 
 
-# Double Text Rate Broken Down by Day of Week and Time of Day
+#### Double Text Rate Broken Down by Day of Week and Time of Day
 
 ![img](https://image.ibb.co/fygmDv/bokeh_plot_11.png)
 ![img](https://image.ibb.co/cdq2mF/bokeh_plot_10.png)
 
-# Overall Emoji Usage
+#### Overall Emoji Usage
 
 top_emojis_Me:
 thinking face, face with rolling eyes,
@@ -29,7 +29,7 @@ weary face, face with tears of joy,
 	skull, person tipping hand, OK hand: medium-dark skin tone,
 	hugging face
 
-# Median Wait Time to Get a Reply
+#### Median Wait Time to Get a Reply
 
 ![img](https://image.ibb.co/hGsRDv/bokeh_plot_2.png)
 
@@ -37,7 +37,7 @@ weary face, face with tears of joy,
 ![img](https://image.ibb.co/fUcF6F/bokeh_plot_1.png)
 
 
-# Laughing Rate Broken Down by Day of Week and Time of Day
+#### Laughing Rate Broken Down by Day of Week and Time of Day
 
 ![img](https://image.ibb.co/bWyzYv/bokeh_plot_9.png)
 
@@ -46,7 +46,7 @@ weary face, face with tears of joy,
 
 
 
-# Number of Texts Sent by Time of Day
+#### Number of Texts Sent by Time of Day
 
 
 ![img](https://image.ibb.co/gywWfa/bokeh_plot_3.png)
@@ -55,13 +55,13 @@ weary face, face with tears of joy,
 
 
 
-# Cursing Rates as a Percentage of Texts Sent
+#### Cursing Rates as a Percentage of Texts Sent
 
 ![img](https://image.ibb.co/chToRF/bokeh_plot_15.png)
 
 ![img](https://image.ibb.co/jHwKYv/bokeh_plot_14.png)
 
-# Number of Links Sent as a Percentage of Texts Sent
+#### Number of Links Sent as a Percentage of Texts Sent
 
 
 ![img](https://image.ibb.co/mEDNmF/bokeh_plot_13.png)
@@ -70,12 +70,12 @@ weary face, face with tears of joy,
 ![img](https://image.ibb.co/iuOcLa/bokeh_plot_12.png)
 
 
-# How Many Texts Were Sent on an Hourly Basis
+#### How Many Texts Were Sent on an Hourly Basis
 
 ![img](https://image.ibb.co/euioRF/bokeh_plot_4.png)
 
 
-# How Many Texts Were Sent Cumulatively
+#### How Many Texts Were Sent Cumulatively
 
 ![img](https://image.ibb.co/cxC40a/bokeh_plot_5.png)
 
@@ -105,7 +105,7 @@ This is best done if you have conda installed and can be done with the simple co
 `conda install bokeh`
 
 
-# sample data output
+#### sample data output
 s1 & s2 denote different conversations participants.
 For more in depth explanations of the calculations & assumptions, see [the wiki pages](https://github.com/weAllWeGot/conversation-analytics/wiki).
 ```python
