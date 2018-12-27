@@ -2,6 +2,10 @@
 
 [![Coverage Status](https://coveralls.io/repos/github/weAllWeGot/conversation-analytics/badge.svg?branch=master)](https://coveralls.io/github/weAllWeGot/conversation-analytics?branch=master)
 
+[Why Does this Project Exist?](https://andcomputers.io/unrequited-love-as-told-by-a-computer/)
+
+[Developer's Walkthrough](https://andcomputers.io/conversational-analytics-a-technical-walkthrough/)
+
 
 
 # Double Text Rate Broken Down by Day of Week and Time of Day
